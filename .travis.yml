@@ -17,6 +17,7 @@ script:
   - npm run lint
   #- npm run cover
   #- npm run nyc_init
+  - npm i element-ui -S
   - npm run test
   - npm run doc
 
