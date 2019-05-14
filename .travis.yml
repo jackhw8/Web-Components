@@ -1,0 +1,42 @@
+env:
+  global:
+    - CC_TEST_REPORTER_ID=3221b5b86d172be8e2c5a97cccd24f42f8d452c62b7131e43e6568d62106bef8
+
+language: node_js
+
+node_js:
+  - '10'
+
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
+
+script:
+  - npm install
+  - npm run lint
+  #- npm run cover
+  #- npm run nyc_init
+  - nyc npm run test
+  - npm run doc
+
+after_script:
+  - ./cc-test-reporter -t lcov after-build --exit-code $TRAVIS_TEST_RESULT
+
+deploy:
+  provider: pages
+  skip_cleanup: true
+  github_token: 9c2b5cae23750edd24afb63a8a4824f605be6de7  # Set in the settings page of your repository, as a secure variable
+  keep_history: true
+  on:
+    repo: ucsd-cse112/team6
+    branches: 
+      only:
+        - master
+    #all_branches: true
+  local_dir: ./docs
+  
+
+
+notifications:
+  slack: cse112-sp19-team6:N12LyYY9qQqATj006RyRVmKk
