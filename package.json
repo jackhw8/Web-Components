@@ -5,8 +5,8 @@
   "main": "main.js",
   "scripts": {
     "lint": "eslint . ./**/*.js",
-    "nyc_init": "nyc --reporter=lcov",
-    "test": "nyc --reporter=text --reporter=lcov mocha ./test/unit --recursive --exit --timeout 15000",
+    "nyc_init": "nyc cover mocha",
+    "test": "nyc --all --reporter=text --reporter=lcov mocha ./test/unit --recursive --exit --timeout 15000",
     "doc": "esdoc -c .esdoc.json",
     "cover": "istanbul cover _mocha"
   },
