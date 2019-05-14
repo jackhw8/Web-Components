@@ -20,12 +20,12 @@
     "husky": "^2.2.0",
     "istanbul": "^0.4.5",
     "mocha": "^6.1.4",
-    "nyc": "^1.0.0",
+    "nyc": "^14.1.1",
     "showroom": "^0.9.3"
   },
   "husky": {
-      "hooks": {
-          "pre-commit": "npm run lint"
-      }
+    "hooks": {
+      "pre-commit": "npm run lint"
+    }
   }
 }
