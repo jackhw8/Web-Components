@@ -1,6 +1,6 @@
 env:
   global:
-    - CC_TEST_REPORTER_ID=68ef978c26ab7a78297fd20204ea282dcd11d9ad428d5daa3ca2575c05f257b0
+    - CC_TEST_REPORTER_ID=$REPORTER_ID
 
 language: node_js
 
@@ -27,7 +27,7 @@ after_script:
 deploy:
   provider: pages
   skip_cleanup: true
-  github_token: 9c2b5cae23750edd24afb63a8a4824f605be6de7  # Set in the settings page of your repository, as a secure variable
+  github_token: $GH_TOKEN  # Set in the settings page of your repository, as a secure variable
   keep_history: true
   on:
     repo: ucsd-cse112/team6
