@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "eslint . ./**/*.js",
     "nyc_init": "nyc cover mocha",
-    "test": "nyc --all --reporter=text --reporter=lcov mocha ./test/unit --recursive --exit --timeout 15000",
+    "test": "nyc mocha ./test/unit --recursive --exit --timeout 15000",
     "doc": "esdoc -c .esdoc.json",
     "cover": "istanbul cover _mocha"
   },
@@ -17,7 +17,7 @@
     "esdoc": "^1.1.0",
     "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^5.16.0",
-    "husky": "^2.2.0",
+    "husky": "^2.3.0",
     "istanbul": "^0.4.5",
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
@@ -27,5 +27,17 @@
     "hooks": {
       "pre-commit": "npm run lint"
     }
+  },
+  "nyc": {
+    "all": true,
+    "reporter": [
+      "text",
+      "lcov",
+      "html"
+    ],
+    "instrument": true
+  },
+  "dependencies": {
+    "puppeteer": "^1.16.0"
   }
 }
