@@ -1,0 +1,103 @@
+.button
+{
+    /*background-color: #4CAF50; */
+    /* border: none; */
+    /*color: white; */
+    line-height: 1;
+    border: none;
+    padding: 12px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.default
+{
+    background-color: #ffffff;
+    color: black;
+    border: 1px solid #dcdfe6;
+}
+
+.default:hover
+{
+    background-color: #EEF5FE;
+    color: #409eff;
+    border-color: #409eff;
+}
+
+.primary
+{
+    background-color: #409eff;
+    color: #ffffff;
+    border-color: #409eff;
+}
+
+.primary:hover
+{
+    background-color: #77B4F8;
+}
+
+.primary.plain 
+{
+    background-color: #EEF5FE;
+    color: #409eff;
+    border-color: #409eff;
+}
+
+.primary.plain:hover
+{
+    background-color: #409eff;
+    color: #FFFFFF;
+}
+
+.success
+{
+    background-color: #67c23a;
+    color: #ffffff;
+    border-color: #67c23a;
+}
+
+.success:hover
+{
+    background-color: #98C76D
+}
+
+.info
+{
+    background-color: #909399;
+    color: #ffffff;
+    border-color: #909399;
+}
+
+.info:hover
+{
+    background-color: #A7A9AD;
+}
+
+.warning
+{
+    background-color: #e6a23c;
+    color: #ffffff;
+    border-color: #e6a23c;
+}
+
+.warning:hover
+{
+    background-color: #E3B572
+}
+
+.danger
+{
+    background-color: #f56c6c;
+    color: #ffffff;
+    border-color: #f56c6c;
+} 
+
+.danger:hover
+{
+    background-color: #E6908E;
+}
