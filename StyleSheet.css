@@ -48,11 +48,21 @@
     border-color: #67c23a;
 }
 
+.success:hover
+{
+    background-color: #98C76D
+}
+
 .info
 {
     background-color: #909399;
     color: #ffffff;
     border-color: #909399;
+}
+
+.info:hover
+{
+    background-color: #A7A9AD;
 }
 
 .warning
@@ -62,9 +72,19 @@
     border-color: #e6a23c;
 }
 
+.warning:hover
+{
+    background-color: #E3B572
+}
+
 .danger
 {
     background-color: #f56c6c;
     color: #ffffff;
     border-color: #f56c6c;
 }
+
+.danger:hover
+{
+    background-color: #E6908E;
+} 
