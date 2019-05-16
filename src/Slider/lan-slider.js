@@ -27,11 +27,9 @@ export default class LANSlider extends HTMLElement {
     const valueBox = document.createElement("div");
     valueBox.id = "val-box";
     valueBox.innerHTML = val;
-    valueBox.style.cssText = `
-      left: ${calculatePosition(val, max, min)}%;
-    `;
+    valueBox.style.cssText = `left: ${calculatePosition(val, max, min)}%;`;
 
-    // Create slider
+    // Create slider and add event listeners to it
     const slider = document.createElement("input");
     slider.setAttribute("type", "range");
     slider.setAttribute("name", "lan-slider");
@@ -40,10 +38,13 @@ export default class LANSlider extends HTMLElement {
     slider.setAttribute("value", val);
     slider.id = "lan-slider";
     slider.onmousemove = () => {
+      let currMin = calculateMin(this.getAttribute("min"));
+      let currMax = calculateMax(this.getAttribute("max"));
+      
       valueBox.innerHTML = slider.value;
       valueBox.style.cssText = `
         opacity: 1;
-        left: ${calculatePosition(slider.value, max, min)}%;
+        left: ${calculatePosition(slider.value, currMax, currMin)}%;
       `;
     };
     slider.onmouseout = () => (valueBox.style.cssText = "opacity: 0;");
@@ -145,17 +146,26 @@ export default class LANSlider extends HTMLElement {
    * updated.
    */
   attributeChangedCallback() {
+    const slider = this.shadowRoot.querySelector("#lan-slider");
+    const valueBox = this.shadowRoot.querySelector("#val-box");
+
+    // Calculate min, max, val
+    let min = calculateMin(this.getAttribute("min"));
+    let max = calculateMax(this.getAttribute("max"));
+    if (min > max) {
+      min = 0;
+      max = 100;
+    }
+    let val = calculateVal(this.getAttribute("val"), max, min);
+
     // Update slider value
-    this.shadowRoot.querySelector("#lan-slider").value = calculateVal(
-      this.getAttribute("val"),
-      this.getAttribute("max"),
-      this.getAttribute("min")
-    );
-    this.shadowRoot.querySelector("#val-box").innerHTML = calculateVal(
-      this.getAttribute("val"),
-      this.getAttribute("max"),
-      this.getAttribute("min")
-    );
+    slider.min = min;
+    slider.max = max;
+    slider.value = val;
+
+    // Update blackbox value and position
+    valueBox.innerHTML = val;
+    valueBox.style.cssText = `left: ${calculatePosition(val, max, min)}%;`;
   }
 
   /**
@@ -163,7 +173,7 @@ export default class LANSlider extends HTMLElement {
    * @returns {list} returns a list of observed attributes
    */
   static get observedAttributes() {
-    return ["val", "min", "max"];
+    return ["val", "max", "min"];
   }
 }
 
@@ -178,11 +188,12 @@ let calculateMax = max => {
 let calculateVal = (val, max, min) => {
   return val && val <= calculateMax(max) && val >= calculateMin(min)
     ? parseInt(val)
-    : min + (max - min) / 2;
+    : calculateMin(min) + (calculateMax(max) - calculateMin(min)) / 2;
 };
 
 let calculatePosition = (val, max, min) => {
-  return (val / (max - min)) * 100 / 1.02;
+  console.log(val, max, min)
+  return (((val - min) / (max - min)) * 100) / 1.02;
 };
 
 // Define the new element
