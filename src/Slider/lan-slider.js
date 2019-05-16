@@ -13,22 +13,40 @@ export default class LANSlider extends HTMLElement {
     // Create a shadow root
     const shadow = this.attachShadow({ mode: "open" });
 
+    // Initialize val, min, max
+    let min = calculateMin(this.getAttribute("min"));
+    let max = calculateMax(this.getAttribute("max"));
+    if (min > max) {
+      min = 0;
+      max = 100;
+    }
+
+    let val = calculateVal(this.getAttribute("val"), max, min);
+
     // Create the blackbox to show the value of the slider
     const valueBox = document.createElement("div");
     valueBox.id = "val-box";
-    valueBox.innerHTML =
-      this.getAttribute("val") == null ? "50" : this.getAttribute("val");
-    valueBox.style.cssText = "visibility: hidden";
+    valueBox.innerHTML = val;
+    valueBox.style.cssText = `
+      left: ${calculatePosition(val, max, min)}%;
+    `;
 
     // Create slider
     const slider = document.createElement("input");
     slider.setAttribute("type", "range");
+    slider.setAttribute("name", "lan-slider");
+    slider.setAttribute("min", min);
+    slider.setAttribute("max", max);
+    slider.setAttribute("value", val);
     slider.id = "lan-slider";
     slider.onmousemove = () => {
       valueBox.innerHTML = slider.value;
-      valueBox.style.cssText = "visibility: visible";
+      valueBox.style.cssText = `
+        opacity: 1;
+        left: ${calculatePosition(slider.value, max, min)}%;
+      `;
     };
-    slider.onmouseleave = () => (valueBox.style.cssText = "visibility: hidden");
+    slider.onmouseout = () => (valueBox.style.cssText = "opacity: 0;");
 
     // Create some CSS to apply to the shadow dom
     const style = document.createElement("style");
@@ -38,22 +56,22 @@ export default class LANSlider extends HTMLElement {
         background: black;
         color: white;
         width: 30px;
-        height: 30px;
-        font-size: 20px;
-        margin: auto;
+        height: 25px;
+        font-size: 12px;
+        font-family: sans-serif;
+        text-align: center;
+        padding-top: 10px;
+        position: absolute;
+        top: 5%;
+        opacity: 0;
       }
 
       #lan-slider {
         -webkit-appearance: none;
-        width: 90%;
+        width: 100%;
         height: 7px;
         background: #409eff;
         border-radius: 10px;
-        margin: 0 5%;
-      }
-      
-      #lan-slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
       }
       
       #lan-slider:focus {
@@ -76,6 +94,7 @@ export default class LANSlider extends HTMLElement {
         border-radius: 100px;
         background: #ffffff;
         cursor: pointer;
+        -webkit-transition: 0.2s;
       }
 
       #lan-slider::-moz-range-thumb {
@@ -85,6 +104,7 @@ export default class LANSlider extends HTMLElement {
         border-radius: 3px;
         background: #ffffff;
         cursor: pointer;
+        -moz-transition: 0.2s;
       }
 
       #lan-slider::-ms-thumb {
@@ -94,6 +114,22 @@ export default class LANSlider extends HTMLElement {
         border-radius: 3px;
         background: #ffffff;
         cursor: pointer;
+        transition: 0.2s;
+      }
+
+      #lan-slider::-webkit-slider-thumb:hover {
+        height: 30px;
+        width: 30px;
+      }
+
+      #lan-slider::-moz-range-thumb:hover {
+        height: 30px;
+        width: 30px;
+      }
+
+      #lan-slider::-ms-thumb:hover {
+        height: 30px;
+        width: 30px;
       }
     `;
 
@@ -110,11 +146,15 @@ export default class LANSlider extends HTMLElement {
    */
   attributeChangedCallback() {
     // Update slider value
-    this.shadowRoot.querySelector("#lan-slider").value = this.getAttribute(
-      "val"
+    this.shadowRoot.querySelector("#lan-slider").value = calculateVal(
+      this.getAttribute("val"),
+      this.getAttribute("max"),
+      this.getAttribute("min")
     );
-    this.shadowRoot.querySelector("#val-box").innerHTML = this.getAttribute(
-      "val"
+    this.shadowRoot.querySelector("#val-box").innerHTML = calculateVal(
+      this.getAttribute("val"),
+      this.getAttribute("max"),
+      this.getAttribute("min")
     );
   }
 
@@ -127,10 +167,22 @@ export default class LANSlider extends HTMLElement {
   }
 }
 
-const updateVal = component => {
-  const shadow = component.shadowRoot;
-  const slider = shadow.querySelector("#lan-slider");
-  slider.setAttribute("val", component.getAttribute("val"));
+let calculateMin = min => {
+  return min ? parseInt(min) : 0;
+};
+
+let calculateMax = max => {
+  return max ? parseInt(max) : 100;
+};
+
+let calculateVal = (val, max, min) => {
+  return val && val <= calculateMax(max) && val >= calculateMin(min)
+    ? parseInt(val)
+    : min + (max - min) / 2;
+};
+
+let calculatePosition = (val, max, min) => {
+  return (val / (max - min)) * 100 / 1.02;
 };
 
 // Define the new element
