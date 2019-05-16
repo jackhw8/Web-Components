@@ -6,21 +6,57 @@
   <link href="StyleSheet.css" rel="stylesheet" type="text/css">
 </head>
 <body>
+  <div>
   <hello-world userName="Gary"></hello-world>
+  </div>
+  <h1 style="color:red">Hello Peter!<h1>
   <lan-slider min=0 max=100 val=8></lan-slider>
+  <lan-button type="Default" onclick="resetOnclick()">Reset</lan-button>
 
-  <script type = "module" src="src/main.js"></script>
-  <script type = "module" src="src/Slider/lan-slider.js"></script>
-  <script type = "module" src="src/main.js"></script>
-  <button class="button default" onclick="resetOnclick()">Default</button>
-  <button class="button primary">Primary</button>
-  <button class="button success">Success</button>
-  <button class="button info">Info</button>
-  <button class="button warning">Warning</button>
   <!--
     <button class="button danger">Danger</button>
   -->
   <input type="button" class="button danger" value="Danger" onclick="alert('YO!!!')">
+
+  <h1>LANButton example</h1>
+    <div>
+        <lan-button>Default</lan-button>
+        <lan-button type="primary">Primary</lan-button>
+        <lan-button type="success">Success</lan-button>
+        <lan-button type="info">Info</lan-button>
+        <lan-button type="warning">Warning</lan-button>
+        <lan-button type="danger">Primary</lan-button>
+    </div>
+    <div>
+        <lan-button plain>Plain</lan-button>
+        <lan-button type="primary" plain>Primary</lan-button>
+        <lan-button type="success" plain>Success</lan-button>
+        <lan-button type="info" plain>Info</lan-button>
+        <lan-button type="warning" plain>Warning</lan-button>
+        <lan-button type="danger" plain>Primary</lan-button>
+    </div>
+    <div>
+        <lan-button round>Round</lan-button>
+        <lan-button type="primary" round>Primary</lan-button>
+        <lan-button type="success" round>Success</lan-button>
+        <lan-button type="info" round>Info</lan-button>
+        <lan-button type="warning" round>Warning</lan-button>
+        <lan-button type="danger" round>Primary</lan-button>
+    </div>
+    <div>
+        <lan-button>Default</lan-button>
+        <lan-button size="medium">Medium</lan-button>
+        <lan-button size="small">Small</lan-button>
+        <lan-button size="mini">Mini</lan-button>
+    </div>
+    <div>
+        <lan-button disabled>Disabled</lan-button>
+        <lan-button type="primary" disabled>Primary</lan-button>
+        <lan-button type="success" disabled>Success</lan-button>
+        <lan-button type="info" disabled>Info</lan-button>
+        <lan-button type="warning" disabled>Warning</lan-button>
+        <lan-button type="danger" disabled>Danger</lan-button>
+    </div>
   
   <script>
     function resetOnclick(){
@@ -30,5 +66,6 @@
   </script>
 
   <script type = "module" src="packages/Slider/lan-slider.js"></script>
+  <script type = "module" src="packages/button/src/main.js"></script>
 </body>
 </html>

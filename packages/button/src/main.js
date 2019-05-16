@@ -5,6 +5,199 @@ template.innerHTML = `
     <div style="display:inline-block;">
         <button type="submit" class="button default"><slot name="button-label"></slot></button>
     </div>
+    <style>
+    .button
+{
+    /*background-color: #4CAF50; */
+    /* border: none; */
+    /*color: white; */
+    line-height: 1;
+    border: none;
+    padding: 12px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.default
+{
+    background-color: #ffffff;
+    color: black;
+    border: 1px solid #dcdfe6;
+}
+
+.default:hover
+{
+    background-color: #EEF5FE;
+    color: #409eff;
+    border-color: #409eff;
+}
+
+.default.plain:hover
+{
+    background-color: #ffffff;
+}
+
+.primary
+{
+    background-color: #409eff;
+    color: #ffffff;
+    border-color: #409eff;
+}
+
+.primary:hover
+{
+    background-color: #77B4F8;
+}
+
+.primary.plain 
+{
+    background-color: #EEF5FE;
+    color: #409eff;
+    border: 1px solid #409eff;
+}
+
+.primary.plain:hover
+{
+    background-color: #409eff;
+    color: #ffffff;
+}
+
+.success
+{
+    background-color: #67c23a;
+    color: #ffffff;
+    border-color: #67c23a;
+}
+
+.success:hover
+{
+    background-color: #98C76D
+}
+
+.success.plain 
+{
+    background-color: #f2f8ec;
+    color: #67c23a;
+    border: 1px solid #67c23a;
+}
+
+.success.plain:hover
+{
+    background-color: #67c23a;
+    color: #ffffff;
+}
+
+.info
+{
+    background-color: #909399;
+    color: #ffffff;
+    border-color: #909399;
+}
+
+.info:hover
+{
+    background-color: #A7A9AD;
+}
+
+.info.plain 
+{
+    background-color: #f4f4f5;
+    color: #909399;
+    border: 1px solid #909399;
+}
+
+.info.plain:hover
+{
+    background-color: #909399;
+    color: #ffffff;
+}
+
+.warning
+{
+    background-color: #e6a23c;
+    color: #ffffff;
+    border-color: #e6a23c;
+}
+
+.warning:hover
+{
+    background-color: #E3B572
+}
+
+.warning.plain 
+{
+    background-color: #fcf6ed;
+    color: #e6a23c;
+    border: 1px solid #e6a23c;
+}
+
+.warning.plain:hover
+{
+    background-color: #e6a23c;
+    color: #ffffff;
+}
+
+.danger
+{
+    background-color: #f56c6c;
+    color: #ffffff;
+    border-color: #f56c6c;
+} 
+
+.danger:hover
+{
+    background-color: #E6908E;
+}
+
+.danger.plain 
+{
+    background-color: #fbf1f1;
+    color: #f56c6c;
+    border: 1px solid #f56c6c;
+}
+
+.danger.plain:hover
+{
+    background-color: #f56c6c;
+    color: #ffffff;
+}
+
+.round
+{
+    border-radius: 24px;
+}
+
+.medium
+{
+    padding: 10px 20px;
+}
+
+.small
+{
+    padding: 9px 15px;
+}
+
+.mini
+{
+    padding: 7px 15px;
+}
+
+.loading 
+{
+    opacity: 80;
+}
+
+.disabled
+{
+    pointer-events: none;
+    opacity:.5;
+}
+    </style>
 `;
 
 /**
