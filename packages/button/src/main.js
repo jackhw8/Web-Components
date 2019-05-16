@@ -74,7 +74,7 @@ function updateButtonValue(elem) {
 
     // Set size of button
     const elemSize = elem.getAttribute('size');
-    var size = "normal";
+    var size = "";
     if (elemSize == "medium" || elemSize == "small" || elemSize == "mini") {
         size = elemSize;
     }
@@ -89,12 +89,12 @@ function updateButtonValue(elem) {
 
 
     // Set button shape (plain, round, circle)
-    var shape = 'plain';
+    var shape = '';
     if (elem.hasAttribute('round')) {
         shape = 'round';
     } else if (elem.hasAttribute('circle')) {
         shape = 'circle';
-    } else {
+    } else if (elem.hasAttribute('plain')) {
         shape = 'plain';
     }
 

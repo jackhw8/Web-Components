@@ -41,6 +41,19 @@
     background-color: #77B4F8;
 }
 
+.primary.plain 
+{
+    background-color: #EEF5FE;
+    color: #409eff;
+    border-color: #409eff;
+}
+
+.primary.plain:hover
+{
+    background-color: #409eff;
+    color: #FFFFFF;
+}
+
 .success
 {
     background-color: #67c23a;
