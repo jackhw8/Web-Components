@@ -106,7 +106,6 @@ function updateButtonValue(elem) {
         elemClass += 'disabled';
     }
 
-    console.log(elem.getAttribute('loading'));
     if (elem.getAttribute('loading') == 'true') {
         elemClass += 'loading';
         const text = '<i class="fa fa-refresh fa-spin"></i>Loading';
