@@ -272,6 +272,7 @@ export default class LANSlider extends HTMLElement {
   attributeChangedCallback() {
     const slider = this.shadowRoot.querySelector("#lan-slider");
     const valueBox = this.shadowRoot.querySelector("#val-box");
+    const progressBar = this.shadowRoot.querySelector(".preBar");
 
     // Calculate min, max, val
     let min = calculateMin(this.getAttribute("min"));
@@ -286,6 +287,14 @@ export default class LANSlider extends HTMLElement {
     slider.min = min;
     slider.max = max;
     slider.value = val;
+
+    var range = max - min;
+    let getVal = function () {
+      var t = (1 * (parseInt(val, 10) - parseInt(min, 10)) / range);
+      return t * 100;
+    };
+
+    progressBar.style.width = getVal() + '%';
 
     // Update blackbox value and position
     valueBox.innerHTML = val;
