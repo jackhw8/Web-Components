@@ -1,6 +1,7 @@
 const template = document.createElement("template");
 template.innerHTML = `
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <div style="display:inline-block;">
         <button type="submit" class="button default"><slot name="button-label"></slot></button>
     </div>
@@ -53,7 +54,8 @@ class LANButton extends HTMLElement {
             'plain',
             'round',
             'circle',
-            'disabled'
+            'disabled',
+            'loading'
         ];
     }
 }
@@ -74,7 +76,7 @@ function updateButtonValue(elem) {
 
     // Set size of button
     const elemSize = elem.getAttribute('size');
-    var size = "normal";
+    var size = "";
     if (elemSize == "medium" || elemSize == "small" || elemSize == "mini") {
         size = elemSize;
     }
@@ -89,19 +91,29 @@ function updateButtonValue(elem) {
 
 
     // Set button shape (plain, round, circle)
-    var shape = 'plain';
+    var shape = '';
     if (elem.hasAttribute('round')) {
         shape = 'round';
     } else if (elem.hasAttribute('circle')) {
         shape = 'circle';
-    } else {
+    } else if (elem.hasAttribute('plain')) {
         shape = 'plain';
     }
 
     var elemClass = 'button ' + type + ' ' + shape + ' ' + size;
     // Check if button is disabled
     if (elem.hasAttribute('disabled')) {
-        elemClass += ' disabled';
+        elemClass += 'disabled';
+    }
+
+    console.log(elem.getAttribute('loading'));
+    if (elem.getAttribute('loading') == 'true') {
+        elemClass += 'loading';
+        const text = '<i class="fa fa-refresh fa-spin"></i>Loading';
+        buttonInput.querySelector('slot').innerHTML = text;
+    } else {
+        /*const text = this.innerHTML;
+        buttonComponent.querySelector('slot').innerHTML = text;*/
     }
 
     // Set class
