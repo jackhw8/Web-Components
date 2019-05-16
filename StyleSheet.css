@@ -25,6 +25,8 @@
 .default:hover
 {
     background-color: #e7e7e7;
+    color: #409eff;
+    border-color: #409eff;
 }
 
 .primary
@@ -32,6 +34,11 @@
     background-color: #409eff;
     color: #ffffff;
     border-color: #409eff;
+}
+
+.primary:hover
+{
+    background-color: #77B4F8;
 }
 
 .success
