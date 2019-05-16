@@ -27,7 +27,6 @@ export default class LANSlider extends HTMLElement {
     const valueBox = document.createElement("div");
     valueBox.id = "val-box";
     valueBox.innerHTML = val;
-    valueBox.style.cssText = `left: ${calculatePosition(val, max, min)}%;`;
 
     // Create slider and add event listeners to it
     const slider = document.createElement("input");
@@ -47,13 +46,16 @@ export default class LANSlider extends HTMLElement {
         left: ${calculatePosition(slider.value, currMax, currMin)}%;
       `;
     };
-    slider.onmouseout = () => (valueBox.style.cssText = "opacity: 0;");
+    slider.onmouseout = () => {
+      let currMin = calculateMin(this.getAttribute("min"));
+      let currMax = calculateMax(this.getAttribute("max"));
 
-    // Create some CSS to apply to the shadow dom
-    // const style = document.createElement("link");
-    // style.setAttribute('rel', 'stylesheet');
-    // style.setAttribute('type', 'text/css');
-    // style.setAttribute('href', './style.css');
+      valueBox.style.cssText = `
+        opacity: 0;
+        left: ${calculatePosition(slider.value, currMax, currMin)}%;
+      `
+    };
+
     const style = document.createElement("style");
 
     style.textContent = `
@@ -67,7 +69,8 @@ export default class LANSlider extends HTMLElement {
         text-align: center;
         padding-top: 10px;
         position: absolute;
-        top: 5%;
+        top: -200%;
+        margin-left: -5px;
         opacity: 0;
       }
       #lan-slider {
@@ -82,45 +85,6 @@ export default class LANSlider extends HTMLElement {
       #lan-slider:focus {
         outline: none;
       }
-      
-      // #lan-slider::-ms-track {
-      //   width: 100%;
-      //   cursor: pointer;
-      //   background: transparent; 
-      //   border-color: transparent;
-      //   color: transparent;
-      // }
-      
-      // #lan-slider::-moz-range-thumb {
-      //   border: 2px solid #409eff;
-      //   height: 25px;
-      //   width: 25px;
-      //   border-radius: 3px;
-      //   background: #ffffff;
-      //   cursor: pointer;
-      //   -moz-transition: 0.2s;
-      // }
-      // #lan-slider::-ms-thumb {
-      //   border: 2px solid #409eff;
-      //   height: 25px;
-      //   width: 25px;
-      //   border-radius: 3px;
-      //   background: #ffffff;
-      //   cursor: pointer;
-      //   transition: 0.2s;
-      // }
-      // #lan-slider::-webkit-slider-thumb:hover {
-      //   height: 30px;
-      //   width: 30px;
-      // }
-      // #lan-slider::-moz-range-thumb:hover {
-      //   height: 30px;
-      //   width: 30px;
-      // }
-      // #lan-slider::-ms-thumb:hover {
-      //   height: 30px;
-      //   width: 30px;
-      // }
 
       .barCnt {
         position: relative;
@@ -177,6 +141,7 @@ export default class LANSlider extends HTMLElement {
         z-index: 400;
         position: relative;
         cursor: pointer;
+        -webkit-transition: 0.2s;
         /* transition: height .01s ease-in-out; */
       }
       
@@ -203,14 +168,34 @@ export default class LANSlider extends HTMLElement {
         border-radius: 50%;
         background: lightgray;
         z-index: 400;
+        -moz-transition: 0.2s;
       }
       
       input[type=range].colorized::-moz-focus-outer {
         border: 0;
-      }      
+      }
+
+      input[type=range].colorized::-webkit-slider-thumb:hover {
+        height: 20px;
+        width: 20px;
+        margin-top: -5px !important;
+        margin-left: 0px !important;
+      }
+
+      input[type=range].colorized::-moz-range-thumb:hover {
+        height: 20px;
+        width: 20px;
+        margin-top: -5px !important;
+        margin-left: 0px !important;
+      }
+
+      input[type=range].colorized::-ms-thumb:hover {
+        height: 20px;
+        width: 20px;
+        margin-top: -5px !important;
+        margin-left: 0px !important;
+      }
     `;
-
-
 
     var input = slider;
     var wrp = document.createElement('div'),
@@ -233,33 +218,14 @@ export default class LANSlider extends HTMLElement {
 
     preBar.style.width = getVal() + '%';
 
-    var box = document.createElement('textarea');
-    box.innerText = parseInt(input.value, 10);
-    box.class = 'test';
-    shadow.appendChild(box.cloneNode(true));
-
     // Change width of preBar depending on input
     input.addEventListener('input', function () {
-      shadow.querySelector('textarea').value = shadow.querySelector('input').value;
       preBar.style.width = getVal() + '%';
-
-      const valueBox = shadow.querySelector('#val-box');
-      console.log(valueBox.innerHTML);
-      console.log(shadow.querySelector('input').value);
-      valueBox.innerHTML = shadow.querySelector('input').value;
-      valueBox.style.cssText = `
-        opacity: 1;
-        left: ${calculatePosition(input.value, input.max, input.min)}%;
-        border-top: -100px;
-      `;
-      console.log("Adad" + valueBox.innerHTML);
-
     });
 
 
     // Attach the created elements to the shadow dom
     shadow.appendChild(style);
-    //shadow.appendChild(slider);
     shadow.appendChild(wrp);
     shadow.querySelector('.barCnt').appendChild(valueBox);
   }
@@ -325,7 +291,6 @@ let calculateVal = (val, max, min) => {
 };
 
 let calculatePosition = (val, max, min) => {
-  console.log(val, max, min)
   return (((val - min) / (max - min)) * 100) / 1.02;
 };
 
