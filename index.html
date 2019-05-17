@@ -10,13 +10,15 @@
   <hello-world userName="Gary"></hello-world>
   </div>
   <h1 style="color:red">Hello Peter!<h1>
-  <lan-slider min=0 max=100 val=8></lan-slider>
+  <lan-slider min=0 max=100 val=8 onchange="getSliderValue()"></lan-slider>
   <lan-button type="Default" onclick="resetOnclick()">Reset</lan-button>
 
   <!--
     <button class="button danger">Danger</button>
   -->
   <input type="button" class="button danger" value="Danger" onclick="alert('YO!!!')">
+
+  <textarea id="text-area"></textarea>
 
   <h1>LANButton example</h1>
     <div>
@@ -62,6 +64,14 @@
     function resetOnclick(){
       var element = document.querySelector("lan-slider");
       element.setAttribute("val", 0);
+    }
+  </script>
+
+  <script>
+    function getSliderValue() {
+      var element = document.querySelector("lan-slider");
+      var textArea = document.querySelector('#text-area')
+      textArea.innerHTML = element.getAttribute("val");
     }
   </script>
 

@@ -39,7 +39,11 @@ export default class LANSlider extends HTMLElement {
     slider.onmousemove = () => {
       let currMin = calculateMin(this.getAttribute("min"));
       let currMax = calculateMax(this.getAttribute("max"));
-      
+
+      this.onchange()
+
+      this.setAttribute("val", slider.value);
+
       valueBox.innerHTML = slider.value;
       valueBox.style.cssText = `
         opacity: 1;
@@ -53,7 +57,7 @@ export default class LANSlider extends HTMLElement {
       valueBox.style.cssText = `
         opacity: 0;
         left: ${calculatePosition(slider.value, currMax, currMin)}%;
-      `
+      `;
     };
 
     const style = document.createElement("style");
@@ -198,17 +202,20 @@ export default class LANSlider extends HTMLElement {
     `;
 
     var input = slider;
-    var wrp = document.createElement('div'),
-      preBar = document.createElement('p'),
+    var wrp = document.createElement("div"),
+      preBar = document.createElement("p"),
       range = max - min,
-      getVal = function () {
-        var t = (1 * (parseInt(input.value, 10) - parseInt(input.min, 10)) / range);
+      getVal = function() {
+        var t =
+          (1 * (parseInt(input.value, 10) - parseInt(input.min, 10))) / range;
         return t * 100;
       };
-    wrp.className = 'barCnt';
-    preBar.className = 'preBar';
+    wrp.className = "barCnt";
+    preBar.className = "preBar";
 
-    input.className = input.className.length ? (input.className + ' colorized') : 'colorized';
+    input.className = input.className.length
+      ? input.className + " colorized"
+      : "colorized";
     //input.parentNode.replaceChild(wrp, input);
 
     wrp.appendChild(input);
@@ -216,18 +223,17 @@ export default class LANSlider extends HTMLElement {
 
     //shadow.querySelector(".barCnt").appendChild(valueBox.cloneNode(true));
 
-    preBar.style.width = getVal() + '%';
+    preBar.style.width = getVal() + "%";
 
     // Change width of preBar depending on input
-    input.addEventListener('input', function () {
-      preBar.style.width = getVal() + '%';
+    input.addEventListener("input", function() {
+      preBar.style.width = getVal() + "%";
     });
-
 
     // Attach the created elements to the shadow dom
     shadow.appendChild(style);
     shadow.appendChild(wrp);
-    shadow.querySelector('.barCnt').appendChild(valueBox);
+    shadow.querySelector(".barCnt").appendChild(valueBox);
   }
 
   /**
@@ -255,12 +261,12 @@ export default class LANSlider extends HTMLElement {
     slider.value = val;
 
     var range = max - min;
-    let getVal = function () {
-      var t = (1 * (parseInt(val, 10) - parseInt(min, 10)) / range);
+    let getVal = function() {
+      var t = (1 * (parseInt(val, 10) - parseInt(min, 10))) / range;
       return t * 100;
     };
 
-    progressBar.style.width = getVal() + '%';
+    progressBar.style.width = getVal() + "%";
 
     // Update blackbox value and position
     valueBox.innerHTML = val;
