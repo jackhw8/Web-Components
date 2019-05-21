@@ -17,10 +17,10 @@ before_script:
 
 script:
   - npm install
+  - npm audit fix --force
   - npm run lint
   #- npm run cover
   #- npm run nyc_init
-  - npm audit fix --force
   - bower install --save-dev web-component-tester
   - npm run test
   - npm run doc
