@@ -6,13 +6,14 @@
   "scripts": {
     "lint": "eslint . ./**/*.js",
     "nyc_init": "nyc cover mocha",
-    "test": "nyc mocha ./test/unit --recursive --exit --timeout 15000",
+    "test": "wct",
     "doc": "esdoc -c .esdoc.json",
     "cover": "istanbul cover _mocha"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "bower": "1.8.8",
     "chai": "^4.2.0",
     "esdoc": "^1.1.0",
     "esdoc-standard-plugin": "^1.0.0",
@@ -22,8 +23,8 @@
     "mocha": "^6.1.4",
     "nyc": "^14.1.1",
     "showroom": "^0.9.3",
-    "web-component-tester": "^6.9.2",
-    "bower": "1.8.8"
+    "wct-istanbub": "^0.2.9",
+    "web-component-tester": "^6.9.2"
   },
   "husky": {
     "hooks": {
@@ -40,6 +41,7 @@
     "instrument": true
   },
   "dependencies": {
-    "puppeteer": "^1.16.0"
+    "puppeteer": "^1.16.0",
+    "web-component-tester-istanbul": "^0.10.0"
   }
 }

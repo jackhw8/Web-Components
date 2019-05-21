@@ -1,0 +1,23 @@
+{
+    "plugins": {
+      "local": {
+        "browsers": [
+          "chrome"
+        ],
+        "browserOptions":{
+          "chrome":[
+            "window-size=1920x1080",
+            "headless",
+            "disable-gpu"
+          ]
+        }
+      },
+      "istanbub":{
+        "dir": "./coverage",
+        "reporters": ["text", "lcov"],
+        "include":[
+          "/packages/button/src/main.js"
+        ]
+      }
+    }
+}
