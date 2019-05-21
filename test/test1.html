@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../node_modules/web-component-tester/browser.js"></script>
+  <script src="../packages/button/src/main.js" defer></script>
+</head>
+<body>
+  <test-fixture id="simple">
+    <template>
+      <lan-button type="primary">Primary</lan-button>
+    </template>
+  </test-fixture>
+  
+
+  <script>
+    suite('<lan-button>', function() {
+      let el;
+      setup(() => {
+        myEl = fixture("simple");
+      });
+      test('type is primary', function() {
+        assert.equal(myEl.getAttribute("type"), "primary");
+      });
+      test("inner text is Primary", function() {
+        assert.equal(myEl.shadowRoot.querySelector('button').innerText, "Primary");
+      })
+    });
+  </script>
+</body>
+</html>
