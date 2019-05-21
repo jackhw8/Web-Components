@@ -18,7 +18,6 @@ before_script:
 script:
   - npm install
   - npm update
-  - npm install hpack.js
   - npm run lint
   #- npm run cover
   #- npm run nyc_init
