@@ -310,6 +310,7 @@ function updateButtonValue(elem) {
 
     // Set class
     buttonInput.setAttribute('class', elemClass);
+    buttonInput.id = 'lan-button';
 
     //console.log("Class: " + buttonInput.getAttribute('class'));
     //console.log("Native-type: " + buttonInput.getAttribute("type"));

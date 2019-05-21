@@ -40,7 +40,7 @@ export default class LANSlider extends HTMLElement {
       let currMin = calculateMin(this.getAttribute("min"));
       let currMax = calculateMax(this.getAttribute("max"));
 
-      this.onchange()
+      this.onchange();
 
       this.setAttribute("val", slider.value);
 
