@@ -1,5 +1,5 @@
 {
-  "source": "./packages/lan-button/src",
+  "source": "./packages/",
   "destination": "./docs",
   "plugins": [
     {
