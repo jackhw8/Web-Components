@@ -25,8 +25,10 @@
       });
       test("inner text is Primary", function() {
         assert.equal(myEl.shadowRoot.querySelector('button').innerText, "Primary");
-      })
-      
+      });
+      test("size is elemsize", function() {
+        assert.equal(mmyEl.getAttribute("size"), "medium");
+      });
 
     });
   </script>
