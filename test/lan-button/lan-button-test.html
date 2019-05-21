@@ -27,6 +27,39 @@
       });
       test("inner text is Primary", function () {
         assert.equal(myEl.shadowRoot.querySelector('button').innerText, "Primary");
+      });
+      test('Setting class', function(){
+        myEl.setAttribute('autofocus', '');
+        myEl.updateButtonValue();
+        assert.isNotNull(myEl.shadowRoot.querySelector('button').getAttribute('autofocus'));
+      });
+      test('Testing bootstrap', function(){
+        myEl.setAttribute('class', 'btn');
+        myEl.updateButtonValue();
+        assert.equal(myEl.shadowRoot.querySelector('button').getAttribute('class'), 'button default btn');
+      });
+      test('Testing button shape', function(){
+        myEl.setAttribute('round', '');
+        myEl.updateButtonShape();
+        assert.equal(myEl.shadowRoot.querySelector('button').style.getPropertyValue('--border-rad'), '24px');
+      });
+      test('Testing button size', function(){
+        myEl.setAttribute('size', 'medium');
+        myEl.updateButtonShape();
+        assert.equal(myEl.get().style.getPropertyValue('--padding'), '10px 20px');
+        assert.equal(myEl.shadowRoot.querySelector('button').style.getPropertyValue('--txt-size'), '14px');
+      });
+      test('Testing color', function(){
+        myEl.setAttribute('plain', '');
+        myEl.updateButtonColor();
+      });
+      test('Testing diabled', function(){
+        myEl.setAttribute('disabled', '');
+        myEl.updateDisabled();
+      })
+      test('Testing random type', function(){
+        myEl.setAttribute('type', 'awefoiawjefiojoaweif');
+        myEl.updateButtonColor();
       })
     });
   </script>
