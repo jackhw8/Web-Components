@@ -1,4 +1,4 @@
 export default {
-  component: 'hello-world',
-  path: '/src/main.js'
-}
+  component: "hello-world",
+  path: "/src/main.js"
+};
