@@ -18,9 +18,10 @@ script:
   #- npm run cover
   #- npm run nyc_init
   - npm audit fix --force
+  - bower install --save-dev web-component-tester
   - npm run test
   - npm run doc
-  - bower install --save-dev web-component-tester
+  
 
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
