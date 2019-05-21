@@ -16,7 +16,7 @@
         "dir": "./coverage",
         "reporters": ["text", "lcov"],
         "include":[
-          "/packages/button/src/main.js"
+          "/packages/lan-button/src/main.js"
         ]
       }
     }
