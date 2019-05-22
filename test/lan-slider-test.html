@@ -19,7 +19,7 @@
   <script>
     suite('<lan-slider>', function () {
       let myEl;
-      setup(() => {
+      beforeEach(() => {
         myEl = fixture("slider");
       });
       test('Testing default value of val, min, max', function () {
