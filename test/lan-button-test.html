@@ -66,7 +66,7 @@
         myEl.setAttribute('disabled', '');
         myEl.updateDisabled();
         assert.equal(myEl.get().style.getPropertyValue('--pointer-events'), 'none');
-        assert.equal(myEl.get().style.getPropertyValue('--opacity'), '.7');
+        assert.equal(myEl.get().style.getPropertyValue('--opacity'), '0.7');
         assert.isNotNull(myEl.get().getAttribute('disabled'));
       });
       test('Testing random type', function() {

@@ -34,7 +34,7 @@ export default class LANSlider extends HTMLElement {
     slider.setAttribute("name", "lan-slider");
     slider.setAttribute("min", min);
     slider.setAttribute("max", max);
-    slider.setAttribute("value", val);
+    slider.setAttribute("val", val);
     slider.id = "lan-slider";
     slider.onmousemove = () => {
       let currMin = calculateMin(this.getAttribute("min"));
