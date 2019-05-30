@@ -20,8 +20,12 @@ export default class LANSlider extends HTMLElement {
       min = 0;
       max = 100;
     }
-
     let val = calculateVal(this.getAttribute("val"), max, min);
+    
+    // Update the attribute of val, min, max to default
+    this.setAttribute("val", val);
+    this.setAttribute("min", min);
+    this.setAttribute("max", max);
 
     // Create the blackbox to show the value of the slider
     const valueBox = document.createElement("div");
@@ -34,7 +38,7 @@ export default class LANSlider extends HTMLElement {
     slider.setAttribute("name", "lan-slider");
     slider.setAttribute("min", min);
     slider.setAttribute("max", max);
-    slider.setAttribute("value", val);
+    slider.setAttribute("val", val);
     slider.id = "lan-slider";
     slider.onmousemove = () => {
       let currMin = calculateMin(this.getAttribute("min"));

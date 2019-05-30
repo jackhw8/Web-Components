@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../node_modules/web-component-tester/browser.js"></script>
+  <script src="../packages/lan-slider/src/main.js" type="module" defer></script>
+</head>
+
+<body>
+  <test-fixture id="slider">
+    <template>
+      <lan-slider></lan-slider>
+    </template>
+  </test-fixture>
+
+
+  <script>
+    suite('<lan-slider>', function () {
+      let myEl;
+      setup(() => {
+        myEl = fixture("slider");
+      });
+      test('Testing default value of val, min, max', function () {
+        // assert.equal(myEl.getAttribute('val'), '50');
+        assert.equal(myEl.getAttribute('min'), '0');
+        assert.equal(myEl.getAttribute('max'), '100');
+      });
+      test('Testing value of val, min, max on set', function () {
+        myEl.setAttribute('val', '80');
+        myEl.setAttribute('min', '8');
+        myEl.setAttribute('max', '800');
+        assert.equal(myEl.getAttribute('val'), '80');
+        assert.equal(myEl.getAttribute('min'), '8');
+        assert.equal(myEl.getAttribute('max'), '800');
+      });
+    });
+  </script>
+</body>
+
+</html>
