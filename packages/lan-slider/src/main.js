@@ -3,9 +3,9 @@ import componentStyle from './style.js';
 const template = document.createElement('template');
 template.innerHTML = `
   <style>${componentStyle}</style>
-  <div id='lan-slider-wrapper'>
+  <div id='lan-slider-wrapper' class="barCnt">
     <input id='lan-slider' type="range"/>
-    <p id='lan-slider-prebar'></p>
+    <p id='lan-slider-prebar' class="preBar"></p>
     <div id='val-box'></div>
   </div>
 `;
@@ -33,17 +33,16 @@ export default class LANSlider extends HTMLElement {
       max = 100;
     }
     let val = calculateVal(this.getAttribute("val"), max, min);
-    
-    const tmpl = template.content.cloneNode(true);
 
     // Update the attribute of val, min, max to default
     this.setAttribute("val", val);
     this.setAttribute("min", min);
     this.setAttribute("max", max);
+    
+    const tmpl = template.content.cloneNode(true);
 
     // Create the blackbox to show the value of the slider
     const valueBox = tmpl.querySelector("#val-box");
-    valueBox.id = "val-box";
     valueBox.innerHTML = val;
 
     // Create slider and add event listeners to it
@@ -79,29 +78,18 @@ export default class LANSlider extends HTMLElement {
     };
 
     var input = slider;
-    var wrp = tmpl.querySelector("#lan-slider-wrapper"),
-      preBar = tmpl.querySelector("#lan-slider-prebar"),
-      range = max - min,
-      getVal = function() {
-        var t =
-          (1 * (parseInt(input.value, 10) - parseInt(input.min, 10))) / range;
-        return t * 100;
-      };
-    wrp.className = "barCnt";
-    preBar.className = "preBar";
+    var preBar = tmpl.querySelector("#lan-slider-prebar"),
+      range = max - min;
 
     input.className = input.className.length
       ? input.className + " colorized"
       : "colorized";
-    //input.parentNode.replaceChild(wrp, input);
 
-    //shadow.querySelector(".barCnt").appendChild(valueBox.cloneNode(true));
-
-    preBar.style.width = getVal() + "%";
+    preBar.style.width = calcWidth(val, min, range) + "%";
 
     // Change width of preBar depending on input
     input.addEventListener("input", function() {
-      preBar.style.width = getVal() + "%";
+      preBar.style.width = calcWidth(val, min, range) + "%";
     });
 
     // Attach the created elements to the shadow dom
@@ -133,12 +121,8 @@ export default class LANSlider extends HTMLElement {
     slider.value = val;
 
     var range = max - min;
-    let getVal = function() {
-      var t = (1 * (parseInt(val, 10) - parseInt(min, 10))) / range;
-      return t * 100;
-    };
 
-    progressBar.style.width = getVal() + "%";
+    progressBar.style.width = calcWidth(val, min, range) + "%";
 
     // Update blackbox value and position
     valueBox.innerHTML = val;
@@ -152,6 +136,23 @@ export default class LANSlider extends HTMLElement {
   static get observedAttributes() {
     return ["val", "max", "min"];
   }
+}
+
+
+/**
+ * calcWidth is a helper function to calculates the width of 
+ * the width of the progress bar.
+ * 
+ * @param {number} val 
+ * @param {number} max 
+ * @param {number} min 
+ * 
+ * @return {number} the left horizontal percentage for the tooltip
+ */
+let calcWidth = (val, min, range) => {
+  var x = ((parseInt(val, 10) - range)*0.5)/range;
+  var t = (1 * (parseInt(val, 10) - parseInt(min, 10)) - x) / range;
+  return t * 100;
 }
 
 let calculateMin = min => {
@@ -168,8 +169,21 @@ let calculateVal = (val, max, min) => {
     : calculateMin(min) + (calculateMax(max) - calculateMin(min)) / 2;
 };
 
+/**
+ * calculatePosition is a helper function to calculate the horizontal position
+ * of the tooltip
+ * 
+ * @param {number} val 
+ * @param {number} max 
+ * @param {number} min 
+ * 
+ * @return {number} the left horizontal percentage for the tooltip
+ */
 let calculatePosition = (val, max, min) => {
-  return (((val - min) / (max - min)) * 100) / 1.02;
+  var range = max - min;
+  var x = 1 - (range - parseInt(val, 10))/range;
+  var t = ((1 * (parseInt(val, 10) - parseInt(min, 10))) - x)/ range;
+  return t * 100;
 };
 
 // Define the new element
