@@ -103,7 +103,7 @@ export let onMouseOutCallback = tooltipObject => tooltipObject.style.opacity = '
 
 
 /**
- * onMouseOverCallback is a callback function that should be called
+ * onMouseMoveCallback is a callback function that should be called
  * whenever the mouse is hovering of the slider.
  * 
  * @param {event} event
@@ -126,7 +126,7 @@ export let onMouseMoveCallback = (event, lanSliderClass, inputSliderObject, tool
 
 
 /**
- * onMouseOutCallback is a callback function that should be called
+ * onInputCallback is a callback function that should be called
  * whenever the slider receives input, which in this context is when
  * slider's value changes.
  * 
