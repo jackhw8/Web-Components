@@ -108,6 +108,7 @@ export let onMouseOutCallback = tooltipObject => tooltipObject.style.opacity = '
  * 
  * @param {event} event
  * @param {class} lanSliderClass
+ * @param {object} inputSliderObject
  * @param {object} tooltipObject
  */
 export let onMouseMoveCallback = (event, lanSliderClass, inputSliderObject, tooltipObject) => {
@@ -131,6 +132,7 @@ export let onMouseMoveCallback = (event, lanSliderClass, inputSliderObject, tool
  * slider's value changes.
  * 
  * @param {class} lanSliderClass
+ * @param {object} inputSliderObject
  * @param {object} tooltipObject
  */
 export let onInputCallback = (lanSliderClass, inputSliderObject, tooltipObject) => {
