@@ -16,10 +16,6 @@ export default class LANSlider extends HTMLElement {
     // Initialize val, min, max
     let min = calculateMin(this.getAttribute("min"));
     let max = calculateMax(this.getAttribute("max"));
-    if (min > max) {
-      min = 0;
-      max = 100;
-    }
     let val = calculateVal(this.getAttribute("val"), max, min);
     
     // Update the attribute of val, min, max to default
@@ -253,7 +249,7 @@ export default class LANSlider extends HTMLElement {
     // Calculate min, max, val
     let min = calculateMin(this.getAttribute("min"));
     let max = calculateMax(this.getAttribute("max"));
-    if (min > max) {
+    if (min > max || min < 0 || max < 0) {
       min = 0;
       max = 100;
     }
