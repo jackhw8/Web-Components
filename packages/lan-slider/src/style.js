@@ -1,5 +1,5 @@
 const componentStyle = `
-#val-box {
+#lan-slider-tooltip {
   background: black;
   color: white;
   width: 30px;
@@ -13,18 +13,6 @@ const componentStyle = `
   margin-left: -5px;
   opacity: 0;
 }
-#lan-slider {
-  -webkit-appearance: none;
-  width: 100%;
-  height: 7px;
-  background: #409eff;
-  border-radius: 10px;
-  border: none;
-}
-
-#lan-slider:focus {
-  outline: none;
-}
 
 .barCnt {
   position: relative;
@@ -33,7 +21,7 @@ const componentStyle = `
   z-index: 200;
 }
 
-.preBar{
+.preBar {
   position: relative;
   z-index: 301;
   width: 0;
@@ -49,6 +37,19 @@ const componentStyle = `
   padding: 0px;
   margin: 0px;
   pointer-events: none;
+}
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 7px;
+  background: #409eff;
+  border-radius: 10px;
+  border: none;
+}
+
+input[type=range]:focus {
+  outline: none;
 }
 
 input[type=range].colorized {
@@ -118,22 +119,22 @@ input[type=range].colorized::-moz-focus-outer {
 input[type=range].colorized::-webkit-slider-thumb:hover {
   height: 20px;
   width: 20px;
-  margin-top: -5px !important;
-  margin-left: 0px !important;
+  margin-top: -6px !important;
+  margin-left: -2px !important;
 }
 
 input[type=range].colorized::-moz-range-thumb:hover {
   height: 20px;
   width: 20px;
-  margin-top: -5px !important;
-  margin-left: 0px !important;
+  margin-top: -6px !important;
+  margin-left: -2px !important;
 }
 
 input[type=range].colorized::-ms-thumb:hover {
   height: 20px;
   width: 20px;
-  margin-top: -5px !important;
-  margin-left: 0px !important;
+  margin-top: -6px !important;
+  margin-left: -2px !important;
 }
 `;
 
