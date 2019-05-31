@@ -116,11 +116,24 @@ input[type=range].colorized::-moz-focus-outer {
   border: 0;
 }
 
+input[type=range].colorized::-webkit-slider-runnable-track:hover {
+  cursor: pointer;
+}
+
+input[type=range].colorized::-moz-range-track {
+  cursor: pointer;
+}
+
+input[type=range].colorized::-ms-track {
+  cursor: pointer;
+}
+
 input[type=range].colorized::-webkit-slider-thumb:hover {
   height: 20px;
   width: 20px;
   margin-top: -6px !important;
   margin-left: -2px !important;
+  cursor: grab;
 }
 
 input[type=range].colorized::-moz-range-thumb:hover {
@@ -128,6 +141,7 @@ input[type=range].colorized::-moz-range-thumb:hover {
   width: 20px;
   margin-top: -6px !important;
   margin-left: -2px !important;
+  cursor: grab;
 }
 
 input[type=range].colorized::-ms-thumb:hover {
@@ -135,6 +149,7 @@ input[type=range].colorized::-ms-thumb:hover {
   width: 20px;
   margin-top: -6px !important;
   margin-left: -2px !important;
+  cursor: grab;
 }
 `;
 

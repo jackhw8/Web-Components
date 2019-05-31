@@ -3,8 +3,11 @@ import {
   calculateMin,
   calculateMax,
   calculateVal,
-  calculatePosition,
-  calculateWidth
+  calculateTooltipPosition,
+  calculateWidth,
+  onMouseOutCallback,
+  onMouseMoveCallback,
+  onInputCallback
 } from './helper.js';
 
 const template = document.createElement('template');
@@ -49,6 +52,8 @@ export default class LANSlider extends HTMLElement {
     // Get the tooltip from the template
     const tooltip = tmpl.querySelector("#lan-slider-tooltip");
     tooltip.innerHTML = val;
+    tooltip.style.left = `${calculateTooltipPosition(val, max, min)}%`;
+    tooltip.style.opacity = '0';
 
     // Get the prebar from template
     const preBar = tmpl.querySelector("#lan-slider-prebar");
@@ -64,27 +69,9 @@ export default class LANSlider extends HTMLElement {
     slider.setAttribute("min", min);
     slider.setAttribute("max", max);
     slider.setAttribute("val", val);
-    slider.onmousemove = () => {
-      // Update the attribute val
-      this.setAttribute("val", slider.value);
-
-      // Update the inner HTML of the tooltip accordingly, and show it
-      let currMin = calculateMin(this.getAttribute("min"));
-      let currMax = calculateMax(this.getAttribute("max"));
-      tooltip.style.cssText = `
-        opacity: 1;
-        left: ${calculatePosition(slider.value, currMax, currMin)}%;
-      `;
-    };
-    slider.onmouseout = () => {
-      // Hide tooltip
-      let currMin = calculateMin(this.getAttribute("min"));
-      let currMax = calculateMax(this.getAttribute("max"));
-      tooltip.style.cssText = `
-        opacity: 0;
-        left: ${calculatePosition(slider.value, currMax, currMin)}%;
-      `;
-    };
+    slider.addEventListener('mouseout', () => onMouseOutCallback(tooltip));
+    slider.addEventListener('mousemove', event => onMouseMoveCallback(event, this, slider, tooltip));
+    slider.addEventListener('input', () => onInputCallback(this, slider, tooltip))
 
     // Attach the created elements to the shadow dom
     shadow.appendChild(tmpl);
@@ -122,9 +109,8 @@ export default class LANSlider extends HTMLElement {
     // Update prebar length
     progressBar.style.width = calculateWidth(val, min, range) + "%";
 
-    // Update blackbox value and position
+    // Update tooltip value
     tooltip.innerHTML = val;
-    tooltip.style.cssText = `left: ${calculatePosition(val, max, min)}%;`;
   }
 
 
