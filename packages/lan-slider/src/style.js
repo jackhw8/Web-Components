@@ -55,7 +55,7 @@ input[type=range]:focus {
 input[type=range].colorized {
   -webkit-appearance: none;
   width: 100%;
-  height: 5px;
+  height: 7px;
   position: absolute;
   padding: 0px;
   margin: 0px;
@@ -132,7 +132,7 @@ input[type=range].colorized::-webkit-slider-thumb:hover {
   height: 20px;
   width: 20px;
   margin-top: -6px !important;
-  margin-left: -2px !important;
+  margin-right: -2px !important;
   cursor: grab;
 }
 
