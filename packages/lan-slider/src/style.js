@@ -25,14 +25,9 @@ const componentStyle = `
   position: relative;
   z-index: 301;
   width: 0;
-}
-
-.barCnt .preBar {
-  /* position: absolute; */
   background-color: #489fee;
   height: 7px;
   line-height: 6px;
-  /* z-index: 200; */
   border-radius: 3px;
   padding: 0px;
   margin: 0px;
@@ -83,7 +78,6 @@ input[type=range].colorized::-webkit-slider-thumb {
   position: relative;
   cursor: pointer;
   -webkit-transition: 0.2s;
-  /* transition: height .01s ease-in-out; */
 }
 
 input[type=range].colorized:focus {
@@ -140,7 +134,7 @@ input[type=range].colorized::-moz-range-thumb:hover {
   height: 20px;
   width: 20px;
   margin-top: -6px !important;
-  margin-left: -2px !important;
+  margin-right: -2px !important;
   cursor: grab;
 }
 
@@ -148,7 +142,7 @@ input[type=range].colorized::-ms-thumb:hover {
   height: 20px;
   width: 20px;
   margin-top: -6px !important;
-  margin-left: -2px !important;
+  margin-right: -2px !important;
   cursor: grab;
 }
 `;

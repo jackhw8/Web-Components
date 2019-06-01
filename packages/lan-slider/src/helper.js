@@ -51,7 +51,7 @@ export let calculateVal = (val, max, min) => {
  * 
  * @return {number} the left position percentage for the slider thumb
  */
-export let calculateThumbPosition = (val, max, min) => {
+let calculateThumbPosition = (val, max, min) => {
   const THUMB_SIZE = 20
   const range = max - min;
   return (val / range - THUMB_SIZE / window.innerWidth) * 100;
@@ -119,7 +119,7 @@ export let onMouseMoveCallback = (event, lanSliderClass, inputSliderObject, tool
   const thumbPosition = calculateThumbPosition(inputSliderObject.value, currMax, currMin) * window.innerWidth / 100;
   const thumbLeftBound = thumbPosition - thumbOffset;
   const thumbRightBound = thumbPosition - thumbOffset + thumbSize;
-  const dragOffset = 30;
+  const dragOffset = 10;
   tooltipObject.style.opacity = '1';
   if (event.clientX < (thumbLeftBound - dragOffset) || event.clientX > (thumbRightBound + dragOffset)) {
     tooltipObject.style.opacity = '0';
