@@ -39,7 +39,7 @@ template.innerHTML = `
 
 
 </style>
-<div class = "tooltip">
+<div class = "tooltip-arrow">
     <slot id="content"></slot>
     <span class="tooltiptext">Tooltip text</span>
 </div>
@@ -63,9 +63,24 @@ export default class LANTooltip extends HTMLElement {
 
         // Get customziable attributes and add class to the tooltip 
         if(this.hasAttribute("visible-arrow")){
-          tooltipComponent.querySelector('div').classList.add("tooltip-arrow");
+          console.log("get it");
+          tooltipComponent.querySelector('div').classList.remove("tooltip-arrow");
+          tooltipComponent.querySelector('div').classList.add("tooltip");
         }
         
+        let effect = "dark";
+        if(this.hasAttribute("effect")){
+          effect = this.getAttribute("effect");
+        }
+        if(effect == "dark"){
+          tooltipComponent.querySelector(".tooltiptext").style.backgroundColor = "black";
+          tooltipComponent.querySelector(".tooltiptext").style.color = "white";
+        }
+        else{
+          tooltipComponent.querySelector(".tooltiptext").style.backgroundColor = "white";
+          tooltipComponent.querySelector(".tooltiptext").style.color = "black";
+          tooltipComponent.querySelector(".tooltiptext").style.borderStyle = "solid";
+        }
         // Attach the created elements to the shadow dom
         shadow.appendChild(tooltipComponent.cloneNode(true));
         
