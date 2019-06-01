@@ -1,12 +1,12 @@
 const template = document.createElement("template");
 template.innerHTML = `
 <style>
-.tooltip {
+[class^="tooltip"] {
   position: relative;
   display: inline-block;
 }
 
-.tooltip .tooltiptext {
+[class^="tooltip"] .tooltiptext {
   visibility: hidden;
   width: 120px;
   background-color: black;
@@ -16,12 +16,12 @@ template.innerHTML = `
   padding: 5px 0;
   position: absolute;
   z-index: 1;
-  bottom: 150%;
+  bottom: 125%;
   left: 50%;
   margin-left: -60px;
 }
 
-.tooltip .tooltiptext::after {
+.tooltip-arrow .tooltiptext::after {
   content: "";
   position: absolute;
   top: 100%;
@@ -32,11 +32,14 @@ template.innerHTML = `
   border-color: black transparent transparent transparent;
 }
 
-.tooltip:hover .tooltiptext {
+[class^="tooltip"]:hover .tooltiptext {
   visibility: visible;
 }
+
+
+
 </style>
-<div class="tooltip">
+<div class = "tooltip">
     <slot id="content"></slot>
     <span class="tooltiptext">Tooltip text</span>
 </div>
@@ -58,10 +61,14 @@ export default class LANTooltip extends HTMLElement {
         const text = this.innerHTML;
         tooltipComponent.querySelector('slot').innerHTML = text;
 
+        // Get customziable attributes and add class to the tooltip 
+        if(this.hasAttribute("visible-arrow")){
+          tooltipComponent.querySelector('div').classList.add("tooltip-arrow");
+        }
+        
         // Attach the created elements to the shadow dom
-        console.log(template.content);
         shadow.appendChild(tooltipComponent.cloneNode(true));
-
+        
     }
 
     /**
@@ -71,7 +78,7 @@ export default class LANTooltip extends HTMLElement {
      */
     attributeChangedCallback() {
         // update the value of the buttons
-        console.log("attribute changed");
+       
     }
 
     /**
