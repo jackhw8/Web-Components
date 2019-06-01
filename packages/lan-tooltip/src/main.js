@@ -51,7 +51,7 @@ export default class LANTooltip extends HTMLElement {
         // Create a shadow root
         const shadow = this.attachShadow({ mode: 'open' });
 
-        // Create input button with default values
+        // Create input tooltip with default values
         let tooltipComponent = template.content;
         const text = this.innerHTML;
         this.innerHTML = "";
@@ -162,6 +162,23 @@ export default class LANTooltip extends HTMLElement {
             }
         }
 
+    }
+
+    /**
+     * Returns the button in the shadow DOM
+     * @returns {tooltip}
+     */
+    getTooltipText() {
+        return this.shadowRoot.querySelector('.tooltiptext');
+    }
+
+
+    /**
+     * Returns the button in the shadow DOM
+     * @returns {tooltip}
+     */
+    getTooltip() {
+        return this.shadowRoot.querySelector('#tool');
     }
 }
 
