@@ -81,6 +81,7 @@ export default class LANTooltip extends HTMLElement {
         shadow.appendChild(tooltipComponent.cloneNode(true));
 
         this.handleEventAttr();
+        this.handleDisabled();
     }
 
     /**
@@ -89,8 +90,9 @@ export default class LANTooltip extends HTMLElement {
      * updated.
      */
     attributeChangedCallback() {
-        // update the value of the buttons
+        // update the value of the tooltip
         this.handleEventAttr();
+        this.handleDisabled();
     }
 
     /**
@@ -101,7 +103,11 @@ export default class LANTooltip extends HTMLElement {
         return [
             'event',
             'effect',
-            'visible-arrow'
+            'visible-arrow',
+            'hide-after',
+            'open-delay',
+            'manual',
+            'disabled'
         ];
     }
 
@@ -135,38 +141,109 @@ export default class LANTooltip extends HTMLElement {
         tooltipComponent.onmousedown = () => { };
         tooltipComponent.onmouseup = () => { };
 
-        // set the event handlers
+        // If manual attribute is true, no pointer events
+        if (this.getAttribute('manual') == "true") return;
+
+        // set the event handler
         if (event == "hover") {
             tooltipComponent.onmouseenter = () => {
-                tooltipText.style.setProperty('visibility', 'visible');
+                let timeOut = this.getTimeAfter(0, this.getAttribute('open-delay'));
+                this.appear(timeOut);
             }
             tooltipComponent.onmouseleave = () => {
-                tooltipText.style.setProperty('visibility', 'hidden');
+                let timeOut = this.getTimeAfter(500, this.getAttribute('hide-after'));
+                this.disappear(timeOut);
             }
         } else if (event == "click") {
             tooltipText.style.setProperty('visibility', 'hidden');
             tooltipComponent.onclick = () => {
                 let visibility = tooltipText.style.visibility;
                 if (visibility == "hidden") {
-                    tooltipText.style.setProperty('visibility', 'visible');
+                    let timeOut = this.getTimeAfter(0, this.getAttribute('open-delay'));
+                    this.appear(timeOut)
                 } else {
-                    tooltipText.style.setProperty('visibility', 'hidden');
+                    let timeOut = this.getTimeAfter(0, this.getAttribute('hide-after'));
+                    this.disappear(timeOut)
                 }
             }
         } else if (event == "focus") {
             tooltipComponent.onmousedown = () => {
-                tooltipText.style.setProperty('visibility', 'visible');
+                let timeOut = this.getTimeAfter(0, this.getAttribute('open-delay'));
+                this.appear(timeOut)
             }
             tooltipComponent.onmouseup = () => {
-                tooltipText.style.setProperty('visibility', 'hidden');
+                let timeOut = this.getTimeAfter(0, this.getAttribute('hide-after'));
+                this.disappear(timeOut);
             }
         }
 
     }
 
     /**
+     * Disables the tooltip if disabled attribute is true
+     */
+    handleDisabled() {
+        const shadow = this.shadowRoot;
+        const tooltipComponent = shadow.querySelector("#tool");
+
+        // disable any previous events set
+        if (this.getAttribute('disabled') == "true") {
+            tooltipComponent.onmouseenter = () => { };
+            tooltipComponent.onmouseleave = () => { };
+            tooltipComponent.onclick = () => { };
+            tooltipComponent.onmousedown = () => { };
+            tooltipComponent.onmouseup = () => { };
+        }
+    }
+
+
+    /**
+     * Gets the number of seconds to wait before or after tooltip appears
+     * @param {int} num the default number in milliseconds
+     * @param {string} attr the desired number as a string in milliseconds
+     * @return {time} in milliseconds
+     */
+    getTimeAfter(num, attr) {
+        let timeAfter = num;
+        if (attr != null) {
+            let num = calculateNum(attr);
+            if (num != -1 && num >= 0) {
+                timeAfter = num;
+            }
+        }
+        timeAfter = timeAfter / 1000;
+        return timeAfter
+    }
+
+    /**
+     * Make the tooltip appear 
+     * @param {int} timeOut the number of seconds the transition takes
+     */
+    appear(timeOut) {
+        const shadow = this.shadowRoot;
+        const tooltipText = shadow.querySelector(".tooltiptext");
+
+        tooltipText.style.setProperty('visibility', 'visible');
+        tooltipText.style.setProperty('opacity', '1');
+        tooltipText.style.transition = "opacity " + timeOut + "s linear";
+    }
+
+    /**
+     * Make the tooltip disappear
+     * @param {int} timeOut the number of seconds the transition takes
+     */
+    disappear(timeOut) {
+        const shadow = this.shadowRoot;
+        const tooltipText = shadow.querySelector(".tooltiptext");
+
+        tooltipText.style.setProperty('visibility', 'hidden');
+        tooltipText.style.setProperty('opacity', '0');
+        tooltipText.style.transition = "visibility " + timeOut + "s, opacity " + timeOut + "s linear";
+    }
+
+    /**
      * Returns the button in the shadow DOM
-     * @returns {tooltip}
+     * @returns {tooltip text box}
      */
     getTooltipText() {
         return this.shadowRoot.querySelector('.tooltiptext');
@@ -184,4 +261,11 @@ export default class LANTooltip extends HTMLElement {
 
 // Define the new element
 window.customElements.define('lan-tooltip', LANTooltip);
+
+
+let calculateNum = num => {
+    return num ? parseInt(num) : -1;
+};
+
+
 
