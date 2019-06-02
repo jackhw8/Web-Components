@@ -10,7 +10,8 @@
         },
         "manual": {
           "files": [
-            "./manual/lan-button.md"
+            "./manual/lan-button.md",
+            "./manual/lan-tooltip.md"
           ]
         }
       }
