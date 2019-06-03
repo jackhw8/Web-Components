@@ -13,12 +13,16 @@
     <br><br><br>
     <lan-button>Bu</lan-button>
 
-    <lan-tooltip effect = "light">
+    <lan-tooltip effect="dark" event="hover" hide-after="500" manual="false" open-delay="500" >
         <lan-button>Button</lan-button>
     </lan-tooltip>
 
-    <lan-tooltip visible-arrow effect = "light">
+    <lan-tooltip effect="light" event="click" open-delay="2000" hide-after="1000" visible-arrow>
         <lan-button>Button without arrow</lan-button>
+    </lan-tooltip>
+
+    <lan-tooltip effect="dark" event="focus">
+        <lan-button type="primary">Focus</lan-button>
     </lan-tooltip>
 
 

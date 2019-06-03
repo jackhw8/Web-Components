@@ -38,7 +38,7 @@
     "instrument": true
   },
   "dependencies": {
-    "puppeteer": "^1.16.0",
+    "puppeteer": "^1.17.0",
     "web-component-tester-istanbul": "^0.10.0"
   }
 }
