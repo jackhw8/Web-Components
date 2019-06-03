@@ -21,7 +21,7 @@ template.innerHTML = `
   margin-left: -60px;
 }
 
-.tooltip-arrow .tooltiptext::after {
+[class^="tooltip-arrow"] .tooltiptext::after {
   content: "";
   position: absolute;
   top: 100%;
@@ -29,7 +29,13 @@ template.innerHTML = `
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
+
+}
+.tooltip-arrow .tooltip-light.tooltiptext::after{
   border-color: black transparent transparent transparent;
+}
+.tooltip-arrow .tooltip-dark.tooltiptext::after{
+  border-color: white transparent transparent transparent;
 }
 
 [class^="tooltip"]:hover .tooltiptext {
@@ -63,7 +69,6 @@ export default class LANTooltip extends HTMLElement {
 
         // Get customziable attributes and add class to the tooltip 
         if(this.hasAttribute("visible-arrow")){
-          console.log("get it");
           tooltipComponent.querySelector('div').classList.remove("tooltip-arrow");
           tooltipComponent.querySelector('div').classList.add("tooltip");
         }
@@ -75,11 +80,13 @@ export default class LANTooltip extends HTMLElement {
         if(effect == "dark"){
           tooltipComponent.querySelector(".tooltiptext").style.backgroundColor = "black";
           tooltipComponent.querySelector(".tooltiptext").style.color = "white";
+          tooltipComponent.querySelector(".tooltiptext").classList.add("tooltip-dark");
         }
         else{
           tooltipComponent.querySelector(".tooltiptext").style.backgroundColor = "white";
           tooltipComponent.querySelector(".tooltiptext").style.color = "black";
           tooltipComponent.querySelector(".tooltiptext").style.borderStyle = "solid";
+          tooltipComponent.querySelector(".tooltiptext").classList.add("tooltip-light");
         }
         // Attach the created elements to the shadow dom
         shadow.appendChild(tooltipComponent.cloneNode(true));
