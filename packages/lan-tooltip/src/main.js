@@ -67,6 +67,7 @@ export default class LANTooltip extends HTMLElement {
         
         // Attach the created elements to the shadow dom
         shadow.appendChild(tooltipComponent.cloneNode(true));
+        this.handleStyleAttr();
         this.handleEventAttr();
         this.handleDisabled();
     }
