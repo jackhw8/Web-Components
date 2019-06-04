@@ -11,7 +11,7 @@
 <body>
   <test-fixture id="slider">
     <template>
-      <lan-slider></lan-slider>
+      <lan-slider onchange="null"></lan-slider>
     </template>
   </test-fixture>
 
@@ -34,6 +34,30 @@
         assert.equal(myEl.getAttribute('val'), '80');
         assert.equal(myEl.getAttribute('min'), '8');
         assert.equal(myEl.getAttribute('max'), '800');
+      });
+      test('Testing that min value can not be set less than 0 (negative)', function() {
+        myEl.setAttribute('val', '50');
+        myEl.setAttribute('min', '-5');
+        myEl.setAttribute('max', '100');
+        assert.equal(myEl.getAttribute('val'), '50');
+        assert.equal(myEl.getAttribute('min'), '0');
+        assert.equal(myEl.getAttribute('max'), '100');
+      }); 
+      test('Testing that max value can not be set less than 0 (negative)', function() {
+        myEl.setAttribute('val', '50');
+        myEl.setAttribute('min', '0');
+        myEl.setAttribute('max', '-25');
+        assert.equal(myEl.getAttribute('val'), '50');
+        assert.equal(myEl.getAttribute('min'), '0');
+        assert.equal(myEl.getAttribute('max'), '100');
+      }); 
+      test('Testing that max can not be set less than min value', function() {
+        myEl.setAttribute('val', '50');
+        myEl.setAttribute('min', '75');
+        myEl.setAttribute('max', '25');
+        assert.equal(myEl.getAttribute('val'), '50');
+        assert.equal(myEl.getAttribute('min'), '0');
+        assert.equal(myEl.getAttribute('max'), '100');
       });
     });
   </script>
