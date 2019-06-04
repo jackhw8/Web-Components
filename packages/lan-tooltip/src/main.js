@@ -172,6 +172,7 @@ export default class LANTooltip extends HTMLElement {
         this.handleContent();
         this.handlePlacementAttr();
         this.handleArrowAttr();
+        this.handleOffsetAttr();
         this.handleEffectAttr();
         this.handleEventAttr();
         this.handleDisabled();
@@ -191,7 +192,8 @@ export default class LANTooltip extends HTMLElement {
             'open-delay',
             'manual',
             'disabled',
-            'content'
+            'content',
+            'offset'
         ];
     }
 
@@ -255,6 +257,24 @@ export default class LANTooltip extends HTMLElement {
             } else if (tooltipComponent.classList.contains('tooltip-left')) {
                 tooltipComponent.setAttribute('class', 'tooltip-left arrow-left');
             }
+        }
+    }
+
+    /**
+  * This method updates the offset of the tooltip as a percentage
+  * of the div
+  */
+    handleOffsetAttr() {
+        const shadow = this.shadowRoot;
+        const tooltipComponent = shadow.querySelector("#tool");
+        const tooltipText = shadow.querySelector(".tooltiptext");
+
+        let offset = 50;
+        if (parseInt(this.getAttribute('offset')) >= 0 || parseInt(this.getAttribute('offset')) <= 100) {
+            offset = this.getAttribute('offset');
+        }
+        if (tooltipComponent.classList.contains('tooltip-top') || tooltipComponent.classList.contains('tooltip-bottom')) {
+            tooltipText.style.left = offset + '%';
         }
     }
 
