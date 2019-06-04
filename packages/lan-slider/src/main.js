@@ -43,6 +43,7 @@ export default class LANSlider extends HTMLElement {
       this.onchange();
 
       this.setAttribute("val", slider.value);
+      slider.setAttribute("val", slider.value);
 
       valueBox.innerHTML = slider.value;
       valueBox.style.cssText = `
@@ -252,6 +253,8 @@ export default class LANSlider extends HTMLElement {
     if (min > max || min < 0 || max < 0) {
       min = 0;
       max = 100;
+      this.setAttribute("min", min);
+      this.setAttribute("max", max);
     }
     let val = calculateVal(this.getAttribute("val"), max, min);
 
