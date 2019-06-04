@@ -296,7 +296,11 @@ export default class LANTooltip extends HTMLElement {
      */
     handleEventAttr() {
         const shadow = this.shadowRoot;
-        const tooltipComponent = shadow.querySelector("#tool");
+        let tooltipComponent = shadow.querySelector("#tool");
+        if (this.getAttribute("enterable") === "false") {
+            tooltipComponent = tooltipComponent.querySelector("slot");
+        }
+
         const tooltipText = shadow.querySelector(".tooltiptext");
 
         // get the current event attribute
@@ -347,6 +351,10 @@ export default class LANTooltip extends HTMLElement {
             }
             tooltipComponent.onmouseup = () => {
                 let timeOut = this.getTimeAfter(0, this.getAttribute('hide-after'));
+                this.disappear(timeOut);
+            }
+            tooltipComponent.onmouseleave = () => {
+                let timeOut = this.getTimeAfter(250, this.getAttribute('hide-after'));
                 this.disappear(timeOut);
             }
         }
