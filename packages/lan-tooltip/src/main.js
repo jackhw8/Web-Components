@@ -21,7 +21,7 @@ template.innerHTML = `
   margin-left: -60px;
 }
 
-.tooltip-arrow .tooltiptext::after {
+.tooltip-arrow .tooltip-dark.tooltiptext::after {
   content: "";
   position: absolute;
   top: 100%;
@@ -29,15 +29,35 @@ template.innerHTML = `
   margin-left: -5px;
   border-width: 5px;
   border-style: solid;
-  border-color: black transparent transparent transparent;
 }
-.tooltip-arrow .tooltip-light.tooltiptext::after{
-  border-color: white transparent transparent transparent;
-}
+
 .tooltip-arrow .tooltip-dark.tooltiptext::after{
   border-color: black transparent transparent transparent;
 }
 
+
+.tooltip-light.tooltiptext::before,
+.tooltip-light.tooltiptext::after {
+  content: "";
+  position: absolute;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  top: 100%;
+  left: 50%;
+  margin-left: -10px;
+}
+
+.tooltip-light.tooltiptext::before {
+  border-top: 10px solid black;
+  margin-top: 5px;
+}
+
+/* The white fill of the triangle */
+.tooltip-light.tooltiptext::after {
+  border-top: 10px solid white;
+  margin-top: -2px;
+  z-index: 1;
+}
 
 </style>
 <div class="tooltip-arrow" id="tool">
