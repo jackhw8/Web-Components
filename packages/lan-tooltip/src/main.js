@@ -196,7 +196,37 @@ export default class LANTooltip extends HTMLElement {
             'offset'
         ];
     }
+    /**
+     * This method updates what style the tooltip reacts to.
+     * visible-arrow -- hide the arrow of tooltip
+     * effect "dark" -- Default, the color of tooltip will be black
+     * effect "light"-- Tooltip will be white with black border
+     */
+    handleStyleAttr(){
+        const shadow = this.shadowRoot;
+        const tooltipComponent = shadow.querySelector("#tool");
+        const tooltipText = shadow.querySelector(".tooltiptext");
+        if(this.hasAttribute("visible-arrow")){
+            tooltipComponent.classList.remove("tooltip-arrow");
+            tooltipComponent.classList.add("tooltip");
+        }
 
+        let effect = "dark";
+        if (this.hasAttribute("effect")) {
+            effect = this.getAttribute("effect");
+        }
+        if(effect == "dark"){
+            tooltipText.style.backgroundColor = "black";
+            tooltipText.style.color = "white";
+            tooltipText.classList.add("tooltip-dark");
+        }
+        else{
+            tooltipText.style.backgroundColor = "white";
+            tooltipText.style.color = "black";
+            tooltipText.style.borderStyle = "solid";
+            tooltipText.classList.add("tooltip-light");
+        }
+    }
     /**
      * This method updates the content of the tooltip
      */
