@@ -25,9 +25,50 @@
             setup(() => {
                 myEl = fixture("tooltip");
             });
+            test('Testing placement effect', function () {
+                myEl.setAttribute('visible-arrow', 'false');
+                myEl.setAttribute('placement', 'top');
+                assert.equal(myEl.getTooltip().getAttribute('class'), 'tooltip-top');
+                myEl.setAttribute('placement', 'bottom');
+                assert.equal(myEl.getTooltip().getAttribute('class'), 'tooltip-bottom');
+                myEl.setAttribute('placement', 'left');
+                assert.equal(myEl.getTooltip().getAttribute('class'), 'tooltip-left');
+                myEl.setAttribute('placement', 'right');
+                assert.equal(myEl.getTooltip().getAttribute('class'), 'tooltip-right');
+
+                // Test invalid inputs
+                myEl.setAttribute('placement', 'tops');
+                assert.equal(myEl.getTooltip().getAttribute('class'), 'tooltip-bottom');
+            });
+            test('Testing visible arrow effect', function () {
+                myEl.setAttribute('visible-arrow', 'true');
+                myEl.setAttribute('placement', 'top');
+                assert.equal(myEl.getTooltip().getAttribute('class'), 'tooltip-top arrow-top');
+                myEl.setAttribute('placement', 'bottom');
+                assert.equal(myEl.getTooltip().getAttribute('class'), 'tooltip-bottom arrow-bottom');
+                myEl.setAttribute('placement', 'left');
+                assert.equal(myEl.getTooltip().getAttribute('class'), 'tooltip-left arrow-left');
+                myEl.setAttribute('placement', 'right');
+                assert.equal(myEl.getTooltip().getAttribute('class'), 'tooltip-right arrow-right');
+
+                // Test invalid inputs
+                myEl.setAttribute('placement', 'top');
+                myEl.setAttribute('visible-arrow', 'trues');
+                assert.equal(myEl.getTooltip().getAttribute('class'), 'tooltip-top arrow-top');
+            });
             test('Testing dark effect', function () {
                 assert.equal(myEl.getTooltipText().style.backgroundColor, "black");
                 assert.equal(myEl.getTooltipText().style.color, "white");
+
+                //Test invalid inputs
+                myEl.setAttribute('effect', 'lights')
+                assert.equal(myEl.getTooltipText().style.backgroundColor, "black");
+                assert.equal(myEl.getTooltipText().style.color, "white");
+            });
+            test('Testing light effect', function () {
+                myEl.setAttribute('effect', 'light')
+                assert.equal(myEl.getTooltipText().style.color, "black");
+                assert.equal(myEl.getTooltipText().style.backgroundColor, "white");
             });
             test('Testing click effect', function () {
                 myEl.setAttribute("event", "click");
@@ -36,9 +77,27 @@
                 myEl.getTooltip().click();
                 assert.equal(myEl.getTooltipText().style.visibility, "hidden");
             });
-            test('Testing get function', function () {
-                //assert.equal(myEl.get(), myEl.shadowRoot.querySelector('button'));
-            })
+            test('Testing transition delay effects', function () {
+                myEl.setAttribute("event", "click");
+                myEl.setAttribute("hide-after", "3000");
+                myEl.setAttribute("open-delay", "2000");
+                myEl.getTooltip().click();
+                assert.equal(myEl.getTooltipText().style.transition, "opacity 2s linear 0s");
+                myEl.getTooltip().click();
+                assert.equal(myEl.getTooltipText().style.transition, "visibility 3s ease 0s, opacity 3s linear 0s");
+
+                // Test invalid inputs
+                myEl.setAttribute("hide-after", "-1");
+                myEl.setAttribute("open-delay", "-1");
+                myEl.getTooltip().click();
+                assert.equal(myEl.getTooltipText().style.transition, "opacity 0s linear 0s");
+                myEl.getTooltip().click();
+                assert.equal(myEl.getTooltipText().style.transition, "visibility 0s ease 0s, opacity 0s linear 0s");
+            });
+            test('Testing tooltip content', function () {
+                myEl.setAttribute("content", "hello world");
+                assert.equal(myEl.getTooltipText().innerHTML, "hello world");
+            });
         });
     </script>
 </body>

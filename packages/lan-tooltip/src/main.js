@@ -1,40 +1,135 @@
 const template = document.createElement("template");
 template.innerHTML = `
 <style>
-[class^="tooltip"] {
-  position: relative;
-  display: inline-block;
-}
+    .tooltip-left {
+        position: relative;
+        display: inline-block;
+    }
 
-[class^="tooltip"] .tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-  position: absolute;
-  z-index: 1;
-  bottom: 110%;
-  left: 50%;
-  margin-left: -60px;
-}
+    .tooltip-left .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border: 1px solid black;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        top: 5px;
+        right: 110%;
 
-.tooltip-arrow .tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: black transparent transparent transparent;
-}
+    }
 
+    .arrow-left .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 100%;
+        margin-top: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent transparent black;
+    }
 
+    .tooltip-right {
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltip-right .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border: 1px solid black;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        top: 5px;
+        left: 110%;
+
+    }
+
+    .arrow-right .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        right: 100%;
+        margin-top: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent black transparent transparent;
+    }
+
+    .tooltip-top {
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltip-top .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border: 1px solid black;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -60px;
+    }
+
+    .arrow-top .tooltiptext::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: black transparent transparent transparent;
+    }
+
+    .tooltip-bottom {
+        position: relative;
+        display: inline-block;
+    }
+
+    .tooltip-bottom .tooltiptext {
+        visibility: hidden;
+        width: 120px;
+        background-color: black;
+        color: #fff;
+        text-align: center;
+        border: 1px solid black;
+        border-radius: 6px;
+        padding: 5px 0;
+        position: absolute;
+        z-index: 1;
+        top: 125%;
+        left: 50%;
+        margin-left: -60px;
+    }
+
+    .arrow-bottom .tooltiptext::after {
+        content: "";
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent black transparent;
+    }
 </style>
-<div class="tooltip-arrow" id="tool">
+<div class="tooltip-bottom arrow-bottom" id="tool">
     <slot id="content"></slot>
     <span class="tooltiptext">Tooltip text</span>
 </div>
@@ -53,35 +148,18 @@ export default class LANTooltip extends HTMLElement {
 
         // Create input tooltip with default values
         let tooltipComponent = template.content;
-        const text = this.innerHTML;
+        tooltipComponent.querySelector('slot').innerHTML = this.innerHTML;
         this.innerHTML = "";
-        tooltipComponent.querySelector('slot').innerHTML = text;
-
-        // Get customziable attributes and add class to the tooltip 
-        if (this.hasAttribute("visible-arrow")) {
-            tooltipComponent.querySelector('div').classList.remove("tooltip-arrow");
-            tooltipComponent.querySelector('div').classList.add("tooltip");
-        }
-
-        let effect = "dark";
-        if (this.hasAttribute("effect")) {
-            effect = this.getAttribute("effect");
-        }
-        if (effect == "dark") {
-            tooltipComponent.querySelector(".tooltiptext").style.backgroundColor = "black";
-            tooltipComponent.querySelector(".tooltiptext").style.color = "white";
-        }
-        else {
-            tooltipComponent.querySelector(".tooltiptext").style.backgroundColor = "white";
-            tooltipComponent.querySelector(".tooltiptext").style.color = "black";
-            tooltipComponent.querySelector(".tooltiptext").style.borderStyle = "solid";
-        }
 
         // Attach the created elements to the shadow dom
         shadow.appendChild(tooltipComponent.cloneNode(true));
 
-        this.handleEventAttr();
-        this.handleDisabled();
+        // Set tooltip text
+        if (this.getAttribute('content') != null) {
+            shadow.querySelector('.tooltiptext').innerHTML = this.getAttribute('content');
+        }
+
+        this.attributeChangedCallback();
     }
 
     /**
@@ -91,6 +169,10 @@ export default class LANTooltip extends HTMLElement {
      */
     attributeChangedCallback() {
         // update the value of the tooltip
+        this.handleContent();
+        this.handlePlacementAttr();
+        this.handleArrowAttr();
+        this.handleEffectAttr();
         this.handleEventAttr();
         this.handleDisabled();
     }
@@ -101,14 +183,106 @@ export default class LANTooltip extends HTMLElement {
      */
     static get observedAttributes() {
         return [
+            'placement',
             'event',
             'effect',
             'visible-arrow',
             'hide-after',
             'open-delay',
             'manual',
-            'disabled'
+            'disabled',
+            'content'
         ];
+    }
+
+    /**
+     * This method updates the content of the tooltip
+     */
+    handleContent() {
+        if (this.hasAttribute('content')) {
+            this.shadowRoot.querySelector('.tooltiptext').innerHTML = this.getAttribute('content');
+        }
+    }
+
+    /**
+    * This method handles the placement of the tooltip
+    */
+    handlePlacementAttr() {
+        const shadow = this.shadowRoot;
+        const tooltipComponent = shadow.querySelector("#tool");
+
+        let placement = "bottom"
+        let placeAttr = this.getAttribute('placement');
+        if (placeAttr == "top" || placeAttr == "left" || placeAttr == "right") {
+            placement = placeAttr;
+        }
+
+        if (placement == "bottom") {
+            tooltipComponent.setAttribute('class', 'tooltip-bottom');
+        } else if (placement == "top") {
+            tooltipComponent.setAttribute('class', 'tooltip-top');
+        } else if (placement == "right") {
+            tooltipComponent.setAttribute('class', 'tooltip-right');
+        } else if (placement == "left") {
+            tooltipComponent.setAttribute('class', 'tooltip-left');
+        }
+    }
+
+    /**
+     * This method updates the tooltip arrow
+     */
+    handleArrowAttr() {
+        const shadow = this.shadowRoot;
+        const tooltipComponent = shadow.querySelector("#tool");
+
+        if (this.getAttribute('visible-arrow') == "false") {
+            if (tooltipComponent.classList.contains('arrow-top')) {
+                tooltipComponent.classList.remove("arrow-top");
+            } else if (tooltipComponent.classList.contains('arrow-bottom')) {
+                tooltipComponent.classList.remove("arrow-bottom");
+            } else if (tooltipComponent.classList.contains('arrow-right')) {
+                tooltipComponent.classList.remove("arrow-right");
+            } else if (tooltipComponent.classList.contains('arrow-left')) {
+                tooltipComponent.classList.remove("arrow-left");
+            }
+        } else {
+            if (tooltipComponent.classList.contains('tooltip-top')) {
+                tooltipComponent.setAttribute('class', 'tooltip-top arrow-top');
+            } else if (tooltipComponent.classList.contains('tooltip-bottom')) {
+                tooltipComponent.setAttribute('class', 'tooltip-bottom arrow-bottom');
+            } else if (tooltipComponent.classList.contains('tooltip-right')) {
+                tooltipComponent.setAttribute('class', 'tooltip-right arrow-right');
+            } else if (tooltipComponent.classList.contains('tooltip-left')) {
+                tooltipComponent.setAttribute('class', 'tooltip-left arrow-left');
+            }
+        }
+    }
+
+    /**
+     * This method updates the look of the tooltip
+     * Either dark or light
+     */
+    handleEffectAttr() {
+        const shadow = this.shadowRoot;
+        const tooltipText = shadow.querySelector(".tooltiptext");
+
+        // get the current effect attribute
+        let effect = "dark";
+        if (this.hasAttribute('effect')) {
+            const effectAttr = this.getAttribute("effect");
+            if (effectAttr == "dark" || effectAttr == "light") {
+                effect = effectAttr;
+            }
+        }
+
+        if (effect == "dark") {
+            tooltipText.style.backgroundColor = "black";
+            tooltipText.style.color = "white";
+        }
+        else if (effect == "light") {
+            tooltipText.style.backgroundColor = "white";
+            tooltipText.style.color = "black";
+        }
     }
 
     /**
@@ -151,7 +325,7 @@ export default class LANTooltip extends HTMLElement {
                 this.appear(timeOut);
             }
             tooltipComponent.onmouseleave = () => {
-                let timeOut = this.getTimeAfter(500, this.getAttribute('hide-after'));
+                let timeOut = this.getTimeAfter(250, this.getAttribute('hide-after'));
                 this.disappear(timeOut);
             }
         } else if (event == "click") {
@@ -196,7 +370,6 @@ export default class LANTooltip extends HTMLElement {
         }
     }
 
-
     /**
      * Gets the number of seconds to wait before or after tooltip appears
      * @param {int} num the default number in milliseconds
@@ -211,17 +384,20 @@ export default class LANTooltip extends HTMLElement {
                 timeAfter = num;
             }
         }
-        timeAfter = timeAfter / 1000;
         return timeAfter
     }
 
     /**
      * Make the tooltip appear 
-     * @param {int} timeOut the number of seconds the transition takes
+     * @param {int} timeOut the number of milliseconds the transition takes
      */
     appear(timeOut) {
         const shadow = this.shadowRoot;
         const tooltipText = shadow.querySelector(".tooltiptext");
+
+        timeOut = timeOut / 1000;
+
+        if (timeOut < 0) timeOut = 0;
 
         tooltipText.style.setProperty('visibility', 'visible');
         tooltipText.style.setProperty('opacity', '1');
@@ -230,11 +406,15 @@ export default class LANTooltip extends HTMLElement {
 
     /**
      * Make the tooltip disappear
-     * @param {int} timeOut the number of seconds the transition takes
+     * @param {int} timeOut the number of milliseconds the transition takes
      */
     disappear(timeOut) {
         const shadow = this.shadowRoot;
         const tooltipText = shadow.querySelector(".tooltiptext");
+
+        timeOut = timeOut / 1000;
+
+        if (timeOut < 0) timeOut = 0;
 
         tooltipText.style.setProperty('visibility', 'hidden');
         tooltipText.style.setProperty('opacity', '0');
@@ -249,7 +429,6 @@ export default class LANTooltip extends HTMLElement {
         return this.shadowRoot.querySelector('.tooltiptext');
     }
 
-
     /**
      * Returns the button in the shadow DOM
      * @returns {tooltip}
@@ -262,10 +441,6 @@ export default class LANTooltip extends HTMLElement {
 // Define the new element
 window.customElements.define('lan-tooltip', LANTooltip);
 
-
 let calculateNum = num => {
-    return num ? parseInt(num) : -1;
+    return num ? parseInt(num) : 0;
 };
-
-
-
