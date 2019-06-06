@@ -9,6 +9,10 @@
     <script src="../packages/lan-slider/src/main.js" type="module" defer></script>
     <script src="../packages/lan-button/src/main.js" type="module" defer></script>
     <style>
+      * {
+        font-family: "Helvetica Neue", "Helvetica";
+      }
+
       #index-card-wrapper {
         max-height: 1000px;
         overflow: scroll;
@@ -34,69 +38,77 @@
 </head>
 
 <body>
+  <div class="index-wrapper">
     <h1>LAN Feed example</h1>
 
-    <div class="index-wrapper">
-      <h3>Add more stuff</h3>
-      <form id="add-more-feed">
-        <input id="form-header" type="text" placeholder="Enter the header"/> <br>
-        <textarea id="form-body" placeholder="Enter the body(HTML format)"></textarea> <br>
-        <!-- <input type="submit" value="Add Feed"/> -->
-        <lan-button id="form-submit">Submit</lan-button>
-      </form>
-    </div>
+    <h3>Add more stuff</h3>
+    <form id="add-more-feed">
+      <input id="form-header" type="text" placeholder="Enter the header"/> <br>
+      <textarea id="form-body" placeholder="Enter the body(HTML format)"></textarea> <br>
+      <!-- <input type="submit" value="Add Feed"/> -->
+      <lan-button id="form-submit">Submit</lan-button>
+    </form>
+  </div>
 
-    <div id="index-lan-slider" class="index-wrapper">
-      <h3>Control how many columns you want to have</h3>
-      <lan-slider val=3></lan-slider>
-    </div>
+  <div id="index-lan-slider" class="index-wrapper">
+    <h3>Control how many columns you want to have</h3>
+    <lan-slider min=1 val=3></lan-slider>
+  </div>
 
-    <div id="index-card-wrapper" class="index-wrapper">
-      <lan-card header="Default Plain LAN Card">
-        Padding 20px (default)
-      </lan-card>
-      <lan-card header="Hover for Shadow!" body-style="{ color: red }" shadow="hover">
-        Red body text
-      </lan-card>
-      <lan-card header="hello world" shadow="never">
-        <div>
-          No shadow
-        </div>
-      </lan-card>
-      <lan-card header="hello world" shadow="random">
-        <div>
-          Unidentified shadow type, treat as "always"
-        </div>
-      </lan-card>
-    </div>
+  <div id="index-column-label" class="index-wrapper">
+    <p id="column-label">You have 3 columns per row</p>
+  </div>
+
+  <div id="index-card-wrapper" class="index-wrapper">
+    <lan-card header="Default Plain LAN Card" shadow='hover'>
+      Padding 20px (default)
+    </lan-card>
+    <lan-card header="Hover for Shadow!" shadow='hover'>
+      Red body text
+    </lan-card>
+    <lan-card header="hello world" shadow='hover'>
+      <div>
+        No shadow
+      </div>
+    </lan-card>
+    <lan-card header="hello world" shadow='hover'>
+      <div>
+        Unidentified shadow type, treat as "always"
+      </div>
+    </lan-card>
+  </div>
 
 
-    <script>
-      const GRID_MS = "-ms-grid-column";
-      lanSlider = document.getElementsByTagName("lan-slider")[0];
-      function sliderOnChange(event) {
-        const cols = event.target.value;
-        let gridTemplate = "";
-        for(var i=0; i<cols; i++) gridTemplate += "1fr ";
-        document.getElementById('index-card-wrapper').style.gridTemplateColumns = gridTemplate;
-      }
-      lanSlider.change = sliderOnChange;
-    </script>
+  <script>
+    const GRID_MS = "-ms-grid-column";
+    lanSlider = document.getElementsByTagName("lan-slider")[0];
+    function sliderOnChange(event) {
+      // Update label value
+      let label = document.querySelector('#column-label');
+      label.innerHTML = `You have ${event.target.value} columns per row`;
 
-    <script>
-      cardsWrapper = document.getElementById("index-card-wrapper");
+      const cols = event.target.value;
+      let gridTemplate = "";
+      for(var i=0; i<cols; i++) gridTemplate += "1fr ";
+      document.getElementById('index-card-wrapper').style.gridTemplateColumns = gridTemplate;
+    }
+    lanSlider.change = sliderOnChange;
+  </script>
 
-      submitBtn = document.getElementById('form-submit');
-      submitBtn.addEventListener('click', (e) => {
-        header = document.getElementById('form-header').value;
-        formBody = document.getElementById('form-body').value;
-        newCard = document.createElement('lan-card');
-        newCard.setAttribute('header', header);
-        newCard.innerHTML = formBody;
-        cardsWrapper.appendChild(newCard);
-      })
-      
-    </script>
+  <script>
+    cardsWrapper = document.getElementById("index-card-wrapper");
+
+    submitBtn = document.getElementById('form-submit');
+    submitBtn.addEventListener('click', (e) => {
+      header = document.getElementById('form-header').value;
+      formBody = document.getElementById('form-body').value;
+      newCard = document.createElement('lan-card');
+      newCard.setAttribute('header', header);
+      newCard.setAttribute('shadow', 'hover');
+      newCard.innerHTML = formBody;
+      cardsWrapper.appendChild(newCard);
+    })
+  </script>
 </body>
 
 </html>
