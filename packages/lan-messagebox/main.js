@@ -195,11 +195,19 @@ class MessageBox extends HTMLElement {
     const confirmEvent = new Event('confirm');
     if(this.hasInput){
       const input = this.shadowRoot.querySelector("input");
-      alert(input.value);
+      this.value = input.value;
+      this.dispatchEvent(confirmEvent);
     }
     else{
       this.dispatchEvent(confirmEvent);
     }
+  }
+
+  getValue(){
+    if(this.hasInput){
+      return this.value;
+    }
+    return null;
   }
 }
 
