@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Create Twitter-Like Feed</title>
+    <script src="../packages/lan-card/src/main.js" type="module" defer></script>
+    <script src="../packages/lan-slider/src/main.js" type="module" defer></script>
+    <script src="../packages/lan-button/src/main.js" type="module" defer></script>
+    <style>
+      #index-card-wrapper {
+        max-height: 1000px;
+        overflow: scroll;
+
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+
+      .index-wrapper{
+        margin:auto;
+        max-width: 1000px
+      }
+
+      #index-lan-slider {
+        margin: auto;
+        max-width:500px;
+      }
+
+      lan-card {
+        margin: 10px;
+      }
+    </style>
+</head>
+
+<body>
+    <h1>LAN Feed example</h1>
+
+    <div class="index-wrapper">
+      <h3>Add more stuff</h3>
+      <form id="add-more-feed">
+        <input id="form-header" type="text" placeholder="Enter the header"/> <br>
+        <textarea id="form-body" placeholder="Enter the body(HTML format)"></textarea> <br>
+        <!-- <input type="submit" value="Add Feed"/> -->
+        <lan-button id="form-submit">Submit</lan-button>
+      </form>
+    </div>
+
+    <div id="index-lan-slider" class="index-wrapper">
+      <h3>Control how many columns you want to have</h3>
+      <lan-slider val=3></lan-slider>
+    </div>
+
+    <div id="index-card-wrapper" class="index-wrapper">
+      <lan-card header="Default Plain LAN Card">
+        Padding 20px (default)
+      </lan-card>
+      <lan-card header="Hover for Shadow!" body-style="{ color: red }" shadow="hover">
+        Red body text
+      </lan-card>
+      <lan-card header="hello world" shadow="never">
+        <div>
+          No shadow
+        </div>
+      </lan-card>
+      <lan-card header="hello world" shadow="random">
+        <div>
+          Unidentified shadow type, treat as "always"
+        </div>
+      </lan-card>
+    </div>
+
+
+    <script>
+      const GRID_MS = "-ms-grid-column";
+      lanSlider = document.getElementsByTagName("lan-slider")[0];
+      function sliderOnChange(event) {
+        const cols = event.target.value;
+        let gridTemplate = "";
+        for(var i=0; i<cols; i++) gridTemplate += "1fr ";
+        document.getElementById('index-card-wrapper').style.gridTemplateColumns = gridTemplate;
+      }
+      lanSlider.change = sliderOnChange;
+    </script>
+
+    <script>
+      cardsWrapper = document.getElementById("index-card-wrapper");
+
+      submitBtn = document.getElementById('form-submit');
+      submitBtn.addEventListener('click', (e) => {
+        header = document.getElementById('form-header').value;
+        formBody = document.getElementById('form-body').value;
+        newCard = document.createElement('lan-card');
+        newCard.setAttribute('header', header);
+        newCard.innerHTML = formBody;
+        cardsWrapper.appendChild(newCard);
+      })
+      
+    </script>
+</body>
+
+</html>
