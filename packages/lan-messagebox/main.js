@@ -125,10 +125,7 @@ class MessageBox extends HTMLElement {
             </section>
         </div>
     `;
-    const slots = this.shadowRoot.querySelectorAll('slot');
-    slots[1].addEventListener('slotchange', event => {
-      console.dir(slots[1].assignedNodes());
-    });
+
 
     const backdrop = this.shadowRoot.querySelector('#backdrop');
     const cancelButton = this.shadowRoot.querySelector('#cancel-btn');
@@ -150,7 +147,7 @@ class MessageBox extends HTMLElement {
 
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
+  attributeChangedCallback() {
     if (this.hasAttribute('opened')) {
       this.isOpen = true;
     } else {
@@ -193,7 +190,7 @@ class MessageBox extends HTMLElement {
    * hide the messagebox and dispatch the confirm event
    * need to bind lan-messagebox
    */
-  _confirm(event) {
+  _confirm() {
     this.hide();
     const confirmEvent = new Event('confirm');
     if(this.hasInput){
