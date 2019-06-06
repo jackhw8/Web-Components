@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>lan-card example</title>
+    <script src="main.js" type="module" defer></script>
+    <script src="../../lan-slider/src/main.js" type="module" defer></script>
+    <style>
+      #index-card-wrapper {
+        margin: auto;
+        max-width: 1000px;
+        max-height: 1000px;
+        overflow: scroll;
+      }
+
+      lan-card {
+        margin: 10px;
+      }
+    </style>
+</head>
+
+<body>
+  <h1>LAN Card example</h1>
+
+  <div id="index-card-wrapper">
+    <lan-card header="Default Plain LAN Card with Header">
+      Padding 20px (default)
+    </lan-card>
+    <lan-card>
+      No attributes set
+    </lan-card>
+    <lan-card header="Hover for Shadow!" body-style="{ color: orange; }" shadow="hover">
+      Orange body text
+    </lan-card>
+    <lan-card header="No Shadow" body-style="{ margin: 40px; }" shadow="never">
+      Margin 40px
+    </lan-card>
+    <lan-card header="Unidentified shadow type, treat as 'always'" body-style="{ text-decoration: underline }" shadow="random">
+      Underlined body text
+    </lan-card>
+  </div>
+</body>
+
+</html>
