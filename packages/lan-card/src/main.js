@@ -1,4 +1,4 @@
-import { componentStyle, wrapperStyle } from './style.js';
+import { componentStyle, wrapperStyle } from "./style.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
@@ -22,8 +22,8 @@ export default class LANCard extends HTMLElement {
     super();
 
     // Create a shadow root
-    const shadow = this.attachShadow({ mode: 'open' });
-    
+    const shadow = this.attachShadow({ mode: "open" });
+
     // Clone template
     const tmpl = template.content.cloneNode(true);
 
@@ -36,7 +36,6 @@ export default class LANCard extends HTMLElement {
     // Attach the created elements to the shadow dom
     shadow.appendChild(tmpl);
   }
-
 
   /**
    * connectedCallback is a lifecycle method that is invoked whenever
@@ -55,7 +54,6 @@ export default class LANCard extends HTMLElement {
     this.handleShadowAttribute();
   }
 
-
   /**
    * attributeChangedCallback is a lifecycle method that is invoked
    * whenever attributes listed in observedAttributes static function is
@@ -68,19 +66,13 @@ export default class LANCard extends HTMLElement {
     this.handleShadowAttribute();
   }
 
-
   /**
    * observedAttributes
    * @returns {list} returns a list of observed attributes
    */
   static get observedAttributes() {
-    return [
-      'header',
-      'body-style',
-      'shadow'
-    ];
+    return ["header", "body-style", "shadow"];
   }
-
 
   /**
    * handleHeaderAttribute
@@ -89,13 +81,28 @@ export default class LANCard extends HTMLElement {
   handleHeaderAttribute() {
     const shadow = this.shadowRoot;
     let headerComponent = shadow.querySelector("#card-header");
-    if (this.hasAttribute("header")) {
-      headerComponent.innerHTML = this.getAttribute("header");
+    if (headerComponent) {
+      if (this.hasAttribute("header")) {
+        headerComponent.innerHTML = this.getAttribute("header");
+      } else {
+        headerComponent.outerHTML = "";
+      }
     } else {
-      headerComponent.outerHTML = "";
+      if (this.hasAttribute("header")) {
+        // Get the wrapper component
+        const wrapperComponent = shadow.querySelector("#card-wrapper");
+
+        // Re-create <h1> element
+        let newHeaderComponent = document.createElement("h1");
+        newHeaderComponent.id = "card-header";
+        newHeaderComponent.innerHTML = this.getAttribute("header");
+        wrapperComponent.insertBefore(
+          newHeaderComponent,
+          wrapperComponent.childNodes[0]
+        );
+      }
     }
   }
-
 
   /**
    * handleBodyStyleAttribute
@@ -110,7 +117,6 @@ export default class LANCard extends HTMLElement {
     }
   }
 
-
   /**
    * handleShadowAttribute
    * Takes care of the shadow attribute of the lan-card component
@@ -118,26 +124,31 @@ export default class LANCard extends HTMLElement {
   handleShadowAttribute() {
     const shadow = this.shadowRoot;
     // Get the shadow event for this component, if any
-    let wrapperStyleComponent = shadow.querySelector("style#wrapper-style")
+    let wrapperStyleComponent = shadow.querySelector("style#wrapper-style");
     if (this.hasAttribute("shadow")) {
       const shadowAttr = this.getAttribute("shadow");
       if (shadowAttr == "hover") {
         // Do nothing, but we're just gonna have the empty if block here for code readability
       } else if (shadowAttr == "never") {
         // Remove box-shadow from the styles
-        wrapperStyleComponent.innerHTML = wrapperStyleComponent.innerHTML.split("#card-wrapper:hover")[0];
+        wrapperStyleComponent.innerHTML = wrapperStyleComponent.innerHTML
+          .split("#card-wrapper:hover")[0];
       } else {
         // Treat everything else as "always"
         // Remove hover from the styles
-        wrapperStyleComponent.innerHTML = wrapperStyleComponent.innerHTML.split(":hover").join("");
+        wrapperStyleComponent.innerHTML = wrapperStyleComponent.innerHTML
+          .split(":hover")
+          .join("");
       }
     } else {
       // Since default value of shadow is "always", treat it as how it is supposed to be
       // Remove hover from the styles
-      wrapperStyleComponent.innerHTML = wrapperStyleComponent.innerHTML.split(":hover").join("");
+      wrapperStyleComponent.innerHTML = wrapperStyleComponent.innerHTML
+        .split(":hover")
+        .join("");
     }
   }
 }
 
 // Define the new element
-window.customElements.define('lan-card', LANCard);
+window.customElements.define("lan-card", LANCard);

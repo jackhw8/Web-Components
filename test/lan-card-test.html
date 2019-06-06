@@ -24,12 +24,12 @@
       });
       test('Testing no attributes', function () {
         assert.isNull(myEl.shadowRoot.querySelector("#card-header"));
-        assert.equal((myEl.shadowRoot.querySelector("style#component-style").match(/#card-body {/g)).length, 1);
-        assert.equal((myEl.shadowRoot.querySelector("style#wrapper-style").match(/#card-wrapper {/g)).length, 2);
+        assert.equal((myEl.shadowRoot.querySelector("style#component-style").innerHTML.match(/#card-body {/g)).length, 1);
+        assert.equal((myEl.shadowRoot.querySelector("style#wrapper-style").innerHTML.match(/#card-wrapper {/g)).length, 2);
       });
       test('Testing header', function () {
-        assert.equal((myEl.shadowRoot.querySelector("style#component-style").match(/#card-body {/g)).length, 1);
-        assert.equal((myEl.shadowRoot.querySelector("style#wrapper-style").match(/#card-wrapper {/g)).length, 2);
+        assert.equal((myEl.shadowRoot.querySelector("style#component-style").innerHTML.match(/#card-body {/g)).length, 1);
+        assert.equal((myEl.shadowRoot.querySelector("style#wrapper-style").innerHTML.match(/#card-wrapper {/g)).length, 2);
 
         // Set header
         myEl.setAttribute('header', 'dummy header');
@@ -37,32 +37,44 @@
       });
       test('Testing body-style', function () {
         assert.isNull(myEl.shadowRoot.querySelector("#card-header"));
-        assert.equal((myEl.shadowRoot.querySelector("style#wrapper-style").match(/#card-wrapper {/g)).length, 2);
+        assert.equal((myEl.shadowRoot.querySelector("style#wrapper-style").innerHTML.match(/#card-wrapper {/g)).length, 2);
 
         // Set body-style
         myEl.setAttribute('body-style', '{ dummy: css }');
-        assert.equal((myEl.shadowRoot.querySelector("style#component-style").match(/#card-body {/g)).length, 2);
+        assert.equal((myEl.shadowRoot.querySelector("style#component-style").innerHTML.match(/#card-body {/g)).length, 2);
       });
-      test('Testing shadow', function () {
+      test('Testing shadow never', function () {
         assert.isNull(myEl.shadowRoot.querySelector("#card-header"));
-        assert.equal((myEl.shadowRoot.querySelector("style#component-style").match(/#card-body {/g)).length, 1);
+        assert.equal((myEl.shadowRoot.querySelector("style#component-style").innerHTML.match(/#card-body {/g)).length, 1);
 
         // Shadow: never
         myEl.setAttribute('shadow', 'never');
-        assert.equal((myEl.shadowRoot.querySelector("style#wrapper-style").match(/#card-wrapper {/g)).length, 1);
+        assert.equal((myEl.shadowRoot.querySelector("style#wrapper-style").innerHTML.match(/#card-wrapper {/g)).length, 1);
+      });
+      test('Testing shadow hover', function () {
+        assert.isNull(myEl.shadowRoot.querySelector("#card-header"));
+        assert.equal((myEl.shadowRoot.querySelector("style#component-style").innerHTML.match(/#card-body {/g)).length, 1);
 
         // Shadow: hover
         myEl.setAttribute('shadow', 'hover');
-        assert.equal((myEl.shadowRoot.querySelector("style#wrapper-style").match(/#card-wrapper {/g)).length, 1);
-        assert.equal((myEl.shadowRoot.querySelector("style#wrapper-style").match(/#card-wrapper:hover {/g)).length, 1);
+        assert.equal((myEl.shadowRoot.querySelector("style#wrapper-style").innerHTML.match(/#card-wrapper {/g)).length, 1);
+        assert.equal((myEl.shadowRoot.querySelector("style#wrapper-style").innerHTML.match(/#card-wrapper:hover {/g)).length, 1);
+      });
+      test('Testing shadow always', function () {
+        assert.isNull(myEl.shadowRoot.querySelector("#card-header"));
+        assert.equal((myEl.shadowRoot.querySelector("style#component-style").innerHTML.match(/#card-body {/g)).length, 1);
 
         // Shadow: always
         myEl.setAttribute('shadow', 'always');
-        assert.equal((myEl.shadowRoot.querySelector("style#wrapper-style").match(/#card-wrapper {/g)).length, 2);
+        assert.equal((myEl.shadowRoot.querySelector("style#wrapper-style").innerHTML.match(/#card-wrapper {/g)).length, 2);
+      });
+      test('Testing unidentified shadow', function () {
+        assert.isNull(myEl.shadowRoot.querySelector("#card-header"));
+        assert.equal((myEl.shadowRoot.querySelector("style#component-style").innerHTML.match(/#card-body {/g)).length, 1);
 
         // Unidentified value of shadow
         myEl.setAttribute('shadow', 'peter');
-        assert.equal((myEl.shadowRoot.querySelector("style#wrapper-style").match(/#card-wrapper {/g)).length, 2);
+        assert.equal((myEl.shadowRoot.querySelector("style#wrapper-style").innerHTML.match(/#card-wrapper {/g)).length, 2);
       });
     });
   </script>
