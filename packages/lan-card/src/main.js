@@ -113,7 +113,9 @@ export default class LANCard extends HTMLElement {
     // Get the body style for this component, if any
     let styleComponent = shadow.querySelector("style#component-style");
     if (this.hasAttribute("body-style")) {
-      styleComponent.innerHTML += `#card-body ${this.getAttribute("body-style")}`;
+      styleComponent.innerHTML += `#card-body ${this.getAttribute(
+        "body-style"
+      )}`;
     }
   }
 
@@ -128,11 +130,12 @@ export default class LANCard extends HTMLElement {
     if (this.hasAttribute("shadow")) {
       const shadowAttr = this.getAttribute("shadow");
       if (shadowAttr == "hover") {
-        // Do nothing, but we're just gonna have the empty if block here for code readability
+        const wrapperStyles = wrapperStyleComponent.innerHTML.split(" { box-shadow:");
+        wrapperStyleComponent.innerHTML = `${wrapperStyles[0]}:hover { box-shadow: 0 2px 12px 0 rgba(0,0,0,.1); }`;
       } else if (shadowAttr == "never") {
         // Remove box-shadow from the styles
-        wrapperStyleComponent.innerHTML = wrapperStyleComponent.innerHTML
-          .split("#card-wrapper:hover")[0];
+        const wrapperStyles = wrapperStyleComponent.innerHTML.split("box-shadow:");
+        wrapperStyleComponent.innerHTML = `${wrapperStyles[0]}}`;
       } else {
         // Treat everything else as "always"
         // Remove hover from the styles
