@@ -65,9 +65,9 @@
     <div>
       <lan-button type="primary" onclick="openMessageBox()">messagebox with input</lan-button>
     </div>
-    <lan-messagebox showInput>
-        <span slot="title">Test Title</span>
-        <p slot="text"><i>Test</i> <strong>text</strong></p>
+    <lan-messagebox showInput inputPlaceholder="test@google.com" validator = "email">
+        <span slot="title">email</span>
+        <p slot="text"><i>confirm</i> <strong>your </strong>email</p>
     </lan-messagebox>
   <script>
     function resetOnclick(){
@@ -90,7 +90,6 @@
     messagebox.addEventListener('cancel', () => {
       alert('Cancelled...');
     });
-    
     function getSliderValue() {
       var element = document.querySelector("lan-slider");
       var textArea = document.querySelector('#text-area')
@@ -102,6 +101,6 @@
   <script type = "module" src="packages/lan-slider/src/style.js"></script>
   <script type = "module" src="packages/lan-button/src/main.js"></script>
   <script type = "module" src="packages/lan-tooltip/src/main.js"></script>
-  <script type = "module" src="packages/lan-messagebox/main.js"></script>
+  <script type = "module" src="packages/lan-messagebox/src/main.js"></script>
 </body>
 </html>
