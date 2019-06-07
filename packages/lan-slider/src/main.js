@@ -71,6 +71,7 @@ export default class LANSlider extends HTMLElement {
     slider.setAttribute("val", val);
     slider.addEventListener('mouseout', () => onMouseOutCallback(tooltip));
     slider.addEventListener('mousemove', event => onMouseMoveCallback(event, this, slider, tooltip));
+    slider.addEventListener('click', event => this.change(event));
     slider.addEventListener('input', () => onInputCallback(this, slider, tooltip))
 
     // Attach the created elements to the shadow dom
@@ -89,7 +90,7 @@ export default class LANSlider extends HTMLElement {
     const progressBar = this.shadowRoot.querySelector("#lan-slider-prebar");
 
     // Call the callback function onchange()
-    this.onchange();
+    if(this.onchange) this.onchange();
 
     // Calculate min, max, val
     let min = calculateMin(this.getAttribute("min"));
