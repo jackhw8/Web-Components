@@ -86,6 +86,7 @@ class MessageBox extends HTMLElement {
   open() {
     this.setAttribute('opened', '');
     this.isOpen = true;
+    this.validater();
     if(this.hasInput){
       this.shadowRoot.querySelector("input").value = "";
       if(this.hasAttribute("inputPlaceholder")){

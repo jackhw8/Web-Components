@@ -55,14 +55,69 @@
         assert.equal(myEl.shadowRoot.querySelector("#confirm-btn").getAttribute("type"),"primary");
       });
       test('open and hide',function(){
+        //test hide
+        myEl.open();
+        myEl.hide();
+        assert.equal(myEl.isOpen,false);
+        assert.isNull(myEl.getAttribute("opened"));
+        const input = myEl.shadowRoot.querySelector("input");
+        input.value = "test@google.com";
         //test open
         myEl.open();
         assert.equal(myEl.isOpen,true);
         assert.equal(myEl.getAttribute("opened"),"");
-        //test hide
-        myEl.hide();
-        assert.equal(myEl.isOpen,false);
+        assert.equal(myEl.hasInput,true);
+        assert.equal(myEl.hasAttribute("inputPlaceholder"),true);
+        assert.equal(input.value,"test input");
+      });
+      test('confirm event',function(){
+        myEl.open();
+        //add confirm event
+        let x = 1;
+        myEl.addEventListener('confirm', () => {
+          x = x + 1;
+        });
+        //validator return false, so confirm event will not trigger
+        myEl._confirm();
+        assert.equal(myEl.isOpen,true);
+        assert.equal(myEl.getAttribute("opened"),"");
+        const input = myEl.shadowRoot.querySelector("input");
+        assert.equal(x,1);
+        //test triggering confirm event by function
+        input.value = "test@google.com";
+        myEl._confirm();
+        assert.equal(myEl.getValue(),"test@google.com");
         assert.isNull(myEl.getAttribute("opened"));
+        assert.equal(x,2);
+        //ttest triggering confirm event by clicking confirm button
+        myEl.setAttribute("event", "click");
+        myEl.shadowRoot.querySelector("#confirm-btn").click();
+        assert.equal(x,3);
+      });
+      test('cancel event',function(){
+        myEl.open();
+        let x = 1;
+        myEl.addEventListener('cancel', () => {
+          x = x + 1;
+        });
+        //ttest triggering cancel event by clicking confirm cancel
+        myEl.setAttribute("event", "click");
+        myEl.shadowRoot.querySelector("#cancel-btn").click();
+        assert.equal(x,2);
+      });
+      test('cancel attributeChangedCallback',function(){
+        myEl.setAttribute("opened","");
+        myEl.attributeChangedCallback();
+        assert.equal(myEl.isOpen,true);
+        myEl.removeAttribute("opened");
+        myEl.attributeChangedCallback();
+        assert.equal(myEl.isOpen,false);
+        myEl.setAttribute("showInput","");
+        myEl.attributeChangedCallback();
+        assert.equal(myEl.hasInput,true);
+        myEl.removeAttribute("showInput");
+        myEl.attributeChangedCallback();
+        assert.equal(myEl.hasInput,false);
       });
     });
    </script>
