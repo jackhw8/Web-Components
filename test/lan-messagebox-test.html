@@ -11,25 +11,58 @@
 <body>
   <test-fixture id="messagebox">
     <template>
-      <lan-messagebox>
+      <lan-messagebox showInput inputPlaceholder="test input" validator="email">
         <span slot="title">test title</span>
         <p slot="text">test text</p>
       </lan-messagebox>
     </template>
   </test-fixture>
   <script>
-    suite('<lan-card>', function () {
+    suite('<lan-messagebox>', function () {
       let myEl;
       setup(() => {
         myEl = fixture("messagebox");
       });
       test('Testing lan-meessagebox is closed',function(){
         assert.equal(myEl.isOpen,false);
-        assert.null(myEl.getAttribute("opened"));
+        assert.isNull(myEl.getAttribute("opened"));
       });
       test('Testing header',function(){
-        assert.equal(myEl.shadowRoot.getElementsByName("title").length,1);
-        assert.equal(myEl.shadowRoot.getElementsByName("title")[0].innerHTML,"test title");
+        assert.equal(myEl.querySelector("span[slot='title']").innerHTML,"test title");
+      });
+      test('Testing text',function(){
+        assert.equal(myEl.querySelector("p[slot='text']").innerHTML,"test text");
+      });
+      test('Testing input and input validation',function(){
+        const inputDiv = myEl.shadowRoot.querySelector("#inputDiv");
+        const inputBox = inputDiv.querySelector("#inputBox");
+        const input = inputBox.querySelector("input");
+        const tip = inputDiv.querySelector("#tip");
+        //set input
+        assert.equal(input.value,"test input");
+        //test vaildation
+        assert.equal(myEl.validater(),false);
+        assert.equal(tip.innerHTML,"invalid email");
+        //change input 
+        input.value = "test@google.com";
+        const value = myEl.getValue()
+        assert.equal(value,"test@google.com");
+        assert.equal(myEl.validater(),true);
+        assert.equal(tip.innerHTML," ");
+      });
+      test('Testing actions',function(){
+        assert.equal(myEl.shadowRoot.querySelector("#cancel-btn").getAttribute("type"),"warning");
+        assert.equal(myEl.shadowRoot.querySelector("#confirm-btn").getAttribute("type"),"primary");
+      });
+      test('open and hide',function(){
+        //test open
+        myEl.open();
+        assert.equal(myEl.isOpen,true);
+        assert.equal(myEl.getAttribute("opened"),"");
+        //test hide
+        myEl.hide();
+        assert.equal(myEl.isOpen,false);
+        assert.isNull(myEl.getAttribute("opened"));
       });
     });
    </script>
