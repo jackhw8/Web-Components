@@ -58,8 +58,9 @@ export default class LANButton extends HTMLElement {
       "native-type",
       "plain",
       "round",
-      "circle",
-      "disabled"
+      "autofocus",
+      "disabled",
+      "class"
     ];
   }
 
