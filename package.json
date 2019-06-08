@@ -9,8 +9,7 @@
     "test": "wct",
     "doc": "esdoc -c .esdoc.json",
     "cover": "istanbul cover _mocha",
-    "build": "./node_modules/.bin/rollup -c",
-    "prepublish": "npm run test"
+    "build": "./node_modules/.bin/rollup -c"
   },
   "files": [
     "bundle.js"
