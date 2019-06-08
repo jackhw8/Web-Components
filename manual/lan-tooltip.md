@@ -4,17 +4,18 @@ Display prompt information for mouse hover, click and focus.
 
 ## Basic Usage
 
-``` html
+```html
 <lan-tooltip>
-    <lan-button>Button</lan-button>
+  <lan-button>Button</lan-button>
 </lan-tooltip>
 ```
 
 <img src="https://i.imgflip.com/32hj07.gif" title="made at imgflip.com"/>
 
 ## Attributes
+
 | Attribute     | Description                                                                                      | Type    | Accepted Values                                                                                           | Default Value |
-|---------------|--------------------------------------------------------------------------------------------------|---------|-----------------------------------------------------------------------------------------------------------|---------------|
+| ------------- | ------------------------------------------------------------------------------------------------ | ------- | --------------------------------------------------------------------------------------------------------- | ------------- |
 | effect        | tooltip theme                                                                                    | string  | dark/light                                                                                                | dark          |
 | content       | display content                                                                                  | string  | -                                                                                                         | -             |
 | placement     | position of tooltip                                                                              | string  | top/top-start/top-end/bottom/bottom-start/bottom-end/left/left-start/left-end/right/right-start/right-end | bottom        |
@@ -27,15 +28,3 @@ Display prompt information for mouse hover, click and focus.
 | enterable     | whether the mouse can enter the tooltip                                                          | boolean | -                                                                                                         | false         |
 | hide-after    | timeout in milliseconds to hide tooltip                                                          | number  | -                                                                                                         | 500           |
 | event         | event on which tooltip appears                                                                   | string  | hover/click/focus                                                                                         | hover         |
-
-## Using with JavaScript
-
-To use the lan-button you will need to use JavaScript to connect the button
-
-``` JavaScript
-const lanButton = document.querySelector('lan-button');
-lanButton.addEventListener('click', () => {
-    alert('Button Clicked');
-    // do something
-})
-```
