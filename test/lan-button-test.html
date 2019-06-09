@@ -28,59 +28,59 @@
         assert.equal(myEl.getAttribute('type'), 'primary');
       });
       test("inner text is Button", function () {
-        assert.equal(myEl.get().innerText, "Button");
+        assert.equal(myEl.shadowRoot.querySelector("button").innerText, "Button");
       });
       test('Setting class', function() {
         myEl.setAttribute('autofocus', '');
         myEl.updateButtonValue();
-        assert.isNotNull(myEl.get().getAttribute('autofocus'));
+        assert.isNotNull(myEl.shadowRoot.querySelector("button").getAttribute('autofocus'));
       });
       test('Testing bootstrap', function() {
         myEl.setAttribute('class', 'btn');
         myEl.updateButtonValue();
-        assert.equal(myEl.get().getAttribute('class'), 'button default btn');
+        assert.equal(myEl.shadowRoot.querySelector("button").getAttribute('class'), 'button default btn');
       });
       test('Testing button shape', function() {
         myEl.setAttribute('round', '');
         myEl.updateButtonShape();
-        assert.equal(myEl.get().style.getPropertyValue('--border-rad'), '24px');
+        assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--border-rad'), '24px');
       });
       test('Testing button size', function() {
         myEl.setAttribute('size', 'medium');
         myEl.updateButtonShape();
-        assert.equal(myEl.get().style.getPropertyValue('--padding'), '10px 20px');
-        assert.equal(myEl.get().style.getPropertyValue('--txt-size'), '14px');
+        assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--padding'), '10px 20px');
+        assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--txt-size'), '14px');
       });
       test('Testing color', function() {
         myEl.setAttribute('plain', '');
         myEl.setAttribute('type', 'warning');
         myEl.updateButtonColor();
-        assert.equal(myEl.get().style.getPropertyValue('--bg-color'), '#fcf6ed');
-        assert.equal(myEl.get().style.getPropertyValue('--txt-color'), '#e6a23c');
-        assert.equal(myEl.get().style.getPropertyValue('--border-color'), '#e6a23c');
-        assert.equal(myEl.get().style.getPropertyValue('--hover-bg'), '#e6a23c');
-        assert.equal(myEl.get().style.getPropertyValue('--hover-txt'), '#ffffff');
-        assert.equal(myEl.get().style.getPropertyValue('--hover-border'), '#e6a23c');
+        assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--bg-color'), '#fcf6ed');
+        assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--txt-color'), '#e6a23c');
+        assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--border-color'), '#e6a23c');
+        assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--hover-bg'), '#e6a23c');
+        assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--hover-txt'), '#ffffff');
+        assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--hover-border'), '#e6a23c');
       });
       test('Testing disabled', function() {
         myEl.setAttribute('disabled', '');
         myEl.updateDisabled();
-        assert.equal(myEl.get().style.getPropertyValue('--pointer-events'), 'none');
-        assert.equal(myEl.get().style.getPropertyValue('--opacity'), '0.7');
-        assert.isNotNull(myEl.get().getAttribute('disabled'));
+        assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--pointer-events'), 'none');
+        assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--opacity'), '0.7');
+        assert.isNotNull(myEl.shadowRoot.querySelector("button").getAttribute('disabled'));
       });
       test('Testing random type', function() {
         myEl.setAttribute('type', 'awefoiawjefiojoaweif');
         myEl.updateButtonColor();
-        assert.equal(myEl.get().style.getPropertyValue('--bg-color'), '#ffffff');
-        assert.equal(myEl.get().style.getPropertyValue('--txt-color'), '#606266');
-        assert.equal(myEl.get().style.getPropertyValue('--border-color'), '#dcdfe6');
-        assert.equal(myEl.get().style.getPropertyValue('--hover-bg'), '#EEF5FE');
-        assert.equal(myEl.get().style.getPropertyValue('--hover-txt'), '#409eff');
-        assert.equal(myEl.get().style.getPropertyValue('--hover-border'), '#ddecfd');
+        assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--bg-color'), '#ffffff');
+        assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--txt-color'), '#606266');
+        assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--border-color'), '#dcdfe6');
+        assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--hover-bg'), '#EEF5FE');
+        assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--hover-txt'), '#409eff');
+        assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--hover-border'), '#ddecfd');
       });
       test('Testing get function', function() {
-        assert.equal(myEl.get(), myEl.shadowRoot.querySelector('button'));
+        assert.equal(myEl.shadowRoot.querySelector("button"), myEl.shadowRoot.querySelector('button'));
       })
     });
   </script>
