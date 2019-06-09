@@ -1,16 +1,25 @@
 {
-  "name": "test-webcomp",
-  "version": "1.0.0",
-  "description": "",
-  "main": "main.js",
+  "name": "lannister-component",
+  "version": "1.0.1",
+  "description": "An Open Source web component by UCSD Students",
+  "main": "index.js",
   "scripts": {
     "lint": "eslint . ./packages/*/*.js",
     "nyc_init": "nyc cover mocha",
     "test": "wct",
     "doc": "esdoc -c .esdoc.json",
-    "cover": "istanbul cover _mocha"
+    "cover": "istanbul cover _mocha",
+    "build": "./node_modules/.bin/rollup -c"
   },
-  "author": "",
+  "files": [
+    "bundle.js"
+  ],
+  "author": "Team Lannister",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ucsd-cse112/team6.git"
+  },
+  "unpkg": "bundle.js",
   "license": "ISC",
   "devDependencies": {
     "bower": "1.8.8",
@@ -20,6 +29,8 @@
     "eslint": "^5.16.0",
     "husky": "^2.3.0",
     "mocha": "^6.1.4",
+    "rollup": "^1.14.4",
+    "rollup-plugin-babel-minify": "^8.0.0",
     "wct-istanbub": "^0.2.9",
     "web-component-tester": "^6.9.2"
   },
