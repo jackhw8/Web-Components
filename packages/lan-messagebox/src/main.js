@@ -1,5 +1,5 @@
 import componentStyle from './style.js';
-class MessageBox extends HTMLElement {
+class LANMessageBox extends HTMLElement {
   constructor() {
     super();
     this.attachShadow({ mode: 'open' });
@@ -166,4 +166,4 @@ class MessageBox extends HTMLElement {
   }
 }
 
-customElements.define('lan-messagebox', MessageBox);
+customElements.define('lan-messagebox', LANMessageBox);
