@@ -18,7 +18,7 @@
     "esdoc": "^1.1.0",
     "esdoc-standard-plugin": "^1.0.0",
     "eslint": "^5.16.0",
-    "husky": "^2.3.0",
+    "husky": "^2.4.0",
     "mocha": "^6.1.4",
     "wct-istanbub": "^0.2.9",
     "web-component-tester": "^6.9.2"
