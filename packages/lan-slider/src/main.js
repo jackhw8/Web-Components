@@ -67,6 +67,7 @@ export default class LANSlider extends HTMLElement {
     slider.setAttribute("min", min);
     slider.setAttribute("max", max);
     slider.setAttribute("val", val);
+
     slider.addEventListener("mouseout", () => this.onMouseOutCallback());
     slider.addEventListener("mousemove", event => this.onMouseMoveCallback(event));
     slider.addEventListener("input", () => this.onInputCallback());
@@ -86,7 +87,7 @@ export default class LANSlider extends HTMLElement {
     const progressBar = this.shadowRoot.querySelector("#lan-slider-prebar");
 
     // Call the callback function onchange()
-    this.onchange();
+    if(this.onchange) this.onchange();
 
     // Calculate min, max, val
     let min = calculateMin(this.getAttribute("min"));
