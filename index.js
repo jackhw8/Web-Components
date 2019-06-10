@@ -2,10 +2,12 @@ import HelloWorld from "./packages/core-hello/src/main.js";
 import LANButton from "./packages/lan-button/src/main.js";
 import LANSlider from "./packages/lan-slider/src/main.js";
 import LANTooltip from "./packages/lan-tooltip/src/main.js";
+import LANFeed from "./packages/lan-feed/src/main.js";
 
 export default {
   HelloWorld,
   LANButton,
   LANSlider,
-  LANTooltip
+  LANTooltip,
+  LANFeed
 };

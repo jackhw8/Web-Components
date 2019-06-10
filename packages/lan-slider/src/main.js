@@ -71,6 +71,7 @@ export default class LANSlider extends HTMLElement {
     slider.addEventListener("mouseout", () => this.onMouseOutCallback());
     slider.addEventListener("mousemove", event => this.onMouseMoveCallback(event));
     slider.addEventListener("input", () => this.onInputCallback());
+    slider.addEventListener("change", (e) => this.change(e));
 
     // Attach the created elements to the shadow dom
     shadow.appendChild(tmpl);
