@@ -20,84 +20,38 @@ ${componentStyle}
     </section>
 </div>
 `;
-class LANMessageBox extends HTMLElement {
+export default class LANMessageBox extends HTMLElement {
   constructor() {
     super();
     // Create a shadow root
     this.attachShadow({ mode: "open" });
-    this.isOpen = false;
-    this.hasInput = false;
     // Clone template
     const tmpl = template.content.cloneNode(true);
      // Attach the created elements to the shadow dom
     this.shadowRoot.appendChild(tmpl);
 
-    const mainPart = this.shadowRoot.querySelector("#main");
-    //get backdrop 
-    const backdrop = this.shadowRoot.querySelector('#backdrop');
-    //get cancel button 
-    const cancelButton = this.shadowRoot.querySelector('#cancel-btn');
-    const confirmButton = this.shadowRoot.querySelector('#confirm-btn');
-    const cancelIcon = this.shadowRoot.querySelector("#cancel-icon");
+    //add event when click backdrop rather than message box,trigger cancel event
+    this.shadowRoot.querySelector('#backdrop').addEventListener('click', this._cancel.bind(this));
+    //add event when click cancel button, trigger cancel event
+    this.shadowRoot.querySelector('#cancel-btn').addEventListener('click', this._cancel.bind(this));
+    //add event when click cancel icon, trigger cancel event
+    this.shadowRoot.querySelector("#cancel-icon").addEventListener('click',this._cancel.bind(this));
+    //add event when click confirm button, trigger confirm event
+    this.shadowRoot.querySelector('#confirm-btn').addEventListener('click', this._confirm.bind(this));
 
     //deal with input and inputPlaceHolder
-    //todo refactor these elements
-    if(this.hasAttribute("showInput")){
-      //create input div
-      const inputDiv= document.createElement("div");
-      inputDiv.setAttribute("id","inputDiv");
-      //create input box
-      const inputBox = document.createElement("div");
-      inputBox.setAttribute("id","inputBox");
-      //create input 
-      const input = document.createElement("input");
-      //create tip
-      const tip = document.createElement("p");
-      tip.setAttribute("id","tip");
-      //append these elements
-      inputBox.appendChild(input);
-      inputDiv.appendChild(inputBox);
-      inputDiv.appendChild(tip);
-      mainPart.appendChild(inputDiv);
-      //add vaildate on input
-      input.addEventListener('input',this.validater.bind(this));
-      this.hasInput = true;
-      if(this.hasAttribute("inputPlaceholder")){
-        input.value = this.getAttribute("inputPlaceholder")
-      }
-      this.validater();
-    }
-    //add event when click somewhere rather than this message box, it will trigger cancel event
-    backdrop.addEventListener('click', this._cancel.bind(this));
-    //add event when click cancel button, trigger cancel event
-    cancelButton.addEventListener('click', this._cancel.bind(this));
-    //add event when click cancel icon, trigger cancel event
-    cancelIcon.addEventListener('click',this._cancel.bind(this));
-    //add event when click confirm button, trigger confirm event
-    confirmButton.addEventListener('click', this._confirm.bind(this));
+    this.handleInputAttribute();
   }
-  
   attributeChangedCallback() {
-    if (this.hasAttribute('opened')) {
-      this.isOpen = true;
-    } else {
-      this.isOpen = false;
-    }
-    if(this.hasAttribute("showInput")){
-      this.hasInput = true;
-    }else{
-      this.hasInput = false;
-    }
+    this.handleInputAttribute();
   }
-
   /**
    * open lan-messagebox
    * need to bind wanted lan-messagebox
    */
   open() {
     this.setAttribute('opened', '');
-    this.isOpen = true;
-    if(this.hasInput){
+    if(this.hasAttribute("showInput")){
       this.shadowRoot.querySelector("input").value = "";
       if(this.hasAttribute("inputPlaceholder")){
         this.shadowRoot.querySelector("input").value = this.getAttribute("inputPlaceholder")
@@ -105,8 +59,6 @@ class LANMessageBox extends HTMLElement {
         this.validater();
       }
     }
-    
-     
   }
   /**
    * hide lan-messagebox
@@ -115,7 +67,6 @@ class LANMessageBox extends HTMLElement {
     if (this.hasAttribute('opened')) {
       this.removeAttribute('opened');
     }
-    this.isOpen = false;
   }
 
   /**
@@ -140,7 +91,7 @@ class LANMessageBox extends HTMLElement {
    */
   _confirm() {
     if(!this.validater()){
-      return;
+      return null;
     }
     //hide message box
     this.hide();
@@ -154,12 +105,12 @@ class LANMessageBox extends HTMLElement {
    * get the vaule of input, if no value return null
    */
   getValue(){
-    if(this.hasInput){
+    if(this.hasAttribute("showInput")){
       return this.shadowRoot.querySelector("input").value;
     }
     return null;
   }
-  /** todo
+  /** 
    * validate the input value
    */
   validater(){
@@ -185,11 +136,47 @@ class LANMessageBox extends HTMLElement {
         return false;
       }
     }
-
-    //empty the tip
-    this.shadowRoot.querySelector("#tip").innerHTML = " ";
+    if(this.shadowRoot.querySelector("#tip") !== null){
+       //empty the tip
+      this.shadowRoot.querySelector("#tip").innerHTML = " ";
+    }
     //return true
     return true;
+  }
+
+  handleInputAttribute(){
+    const mainPart = this.shadowRoot.querySelector("#main");
+    if(this.hasAttribute("showInput")){
+      //create input div
+      const inputDiv= document.createElement("div");
+      inputDiv.setAttribute("id","inputDiv");
+      //create input box
+      const inputBox = document.createElement("div");
+      inputBox.setAttribute("id","inputBox");
+      //create input 
+      const input = document.createElement("input");
+      //create tip
+      const tip = document.createElement("p");
+      tip.setAttribute("id","tip");
+      //attach input to input box 
+      inputBox.appendChild(input);
+      //attach input box and tip to input div
+      inputDiv.appendChild(inputBox);
+      inputDiv.appendChild(tip);
+      //attach this input and tip to main div
+      mainPart.appendChild(inputDiv);
+      //add vaildator on input
+      input.addEventListener('input',this.validater.bind(this));
+      //change the value to input place holder 
+      if(this.hasAttribute("inputPlaceholder")){
+        input.value = this.getAttribute("inputPlaceholder")
+        //validate input place holder
+      }
+      this.validater();
+    }
+    else{
+      mainPart.querySelector("#inputDiv").remove();
+    }
   }
 }
 

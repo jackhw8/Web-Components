@@ -24,20 +24,21 @@
         myEl = fixture("messagebox");
       });
       test('Testing lan-meessagebox is closed',function(){
-        assert.equal(myEl.isOpen,false);
         assert.isNull(myEl.getAttribute("opened"));
       });
       test('Testing header',function(){
         assert.equal(myEl.querySelector("span[slot='title']").innerHTML,"test title");
+        //test input div, input box and tip
+        assert.equal(myEl.shadowRoot.querySelector("#main").querySelector("div").getAttribute("id"),"inputDiv");
+        assert.equal(myEl.shadowRoot.querySelector("#main").querySelector("p").getAttribute("id"),"tip");
+        assert.equal(myEl.shadowRoot.querySelector("#main").querySelector("div").querySelector("div").getAttribute("id"),"inputBox");
       });
       test('Testing text',function(){
         assert.equal(myEl.querySelector("p[slot='text']").innerHTML,"test text");
       });
       test('Testing input and input validation',function(){
-        const inputDiv = myEl.shadowRoot.querySelector("#inputDiv");
-        const inputBox = inputDiv.querySelector("#inputBox");
-        const input = inputBox.querySelector("input");
-        const tip = inputDiv.querySelector("#tip");
+        const input = myEl.shadowRoot.querySelector("input");
+        const tip = myEl.shadowRoot.querySelector("#tip");
         //set input
         assert.equal(input.value,"test input");
         //test vaildation
@@ -45,7 +46,7 @@
         assert.equal(tip.innerHTML,"invalid email");
         //change input 
         input.value = "test@google.com";
-        const value = myEl.getValue()
+        const value = myEl.getValue();
         assert.equal(value,"test@google.com");
         assert.equal(myEl.validater(),true);
         assert.equal(tip.innerHTML," ");
@@ -58,28 +59,30 @@
         //test hide
         myEl.open();
         myEl.hide();
-        assert.equal(myEl.isOpen,false);
         assert.isNull(myEl.getAttribute("opened"));
         const input = myEl.shadowRoot.querySelector("input");
         input.value = "test@google.com";
         //test open
         myEl.open();
-        assert.equal(myEl.isOpen,true);
         assert.equal(myEl.getAttribute("opened"),"");
-        assert.equal(myEl.hasInput,true);
         assert.equal(myEl.hasAttribute("inputPlaceholder"),true);
-        assert.equal(input.value,"test input");
+        assert.equal(myEl.getValue(),"test input");
+        //test without inputPlaceholder
+        myEl.removeAttribute("inputPlaceholder");
+        myEl.hide();
+        myEl.open();
+        assert.equal(input.innerHTML,"");
       });
       test('confirm event',function(){
         myEl.open();
-        //add confirm event
+        //add confirm event,let x++
         let x = 1;
         myEl.addEventListener('confirm', () => {
           x = x + 1;
         });
+        assert.isNotNull(new Event('confirm'));
         //validator return false, so confirm event will not trigger
-        myEl._confirm();
-        assert.equal(myEl.isOpen,true);
+        assert.isNull(myEl._confirm());
         assert.equal(myEl.getAttribute("opened"),"");
         const input = myEl.shadowRoot.querySelector("input");
         assert.equal(x,1);
@@ -89,8 +92,9 @@
         assert.equal(myEl.getValue(),"test@google.com");
         assert.isNull(myEl.getAttribute("opened"));
         assert.equal(x,2);
-        //ttest triggering confirm event by clicking confirm button
+        //test triggering confirm event by clicking confirm button
         myEl.setAttribute("event", "click");
+        //test confirm button's click
         myEl.shadowRoot.querySelector("#confirm-btn").click();
         assert.equal(x,3);
       });
@@ -100,24 +104,49 @@
         myEl.addEventListener('cancel', () => {
           x = x + 1;
         });
-        //ttest triggering cancel event by clicking confirm cancel
+        //test triggering cancel event by clicking confirm cancel
         myEl.setAttribute("event", "click");
         myEl.shadowRoot.querySelector("#cancel-btn").click();
         assert.equal(x,2);
       });
-      test('cancel attributeChangedCallback',function(){
-        myEl.setAttribute("opened","");
-        myEl.attributeChangedCallback();
-        assert.equal(myEl.isOpen,true);
-        myEl.removeAttribute("opened");
-        myEl.attributeChangedCallback();
-        assert.equal(myEl.isOpen,false);
-        myEl.setAttribute("showInput","");
-        myEl.attributeChangedCallback();
-        assert.equal(myEl.hasInput,true);
+      test('test without validator',function(){
+        myEl.removeAttribute("validator");
+        const input = myEl.shadowRoot.querySelector("input");
+        //test vaildator
+        input.value = "error email";
+        assert.isTrue(myEl.validater());
+        assert.equal( myEl.shadowRoot.querySelector("#tip").innerHTML," ");
+      });
+      test('test without input',function(){
         myEl.removeAttribute("showInput");
-        myEl.attributeChangedCallback();
-        assert.equal(myEl.hasInput,false);
+        myEl.handleInputAttribute();
+        //test input div
+        assert.isNull(myEl.shadowRoot.querySelector("input"));
+        assert.isNull(myEl.shadowRoot.querySelector("#tip"));
+        assert.isNull(myEl.shadowRoot.querySelector("#inputDiv"));
+        assert.equal(myEl.shadowRoot.querySelector("#cancel-btn").getAttribute("type"),"warning");
+        assert.equal(myEl.shadowRoot.querySelector("#confirm-btn").getAttribute("type"),"primary");
+        //test validator
+        assert.isTrue(myEl.validater());
+        assert.isNull(myEl.getValue());
+        let x = 1;
+        myEl.addEventListener('confirm', () => {
+          x = x + 1;
+        });
+        myEl._confirm();
+        assert.equal(x,2);
+        //test triggering confirm event by clicking confirm button
+        myEl.setAttribute("event", "click");
+        //test confirm button's click
+        myEl.shadowRoot.querySelector("#confirm-btn").click();
+        assert.equal(x,3);
+        //test handleInputAttribute()
+        myEl.setAttribute("showInput","");
+        myEl.setAttribute("showInput","");
+        myEl.handleInputAttribute();
+        assert.isNotNull(myEl.shadowRoot.querySelector("input"));
+        assert.isNotNull(myEl.shadowRoot.querySelector("#tip"));
+        assert.isNotNull(myEl.shadowRoot.querySelector("#inputDiv"));
       });
     });
    </script>

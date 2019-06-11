@@ -79,7 +79,7 @@
   <script>
     const messagebox = document.querySelector('lan-messagebox');
     function openMessageBox(){
-      if (!messagebox.isOpen) {
+      if (!messagebox.hasAttribute('opened')) {
         messagebox.open();
       }
     }
