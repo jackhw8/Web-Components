@@ -115,6 +115,9 @@ export default class LANMessageBox extends HTMLElement {
    */
   validater(){
     //get input value type 
+    if(!this.hasAttribute("showInput")){
+      return true;
+    }
     if(this.getAttribute("validator") == "email"){
       //regular expression to match email address
       const re = /\S+@\S+\.\S+/;
