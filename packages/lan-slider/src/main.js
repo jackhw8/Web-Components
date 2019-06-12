@@ -193,7 +193,6 @@ export default class LANSlider extends HTMLElement {
 
     // Calculate new position, update prebar width, thumb position, tooltip position, and show it.
     this.position = parseInt((event.clientX - track.getBoundingClientRect().left + OFFSET_X) / track.offsetWidth * 100);
-    this.position = this.position > 100 ? 100 : this.position;
     tooltip.style.left = `${calculateTooltipPosition(this.position, track.offsetWidth, 4)}px`;
     tooltip.style.opacity = '1';
 

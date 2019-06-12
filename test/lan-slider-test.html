@@ -54,6 +54,42 @@
         assert.equal(myEl.getAttribute('max'), '100');
         assert.equal(myEl.getAttribute('val'), '50');
       });
+      test('On mouse out', function() {
+        myEl.shadowRoot.querySelector('#thumb').dispatchEvent(new MouseEvent('mouseout'));
+        assert.equal(myEl.shadowRoot.querySelector("#thumb").style.left, '50%');
+        assert.equal(myEl.shadowRoot.querySelector("#prebar").style.width, '50%');
+        assert.equal(myEl.shadowRoot.querySelector("#tooltip").style.opacity, '0');
+      });
+      test('On hover', function() {
+        myEl.shadowRoot.querySelector('#thumb').dispatchEvent(new MouseEvent('mouseover'));
+        assert.equal(myEl.shadowRoot.querySelector("#thumb").style.left, '50%');
+        assert.equal(myEl.shadowRoot.querySelector("#prebar").style.width, '50%');
+        assert.equal(myEl.shadowRoot.querySelector("#tooltip").style.opacity, '1');
+      });
+      test('On drag, within bound', function() {
+        var trackWidth = myEl.shadowRoot.querySelector("#track").offsetWidth;
+        var offset = 10;
+        var mockClientX = 0.5 * trackWidth + offset;
+
+        myEl.shadowRoot.querySelector('#thumb').dispatchEvent(new MouseEvent('drag', { clientX: mockClientX }));
+        var spySetAttr = sinon.spy(myEl, 'setAttribute');
+
+        expect(spySetAttr.calledWith(50));
+        assert.equal(myEl.shadowRoot.querySelector("#thumb").style.left, '50%');
+        assert.equal(myEl.shadowRoot.querySelector("#prebar").style.width, '50%');
+        assert.equal(myEl.val, 50);
+        expect(myEl.position >= 0 && myEl.position <= 100);
+      });
+      test('On drag, beyond bound', function() {
+        myEl.shadowRoot.querySelector('#thumb').dispatchEvent(new MouseEvent('drag', { clientX: 0 }));
+        var spySetAttr = sinon.spy(myEl, 'setAttribute');
+        expect(spySetAttr.notCalled);
+      });
+      test('On drag end', function() {
+        myEl.shadowRoot.querySelector('#thumb').dispatchEvent(new MouseEvent('dragend'));
+        assert.equal(myEl.shadowRoot.querySelector("#thumb").style.left, '50%');
+        assert.equal(myEl.shadowRoot.querySelector("#prebar").style.width, '50%');
+      });
     });
   </script>
 </body>

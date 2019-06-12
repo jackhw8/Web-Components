@@ -34,6 +34,10 @@
         // Set header
         myEl.setAttribute('header', 'dummy header');
         assert.equal(myEl.shadowRoot.querySelector("#card-header").innerHTML, 'dummy header');
+
+        // Re-set header to test
+        myEl.setAttribute('header', 'dummy header 2');
+        assert.equal(myEl.shadowRoot.querySelector("#card-header").innerHTML, 'dummy header 2');
       });
       test('Testing body-style', function () {
         assert.isNull(myEl.shadowRoot.querySelector("#card-header"));
