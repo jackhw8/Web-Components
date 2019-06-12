@@ -3,18 +3,16 @@ import {
   calculateMin,
   calculateMax,
   calculateVal,
-  calculateThumbPosition,
-  calculateTooltipPosition,
-  calculateWidth
+  calculateThumbPosition
 } from "./helper.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
   <style>${componentStyle}</style>
-  <div id='lan-slider-wrapper' class="barCnt">
-    <input id='lan-slider-input' type="range"/>
-    <p id='lan-slider-prebar' class="preBar"></p>
-    <div id='lan-slider-tooltip'></div>
+  <div id='container'>
+    <div id="track"></div>
+    <div id="prebar"></div>
+    <div id="thumb"></div>
   </div>
 `;
 
@@ -33,44 +31,27 @@ export default class LANSlider extends HTMLElement {
     // Create a shadow root
     const shadow = this.attachShadow({ mode: "open" });
 
-    // Initialize val, min, max, and range
-    let min = calculateMin(this.getAttribute("min"));
-    let max = calculateMax(this.getAttribute("max"));
-    let val = calculateVal(this.getAttribute("val"), max, min);
-    let range = max - min;
-
-    // Update the attribute of val, min, max to default
-    this.setAttribute("val", val);
-    this.setAttribute("min", min);
-    this.setAttribute("max", max);
-
     // Clone template
     const tmpl = template.content.cloneNode(true);
 
-    // Get the tooltip from the template
-    const tooltip = tmpl.querySelector("#lan-slider-tooltip");
-    tooltip.innerHTML = val;
-    tooltip.style.left = `${calculateTooltipPosition(val, max, min)}%`;
-    tooltip.style.opacity = "0";
+    // Set the default values of min, max, val, position
+    this.min = 0;
+    this.max = 100;
+    this.val = 50;
+    this.range = this.max - this.min;
+    this.position = calculateThumbPosition(this.val, this.max, this.min);
+    
+    // Get all elements
+    const prebar = tmpl.querySelector("#prebar");
+    const thumb = tmpl.querySelector("#thumb");
 
-    // Get the prebar from template
-    const preBar = tmpl.querySelector("#lan-slider-prebar");
-    preBar.style.width = calculateWidth(val, min, range) + "%";
+    thumb.addEventListener("mouseout", () => this.onMouseOutCallback());
+    thumb.addEventListener("mouseover", () => this.onHoverCallback());
+    thumb.addEventListener("drag", event => this.onDragCallback(event));
 
-    // Get the slider (input range) from the template
-    const slider = tmpl.querySelector("#lan-slider-input");
-    slider.className = slider.className.length
-      ? slider.className + " colorized"
-      : "colorized";
-    slider.setAttribute("type", "range");
-    slider.setAttribute("name", "lan-slider");
-    slider.setAttribute("min", min);
-    slider.setAttribute("max", max);
-    slider.setAttribute("val", val);
-
-    slider.addEventListener("mouseout", () => this.onMouseOutCallback());
-    slider.addEventListener("mousemove", event => this.onMouseMoveCallback(event));
-    slider.addEventListener("input", () => this.onInputCallback());
+    // Set the prebar width and thumb position accordingly
+    prebar.style.width = `${this.position}%`;
+    thumb.style.left = `${this.position}%`;
 
     // Attach the created elements to the shadow dom
     shadow.appendChild(tmpl);
@@ -82,35 +63,24 @@ export default class LANSlider extends HTMLElement {
    * updated.
    */
   attributeChangedCallback() {
-    const slider = this.shadowRoot.querySelector("#lan-slider-input");
-    const tooltip = this.shadowRoot.querySelector("#lan-slider-tooltip");
-    const progressBar = this.shadowRoot.querySelector("#lan-slider-prebar");
+    // Get prebar and thumb
+    const prebar = this.shadowRoot.querySelector("#prebar");
+    let thumb = this.shadowRoot.querySelector("#thumb");
 
-    // Call the callback function onchange()
-    if(this.onchange) this.onchange();
-
-    // Calculate min, max, val
-    let min = calculateMin(this.getAttribute("min"));
-    let max = calculateMax(this.getAttribute("max"));
-    if (min > max || min < 0 || max < 0) {
-      min = 0;
-      max = 100;
-      this.setAttribute("min", min);
-      this.setAttribute("max", max);
+    // Get the attributes of min, max, val
+    this.min = calculateMin(this.getAttribute("min"));
+    this.max = calculateMax(this.getAttribute("max"));
+    if (this.min > this.max) {
+      this.min = 0;
+      this.max = 100;
     }
-    let val = calculateVal(this.getAttribute("val"), max, min);
-    let range = max - min;
+    this.val = calculateVal(this.getAttribute("val"), this.max, this.min);
+    this.range = this.max - this.min;
 
-    // Update slider value
-    slider.min = min;
-    slider.max = max;
-    slider.value = val;
-
-    // Update prebar length
-    progressBar.style.width = calculateWidth(val, min, range) + "%";
-
-    // Update tooltip value
-    tooltip.innerHTML = val;
+    // Update prebar width and thumb position
+    this.position = calculateThumbPosition(this.val, this.max, this.min);
+    prebar.style.width = `${this.position}%`;
+    thumb.style.left = `${this.position}%`;
   }
 
   /**
@@ -122,60 +92,69 @@ export default class LANSlider extends HTMLElement {
   }
 
   /**
-   * onMouseOutCallback is a callback function that should be called
-   * whenever the mouse is out of the slider.
+   * onMouseOutCallback is a callback function that should be fired
+   * whenever the pointer is out of the thumb.
    */
   onMouseOutCallback() {
-    const tooltip = this.shadowRoot.querySelector("#lan-slider-tooltip");
+    // Get prebar and thumb
+    const prebar = this.shadowRoot.querySelector("#prebar");
+    const thumb = this.shadowRoot.querySelector("#thumb");
 
-    // Hide tooltip
-    tooltip.style.opacity = "0";
+    // Revert the size of thumb
+    thumb.style.cssText = `height: 16px; width: 16px; margin-top: -14px; margin-left: -10px;`;
+
+    // Maintain prebar width and thumb position
+    prebar.style.width = `${this.position}%`;
+    thumb.style.left = `${this.position}%`;
   }
 
-
   /**
-   * onMouseMoveCallback is a callback function that should be called
-   * whenever the mouse is hovering of the slider.
+   * onHoverCallback is a callback function that should be fired
+   * whenever the pointer is on top of the thumb.
    */
-  onMouseMoveCallback(event) {
-    const slider = this.shadowRoot.querySelector("#lan-slider-input");
-    const tooltip = this.shadowRoot.querySelector("#lan-slider-tooltip");
+  onHoverCallback() {
+    // Get prebar and thumb
+    const prebar = this.shadowRoot.querySelector("#prebar");
+    let thumb = this.shadowRoot.querySelector("#thumb");
 
-    // Calculate whatever's necessary
-    const currMin = calculateMin(this.getAttribute("min"));
-    const currMax = calculateMax(this.getAttribute("max"));
-    const thumbOffset = -2;
-    const thumbSize = 20;
-    const thumbPosition = calculateThumbPosition(slider.value, currMax, currMin) * window.innerWidth / 100;
-    const thumbLeftBound = thumbPosition - thumbOffset;
-    const thumbRightBound = thumbPosition - thumbOffset + thumbSize;
-    const dragOffset = 10;
+    // Enlarge the thumb
+    thumb.style.cssText = `height: 20px; width: 20px; margin-top: -16px; margin-left: -12px;`;
 
-    // Show/hide tooltip accordingly
-    tooltip.style.opacity = '1';
-    if (event.clientX < (thumbLeftBound - dragOffset) || event.clientX > (thumbRightBound + dragOffset)) {
-      tooltip.style.opacity = '0';
-    } 
+    // Maintain prebar width and thumb position
+    prebar.style.width = `${this.position}%`;
+    thumb.style.left = `${this.position}%`;
   }
 
-
   /**
-   * onInputCallback is a callback function that should be called
-   * whenever the slider receives input, which in this context is when
-   * slider's value changes.
+   * onDragCallback is a callback function that should be fired
+   * whenever the pointer is dragging of the thumb.
    */
-  onInputCallback() {
-    const slider = this.shadowRoot.querySelector("#lan-slider-input");
-    const tooltip = this.shadowRoot.querySelector("#lan-slider-tooltip");
+  onDragCallback(event) {
+    // Guard condition
+    if (event.clientX <= 0) return;
 
-    // Update the attribute val
-    this.setAttribute("val", slider.value);
-  
-    // Update the inner HTML of the tooltip accordingly, and show it
-    const currMin = calculateMin(this.getAttribute("min"));
-    const currMax = calculateMax(this.getAttribute("max"));
-    tooltip.style.opacity = '1';
-    tooltip.style.left = `${calculateTooltipPosition(slider.value, currMax, currMin)}%`;
+    // Get thumb, prebar, and track
+    const track = this.shadowRoot.querySelector("#track");
+    const prebar = this.shadowRoot.querySelector("#prebar");
+    let thumb = this.shadowRoot.querySelector("#thumb");
+    if (!thumb) {
+      thumb = this.shadowRoot.querySelector("#thumb");
+    }
+
+    // Enlarge the thumb
+    thumb.style.cssText = `height: 20px; width: 20px; margin-top: -16px; margin-left: -12px;`;
+
+    // Calculate new position, update prebar width and thumb position
+    this.position = parseInt(event.clientX / track.offsetWidth * 100);
+    this.position = this.position > 100 ? 100 : this.position;
+    prebar.style.width = `${this.position}%`;
+    thumb.style.left = `${this.position}%`;
+
+    // Update val
+    this.val = this.position * this.range / 100;
+    this.setAttribute("val", this.val);
+
+    if (this.onchange) this.onchange();
   }
 }
 

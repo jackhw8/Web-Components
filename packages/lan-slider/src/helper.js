@@ -7,7 +7,12 @@
  * @return {number} the proper value of attribute min
  */
 export let calculateMin = min => {
-  return min ? parseInt(min) : 0;
+  const intMin = parseInt(min);
+  if (Number.isInteger(intMin)) {
+    return intMin < 0 ? 0 : intMin;
+  } else {
+    return 0;
+  }
 };
 
 /**
@@ -19,7 +24,12 @@ export let calculateMin = min => {
  * @return {number} the proper value of attribute max
  */
 export let calculateMax = max => {
-  return max ? parseInt(max) : 100;
+  const intMax = parseInt(max);
+  if (Number.isInteger(intMax)) {
+    return intMax <= 0 ? 100 : intMax;
+  } else {
+    return 0;
+  }
 };
 
 /**
@@ -33,14 +43,21 @@ export let calculateMax = max => {
  * @return {number} the proper value of attribute val
  */
 export let calculateVal = (val, max, min) => {
-  return val && val <= calculateMax(max) && val >= calculateMin(min)
-    ? parseInt(val)
-    : calculateMin(min) + (calculateMax(max) - calculateMin(min)) / 2;
+  const intVal = parseInt(val);
+  if (Number.isInteger(intVal)) {
+    return intVal < 0 ||
+      intVal > calculateMax(max) ||
+      intVal < calculateMin(min)
+      ? calculateMin(min) + (calculateMax(max) - calculateMin(min)) / 2
+      : intVal;
+  } else {
+    return calculateMin(min) + (calculateMax(max) - calculateMin(min)) / 2;
+  }
 };
 
 /**
  * calculateThumbPosition is a helper function to calculate the horizontal position
- * of the tooltip
+ * of the thumb and the width of prebar
  *
  * @param {number} val
  * @param {number} max
@@ -49,9 +66,8 @@ export let calculateVal = (val, max, min) => {
  * @return {number} the left position percentage for the slider thumb
  */
 export let calculateThumbPosition = (val, max, min) => {
-  const THUMB_SIZE = 20;
   const range = max - min;
-  return (val / range - THUMB_SIZE / window.innerWidth) * 100;
+  return (val / range) * 100;
 };
 
 /**
