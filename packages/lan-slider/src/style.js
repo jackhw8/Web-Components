@@ -58,6 +58,23 @@ const componentStyle = `
     -moz-transition: 0.2s;
     -o-transition: 0.2s;
   }
+
+  #tooltip {
+    display: inline-block;
+    background: #303133;
+    color: white;
+    z-index: 400;
+    position: absolute;
+    top: -30px;
+    border-radius: 4px;
+    min-width: 10px;
+    line-height: 1.2;
+    padding: 10px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 400;
+    word-wrap: break-word;
+  }
 `;
 
 export default componentStyle;

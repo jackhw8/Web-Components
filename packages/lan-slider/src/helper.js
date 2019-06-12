@@ -74,31 +74,12 @@ export let calculateThumbPosition = (val, max, min) => {
  * calculateTooltipPosition is a helper function to calculate the horizontal position
  * of the tooltip
  *
- * @param {number} val
- * @param {number} max
- * @param {number} min
+ * @param {number} thumbPosition
+ * @param {number} trackWidth
+ * @param {number} offset
  *
- * @return {number} the left position percentage for the tooltip
+ * @return {number} the left position (in pixel, not percentage) for the tooltip
  */
-export let calculateTooltipPosition = (val, max, min) => {
-  var range = max - min;
-  var offset = 1 - (range - parseInt(val, 10)) / range;
-  var position = (1 * (parseInt(val, 10) - parseInt(min, 10)) - offset) / range;
-  return position * 100;
-};
-
-/**
- * calculateWidth is a helper function to calculates the width of
- * the width of the progress bar.
- *
- * @param {number} val
- * @param {number} min
- * @param {number} range
- *
- * @return {number} the percentage for the progress bar width
- */
-export let calculateWidth = (val, min, range) => {
-  var offset = ((parseInt(val, 10) - range) * 0.5) / range;
-  var width = (1 * (parseInt(val, 10) - parseInt(min, 10)) - offset) / range;
-  return width * 100;
+export let calculateTooltipPosition = (thumbPosition, trackWidth, offset) => {
+  return thumbPosition * trackWidth / 100 + offset;
 };
