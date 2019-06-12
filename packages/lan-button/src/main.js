@@ -83,9 +83,6 @@ export default class LANButton extends HTMLElement {
       let classNames = this.getAttribute('className');
       shadow.querySelector("button").setAttribute("class", classNames);
     } else {
-      // remove link tags
-      shadow.removeChild(shadow.querySelector('link'));
-
       // set the class to default
       shadow.querySelector("button").setAttribute("class", "button default");
 
