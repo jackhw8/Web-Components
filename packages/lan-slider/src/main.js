@@ -14,7 +14,10 @@ template.innerHTML = `
     <div id="track"></div>
     <div id="prebar"></div>
     <div id="thumb"></div>
-    <div id="tooltip"></div>
+    <div id="tooltip">
+      <div id="tooltip-content"></div>
+      <div id="popper-arrow"></div>
+    </div>
   </div>
 `;
 
@@ -65,12 +68,18 @@ export default class LANSlider extends HTMLElement {
    * the component is attached to a document-connected element.
    */
   connectedCallback() {
+    // Set the values of attributes of min, max, val according to the class variables
+    this.setAttribute('max', this.max);
+    this.setAttribute('min', this.min);
+    this.setAttribute('val', this.val);
+
     // Get the track and tooltip
     const track = this.shadowRoot.querySelector("#track");
     const tooltip = this.shadowRoot.querySelector("#tooltip");
+    const tooltipContent = this.shadowRoot.querySelector("#tooltip-content");
 
     // Set the text and position of tooltip
-    tooltip.innerHTML = this.val;
+    tooltipContent.innerHTML = this.val;
     tooltip.style.opacity = '0';
     tooltip.style.left = `${calculateTooltipPosition(this.position, track.offsetWidth, 4)}px`;
   }
@@ -86,6 +95,7 @@ export default class LANSlider extends HTMLElement {
     const prebar = this.shadowRoot.querySelector("#prebar");
     const thumb = this.shadowRoot.querySelector("#thumb");
     const tooltip = this.shadowRoot.querySelector("#tooltip");
+    const tooltipContent = this.shadowRoot.querySelector("#tooltip-content");
 
     // Get the attributes of min, max, val
     this.min = calculateMin(this.getAttribute("min"));
@@ -93,15 +103,24 @@ export default class LANSlider extends HTMLElement {
     if (this.min > this.max) {
       this.min = 0;
       this.max = 100;
+      this.val = 50;
+      this.setAttribute('min', 0);
+      this.setAttribute('max', 100);
+      this.setAttribute('val', 50);
     }
     this.val = calculateVal(this.getAttribute("val"), this.max, this.min);
     this.range = this.max - this.min;
+
+    // Update attributes if they are different from those that are stored in the class variables
+    if (this.min != this.getAttribute('min')) this.setAttribute('min', this.min);
+    if (this.max != this.getAttribute('max')) this.setAttribute('max', this.max);
+    if (this.val != this.getAttribute('val')) this.setAttribute('val', this.val);
 
     // Update prebar width, thumb position, tooltip value and position
     this.position = calculateThumbPosition(this.val, this.max, this.min);
     prebar.style.width = `${this.position}%`;
     thumb.style.left = `${this.position}%`;
-    tooltip.innerHTML = this.val;
+    tooltipContent.innerHTML = this.val;
     tooltip.style.left = `${calculateTooltipPosition(this.position, track.offsetWidth, 4)}px`;
   }
 
@@ -156,32 +175,35 @@ export default class LANSlider extends HTMLElement {
    * whenever the pointer is dragging of the thumb.
    */
   onDragCallback(event) {
-    // Guard condition: revert thumb size and hide tooltip
-    if (event.clientX <= 0) return;
+    const OFFSET_X = 10;
 
     // Get track, thumb, prebar, and tooltip
     const track = this.shadowRoot.querySelector("#track");
-    const prebar = this.shadowRoot.querySelector("#prebar");
     const thumb = this.shadowRoot.querySelector("#thumb");
     const tooltip = this.shadowRoot.querySelector("#tooltip");
+    const tooltipContent = this.shadowRoot.querySelector("#tooltip-content");
+
+    // Guard condition
+    if (event.clientX < track.getBoundingClientRect().left || event.clientX > track.getBoundingClientRect().right) {
+      return;
+    }
 
     // Enlarge the thumb
     thumb.style.cssText = `height: 20px; width: 20px; margin-top: -16px; margin-left: -12px;`;
 
     // Calculate new position, update prebar width, thumb position, tooltip position, and show it.
-    this.position = parseInt(event.clientX / track.offsetWidth * 100);
+    this.position = parseInt((event.clientX - track.getBoundingClientRect().left + OFFSET_X) / track.offsetWidth * 100);
     this.position = this.position > 100 ? 100 : this.position;
-    prebar.style.width = `${this.position}%`;
-    thumb.style.left = `${this.position}%`;
     tooltip.style.left = `${calculateTooltipPosition(this.position, track.offsetWidth, 4)}px`;
     tooltip.style.opacity = '1';
 
     // Update val and tooltip value
-    this.val = this.position * this.range / 100;
+    this.val = parseInt(this.position * this.range / 100) + this.min;
     this.setAttribute("val", this.val);
-    tooltip.innerHTML = this.val;
+    tooltipContent.innerHTML = this.val;
 
-    if (this.onchange) this.onchange();
+    // Fire onchange if present
+    if (this.onchange) this.onchange(event);
   }
 
   /**

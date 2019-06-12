@@ -67,7 +67,7 @@ export let calculateVal = (val, max, min) => {
  */
 export let calculateThumbPosition = (val, max, min) => {
   const range = max - min;
-  return (val / range) * 100;
+  return ((val - min) / range) * 100;
 };
 
 /**

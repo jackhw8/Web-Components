@@ -70,10 +70,23 @@ const componentStyle = `
     min-width: 10px;
     line-height: 1.2;
     padding: 10px;
+    font-family: "Helvetica Neue", "Helvetica";
     text-align: center;
     font-size: 12px;
     font-weight: 400;
     word-wrap: break-word;
+  }
+
+  #popper-arrow {
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-top-color: #303133;
+    border-style: solid;
+    border-width: 6px;
+    border-bottom-width: 0px;
+    bottom: -6px;
   }
 `;
 
