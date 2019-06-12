@@ -115,7 +115,7 @@ export default class LANMessageBox extends HTMLElement {
    */
   validater(){
     //get input value type 
-    if(this.hasAttribute("showInput")){
+    if(!this.hasAttribute("showInput")){
       return true;
     }
     if(this.getAttribute("validator") == "email"){
