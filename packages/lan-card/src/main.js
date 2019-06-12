@@ -2,6 +2,7 @@ import { componentStyle, wrapperStyle } from "./style.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 <style id="component-style">${componentStyle}</style>
 <style id="wrapper-style">${wrapperStyle}</style>
 <div id="card-wrapper">
@@ -35,6 +36,7 @@ export default class LANCard extends HTMLElement {
 
     // Attach the created elements to the shadow dom
     shadow.appendChild(tmpl);
+    this._checkbootstrap(shadow);
   }
 
   /**
@@ -52,6 +54,8 @@ export default class LANCard extends HTMLElement {
     this.handleHeaderAttribute();
     this.handleBodyStyleAttribute();
     this.handleShadowAttribute();
+
+    this._checkbootstrap(this.shadowRoot);
   }
 
   /**
@@ -64,6 +68,26 @@ export default class LANCard extends HTMLElement {
     this.handleHeaderAttribute();
     this.handleBodyStyleAttribute();
     this.handleShadowAttribute();
+
+    this._checkbootstrap(this.shadowRoot);
+  }
+
+  _checkbootstrap(shadow) {
+    // If bootstrap is enabled then reset the style etc.
+    if(this.hasAttribute("bootstrap")) {
+      // remove styles
+      shadow.querySelector('#wrapper-style').innerHTML = "";
+      shadow.querySelector('#component-style').innerHTML = "";
+
+      // add class names to card-wrapper
+      shadow.querySelector("#card-wrapper").setAttribute("class", "card");
+      shadow.querySelector("#card-header").setAttribute("class", "card-header");
+      shadow.querySelector("#card-body").setAttribute("class", "card-body");
+
+      // change h1 to div
+      const header = shadow.querySelector("#card-header");
+      header.outerHTML = header.outerHTML.replace(/h1/g,"div");
+    }
   }
 
   /**
@@ -71,7 +95,7 @@ export default class LANCard extends HTMLElement {
    * @returns {list} returns a list of observed attributes
    */
   static get observedAttributes() {
-    return ["header", "body-style", "shadow"];
+    return ["header", "body-style", "shadow", "bootstrap"];
   }
 
   /**
