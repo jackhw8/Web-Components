@@ -40,9 +40,16 @@ export default class LANButton extends HTMLElement {
    * whenever attributes listed in observedAttributes static function is
    * updated.
    */
-  attributeChangedCallback() {
-    // update the value of the buttons
-    this.updateButtonValue();
+  // eslint-disable-next-line no-unused-vars
+  attributeChangedCallback(name, oldVal, newVal) {
+    switch(name){
+      case "bootstrap":
+        this._checkbootstrap(this.shadowRoot);
+        break;
+      default:
+        // update the value of the buttons
+        this.updateButtonValue();
+    }
   }
 
   
