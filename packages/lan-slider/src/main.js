@@ -13,7 +13,7 @@ template.innerHTML = `
   <div id='container'>
     <div id="track"></div>
     <div id="prebar"></div>
-    <div id="thumb"></div>
+    <div id="thumb" draggable="true"></div>
     <div id="tooltip">
       <div id="tooltip-content"></div>
       <div id="popper-arrow"></div>
@@ -54,6 +54,7 @@ export default class LANSlider extends HTMLElement {
     thumb.addEventListener("mouseover", () => this.onHoverCallback());
     thumb.addEventListener("drag", event => this.onDragCallback(event));
     thumb.addEventListener("dragend", () => this.onDragEndCallback());
+    thumb.addEventListener("dragstart", event => this.onDragStartCallback(event));
 
     // Set the prebar width and thumb position accordingly
     prebar.style.width = `${this.position}%`;
@@ -183,7 +184,7 @@ export default class LANSlider extends HTMLElement {
     const tooltip = this.shadowRoot.querySelector("#tooltip");
     const tooltipContent = this.shadowRoot.querySelector("#tooltip-content");
 
-    // Guard condition
+    //Guard condition
     if (event.clientX < track.getBoundingClientRect().left || event.clientX > track.getBoundingClientRect().right) {
       return;
     }
@@ -203,6 +204,7 @@ export default class LANSlider extends HTMLElement {
 
     // Fire onchange if present
     if (this.onchange) this.onchange(event);
+    this.dispatchEvent(new Event("change"));
   }
 
   /**
@@ -220,6 +222,12 @@ export default class LANSlider extends HTMLElement {
     // Maintain prebar width and thumb position
     prebar.style.width = `${this.position}%`;
     thumb.style.left = `${this.position}%`;
+  }
+
+  onDragStartCallback(event){
+    var img = new Image();
+    img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+    event.dataTransfer.setDragImage(img, 0, 0);
   }
 }
 
