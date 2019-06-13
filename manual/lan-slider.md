@@ -29,6 +29,6 @@ function sliderOnChange(event) {
 }
 
 const lanSlider = document.querySelector('lan-slider');
-lanSlider.change = sliderOnChange;
+lanSlider.onchange = () => sliderOnChange();
 })
 ```
