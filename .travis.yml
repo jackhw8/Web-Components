@@ -46,6 +46,7 @@ deploy:
     keep_history: true
     script:
       - npm run build
+      - npm version patch
     on:
       repo: ucsd-cse112/team6
       branches: 
