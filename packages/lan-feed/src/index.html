@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+
+</head>
+<body>
+
+  <div style='margin:auto;'>
+    <lan-feed
+      cols=2
+      settings
+      contents='
+        [
+          {
+            "header": "card 1",
+            "body": "Test <lan-button round>Sample Button</lan-button>"
+          },
+          {
+            "header": "card 2",
+            "body": "<img src=\"https://picsum.photos/300/300\" height=300 />"
+          },
+          {
+            "header": "card 3",
+            "body": "<img src=\"https://picsum.photos/200/300\" height=300 />"
+          },
+          {
+            "header": "card 4",
+            "body": "this my feed dawgies"
+          }
+        ]
+      '
+    >
+    </lan-feed>
+    <!--
+    <lan-feed cols=2 settings>
+      <lan-card header="hello world">
+        Test <lan-button round>Sample Button</lan-button>
+      </lan-card>
+      <lan-card>
+        <img src="https://picsum.photos/300/300"/>
+      </lan-card>
+      <lan-card>
+        <img src="https://picsum.photos/200/300"/>
+      </lan-card>
+    </lan-feed>
+    -->
+  </div>
+
+  <script>
+    lanFeed = document.querySelector('lan-feed');
+    lanFeed.change = () => {
+      console.log("slider push");
+    }
+  </script>
+
+  <script type="module" src="main.js"></script>
+  <script type="module" src="../../lan-card/src/main.js"></script>
+  <script type="module" src="../../lan-button/src/main.js"></script>
+  <script type="module" src="../../lan-slider/src/main.js"></script>
+</body>
+</html>

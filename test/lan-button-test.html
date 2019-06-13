@@ -36,9 +36,12 @@
         assert.isNotNull(myEl.shadowRoot.querySelector("button").getAttribute('autofocus'));
       });
       test('Testing bootstrap', function() {
-        myEl.setAttribute('class', 'btn');
-        myEl.updateButtonValue();
-        assert.equal(myEl.shadowRoot.querySelector("button").getAttribute('class'), 'button default btn');
+        myEl.setAttribute('bootstrap', ' ');
+        myEl.setAttribute('className', 'btn btn-primary');
+        const btn = myEl.shadowRoot.querySelector("button");
+        assert.equal(myEl.hasAttribute('bootstrap'), true);
+        assert.equal(btn.getAttribute('type'), 'button');
+        setTimeout(()=>assert.equal(btn.getAttribute('class'), 'btn btn-primary'), 0);
       });
       test('Testing button shape', function() {
         myEl.setAttribute('round', '');
