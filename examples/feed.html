@@ -52,7 +52,7 @@
 
   <div id="index-lan-slider" class="index-wrapper">
     <h3>Control how many columns you want to have</h3>
-    <lan-slider min=1 val=3></lan-slider>
+    <lan-slider min=1 max=5 val=3></lan-slider>
   </div>
 
   <div id="index-column-label" class="index-wrapper">
@@ -82,17 +82,17 @@
   <script>
     const GRID_MS = "-ms-grid-column";
     lanSlider = document.getElementsByTagName("lan-slider")[0];
-    function sliderOnChange(event) {
+    function sliderOnChange() {
       // Update label value
       let label = document.querySelector('#column-label');
-      label.innerHTML = `You have ${event.target.value} columns per row`;
+      label.innerHTML = `You have ${lanSlider.getAttribute('val')} columns per row`;
 
-      const cols = event.target.value;
+      const cols = lanSlider.getAttribute('val');
       let gridTemplate = "";
       for(var i=0; i<cols; i++) gridTemplate += "1fr ";
       document.getElementById('index-card-wrapper').style.gridTemplateColumns = gridTemplate;
     }
-    lanSlider.change = sliderOnChange;
+    lanSlider.onchange = () => sliderOnChange();
   </script>
 
   <script>
