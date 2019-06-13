@@ -180,7 +180,9 @@ export default class LANMessageBox extends HTMLElement {
       this.validater();
     }
     else{
-      mainPart.querySelector("#inputDiv").remove();
+      if (mainPart.querySelector("#inputDiv")){
+        mainPart.querySelector("#inputDiv").remove();
+      }
     }
   }
 

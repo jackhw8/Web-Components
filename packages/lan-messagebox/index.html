@@ -1,38 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Web Components</title>
-    <style>
-      * {
-        box-sizing: border-box;
-      }
-
-      body {
-        margin: 2rem;
-        font-family: sans-serif;
-      }
-    </style>
-    <script src="modal.js"></script>
+    <meta charset="utf-8">
+    <script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="./src/main.js" type="module" defer></script>
+    <script src="../lan-button/src/main.js" type="module" defer></script>
   </head>
   <body>
-    <lan-messagebox>
+    <h1 style="font-family:arial">Lan Messagebox Example</h1>
+    <lan-messagebox id="confirmation">
       <h1 slot="title">Please Confirm</h1>
-      <p>With your confirmation you agree to pay the full amount!</p>
+      <p slot="text">With your confirmation you agree to give us $1,000,000!</p>
     </lan-messagebox>
-    <p>Please confirm your choice.</p>
-    <button>Show Details & Confirm</button>
-    <script>
-      const confirmButton = document.querySelector('button');
-      const modal = document.querySelector('lan-messagebox');
-      confirmButton.addEventListener('click', () => {
-        //  modal.setAttribute('opened', '');
-        if (!modal.isOpen) {
-          modal.open();
-        }
-      });
-    </script>
+    <lan-messagebox id="input" showInput validator="email" inputPlaceholder="abc@123.com">
+      <h1 slot="title">Input your email</h1>
+      <p slot="text">All spam will be sent to this address!</p>
+    </lan-messagebox>
+    <lan-button type="primary" onclick="openConfirmation()">Open Confirmation Dialog</lan-button>
+    <lan-button type="warning" onclick="openInput()">Open Input Dialog</lan-button>
   </body>
+
+  <script>
+    const messagebox = document.querySelector('#confirmation');
+    function openConfirmation(){
+      if (!messagebox.hasAttribute('opened')) {
+        messagebox.open();
+      }
+    }
+    messagebox.addEventListener('cancel', () => {
+      alert('You have cancelled.');
+    });
+    const inputBox = document.querySelector('#input');
+    function openInput(){
+      if (!inputBox.hasAttribute('opened')){
+        inputBox.open();
+      }
+    }
+    inputBox.addEventListener('cancel', () => {
+      alert('You have cancelled.');
+    });
+    inputBox.addEventListener('confirm', () => {
+      var targetEmail = inputBox.getValue();
+      alert(targetEmail + " will now receive spam!");
+    });
+  </script>
 </html>
