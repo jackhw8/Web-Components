@@ -21,6 +21,7 @@ const componentStyle = `#backdrop {
   }
 
   #MessageBox {
+    font-family: Arial, Helvetica, sans-serif;
     position: fixed;
     top: 5vh;
     left: 33%;
@@ -127,6 +128,7 @@ const componentStyle = `#backdrop {
     -moz-osx-font-smoothing: grayscale;
   }
   .el-icon-close:before {
+    font-family: Arial, Helvetica, sans-serif;
     content: "x";
   }
   `;

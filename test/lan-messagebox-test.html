@@ -52,7 +52,7 @@
         assert.equal(tip.innerHTML," ");
       });
       test('Testing actions',function(){
-        assert.equal(myEl.shadowRoot.querySelector("#cancel-btn").getAttribute("type"),"warning");
+        assert.equal(myEl.shadowRoot.querySelector("#cancel-btn").getAttribute("type"),"danger");
         assert.equal(myEl.shadowRoot.querySelector("#confirm-btn").getAttribute("type"),"primary");
       });
       test('open and hide',function(){
@@ -66,7 +66,7 @@
         myEl.open();
         assert.equal(myEl.getAttribute("opened"),"");
         assert.equal(myEl.hasAttribute("inputPlaceholder"),true);
-        assert.equal(myEl.getValue(),"test input");
+        assert.equal(input.getAttribute("placeholder"), "test input");
         //test without inputPlaceholder
         myEl.removeAttribute("inputPlaceholder");
         myEl.hide();
@@ -124,7 +124,7 @@
         assert.isNull(myEl.shadowRoot.querySelector("input"));
         assert.isNull(myEl.shadowRoot.querySelector("#tip"));
         assert.isNull(myEl.shadowRoot.querySelector("#inputDiv"));
-        assert.equal(myEl.shadowRoot.querySelector("#cancel-btn").getAttribute("type"),"warning");
+        assert.equal(myEl.shadowRoot.querySelector("#cancel-btn").getAttribute("type"),"danger");
         assert.equal(myEl.shadowRoot.querySelector("#confirm-btn").getAttribute("type"),"primary");
         //test validator
         assert.isTrue(myEl.validater());
@@ -147,6 +147,14 @@
         assert.isNotNull(myEl.shadowRoot.querySelector("input"));
         assert.isNotNull(myEl.shadowRoot.querySelector("#tip"));
         assert.isNotNull(myEl.shadowRoot.querySelector("#inputDiv"));
+      });
+      test("input number validation test", function(){
+        myEl.setAttribute("validator", "number");
+        const input = myEl.shadowRoot.querySelector("input");
+        input.value = "2";
+        assert.isTrue(myEl.validater());
+        input.value = "test@google.com"
+        assert.isFalse(myEl.validater());
       });
     });
    </script>

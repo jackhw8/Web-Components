@@ -15,7 +15,7 @@ ${componentStyle}
         <slot name="text"></slot>
     </div>
     <section id="actions">
-        <lan-button size="small" id="cancel-btn" type="warning">Cancel</lan-button>
+        <lan-button size="small" id="cancel-btn" type="danger">Cancel</lan-button>
         <lan-button size="small" id="confirm-btn" type="primary">OK</lan-button>
     </section>
 </div>
@@ -23,6 +23,7 @@ ${componentStyle}
 export default class LANMessageBox extends HTMLElement {
   constructor() {
     super();
+    this.inputPlaceholder = "";
     // Create a shadow root
     this.attachShadow({ mode: "open" });
     // Clone template
@@ -42,9 +43,10 @@ export default class LANMessageBox extends HTMLElement {
     //deal with input and inputPlaceHolder
     this.handleInputAttribute();
   }
-  attributeChangedCallback() {
-    this.handleInputAttribute();
-  }
+  // attributeChangedCallback() {
+  //   console.log("att changed!");
+  //   this.handleInputAttribute();
+  // }
   /**
    * open lan-messagebox
    * need to bind wanted lan-messagebox
@@ -54,7 +56,7 @@ export default class LANMessageBox extends HTMLElement {
     if(this.hasAttribute("showInput")){
       this.shadowRoot.querySelector("input").value = "";
       if(this.hasAttribute("inputPlaceholder")){
-        this.shadowRoot.querySelector("input").value = this.getAttribute("inputPlaceholder")
+        this.shadowRoot.querySelector("input").placeholder = this.getAttribute("inputPlaceholder")
         //validate the input holder
         this.validater();
       }
@@ -181,6 +183,10 @@ export default class LANMessageBox extends HTMLElement {
       mainPart.querySelector("#inputDiv").remove();
     }
   }
+
+  // static get observedAttributes(){
+  //   return ["inputPlaceholder"];
+  // }
 }
 
 customElements.define('lan-messagebox', LANMessageBox);
