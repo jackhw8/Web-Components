@@ -18,7 +18,8 @@
         "include":[
           "/packages/lan-button/src/main.js",
           "/packages/lan-slider/src/main.js",
-          "/packages/lan-card/src/main.js"
+          "/packages/lan-card/src/main.js",
+          "/packages/lan-messagebox/src/main.js"
         ]
       }
     }

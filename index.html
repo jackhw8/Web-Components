@@ -13,7 +13,7 @@
   <lan-slider min=10 max=100 val=40 onchange="getSliderValue()"></lan-slider>
   <lan-button type="Default" onclick="resetOnclick()">Reset</lan-button>
 
-  <input type="button" class="button danger" value="Danger" onclick="alert('YO!!!')">
+  <lan-button type="danger" onclick="alert('YO!!!')">Alert User</lan-button>
 
   <textarea id="text-area"></textarea>
 
@@ -57,9 +57,15 @@
         <lan-button type="danger" disabled>Danger</lan-button>
     </div>
     <div>
-      <lan-button class="btn btn-primary btn-lg">Bootstrap Button</lan-button>
+      <lan-button class="btn btn-primary btn-lg" >Bootstrap Button</lan-button>
     </div>
-  
+    <div>
+      <lan-button type="primary" onclick="openMessageBox()">messagebox with input</lan-button>
+    </div>
+    <lan-messagebox showInput inputPlaceholder="test@google.com" validator = "email">
+        <span slot="title">email</span>
+        <p slot="text"><i>confirm</i> <strong>your </strong>email</p>
+    </lan-messagebox>
   <script>
     function resetOnclick(){
       var element = document.querySelector("lan-slider");
@@ -68,6 +74,19 @@
   </script>
 
   <script>
+    const messagebox = document.querySelector('lan-messagebox');
+    function openMessageBox(){
+      if (!messagebox.hasAttribute('opened')) {
+        messagebox.open();
+      }
+    }
+    messagebox.addEventListener('confirm', () => {
+      console.log(messagebox.getValue());
+    });
+
+    messagebox.addEventListener('cancel', () => {
+      alert('Cancelled...');
+    });
     function getSliderValue() {
       var element = document.querySelector("lan-slider");
       var textArea = document.querySelector('#text-area')
