@@ -1,11 +1,11 @@
-import { wrapperStyle } from './style.js';
-import { setupSetting } from './helper.js';
+import { wrapperStyle } from "./style.js";
+import { setupSetting, buildCards } from "./helper.js";
 
 const template = document.createElement("template");
 template.innerHTML = `
 <style>${wrapperStyle}</style>
 <div class="feed-wrapper">
-  <div id="feed-setting" style='display:none;'>
+  <div id="feed-setting">
       <p id='column-label'>Slide to change the column size</p>
       <lan-slider id='col-slider' min=1 max=5></lan-slider>
   </div>
@@ -24,23 +24,19 @@ export default class LANFeed extends HTMLElement {
     // Always call super first in constructor
     super();
 
-    // Create a shadow root
+    // Create a shadow root and clone template
     const shadow = this.attachShadow({ mode: "open" });
-
-    // Clone template
     const tmpl = template.content.cloneNode(true);
 
-    // Clone the elements inside the shadow root to the template
+    // Get the feed body and set the inner text accordingly
     const feedBody = tmpl.querySelector("#feed-body");
-
-    // Set the text body accordingly
     feedBody.innerHTML = this.innerHTML;
 
     // Attach the created elements to the shadow dom
     shadow.appendChild(tmpl);
-    
-    // initial setup of the attributes
-    if(this.hasAttribute('settings')) setupSetting(this);
+
+    // Set the feed in settings mode if attribute 'settings' is present
+    if (this.hasAttribute("settings")) setupSetting(this);
   }
 
   /**
@@ -52,15 +48,26 @@ export default class LANFeed extends HTMLElement {
    * @param {string} newVal new value of the attribute
    */
   attributeChangedCallback(name, oldVal, newVal) {
+    // Get feed body and slider
     const shadowRoot = this.shadowRoot;
-    switch(name){
-      case "cols":
-        var feedBody = shadowRoot.getElementById('feed-body');
-        var cols = parseInt(newVal, 10);
+    var feedBody = shadowRoot.querySelector("#feed-body");
+    var slider = shadowRoot.querySelector("#col-slider");
 
+    switch (name) {
+      case "cols":
+        // Parse cols to int and assign it to slider's attribute val
+        var cols = parseInt(newVal, 10);
+        slider.setAttribute("val", cols);
+
+        // Set the grid columns accordingly
         var gridTemplate = "";
-        for(var i=0; i<cols; i++) gridTemplate += "1fr ";
-        feedBody.style.setProperty('--body-cols', gridTemplate);
+        for (var i = 0; i < cols; i++) gridTemplate += "1fr ";
+        feedBody.style.setProperty("--body-cols", gridTemplate);
+        break;
+
+      case "contents":
+        // Build the cards
+        buildCards(feedBody, JSON.parse(newVal), this.hasAttribute("bootstrap"));
         break;
     }
   }
@@ -70,7 +77,7 @@ export default class LANFeed extends HTMLElement {
    * @returns {list} returns a list of observed attributes
    */
   static get observedAttributes() {
-    return ["settings","cols"];
+    return ["cols", "contents"];
   }
 }
 

@@ -10,6 +10,32 @@
 <body>
 
   <div style='margin:auto;'>
+    <lan-feed
+      cols=2
+      settings
+      contents='
+        [
+          {
+            "header": "card 1",
+            "body": "Test <lan-button round>Sample Button</lan-button>"
+          },
+          {
+            "header": "card 2",
+            "body": "<img src=\"https://picsum.photos/300/300\" height=300 />"
+          },
+          {
+            "header": "card 3",
+            "body": "<img src=\"https://picsum.photos/200/300\" height=300 />"
+          },
+          {
+            "header": "card 4",
+            "body": "this my feed dawgies"
+          }
+        ]
+      '
+    >
+    </lan-feed>
+    <!--
     <lan-feed cols=2 settings>
       <lan-card header="hello world">
         Test <lan-button round>Sample Button</lan-button>
@@ -21,6 +47,7 @@
         <img src="https://picsum.photos/200/300"/>
       </lan-card>
     </lan-feed>
+    -->
   </div>
 
   <script>

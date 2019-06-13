@@ -1,10 +1,19 @@
 export const wrapperStyle = `
   .feed-wrapper {
+    font-family: "Helvetica Neue", "Helvetica";
+    width: calc(100vw - 500px);
+    overflow-x: hidden;
+    overflow-y: scroll;
+    margin: 50px auto;
+    padding: 40px;
+  }
+  
+  #feed-setting {
+    display: none;
+    text-align: center;
     max-width: var(--wrapper-max-width, 700px);
-    max-height: var(--wrapper-max-height, 1000px);
-    overflow: scroll;
     margin: auto;
-    padding: 20px;
+    padding-bottom: 30px;
   }
 
   .feed-body {
