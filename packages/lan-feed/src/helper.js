@@ -9,8 +9,8 @@ export function setupSetting(elem) {
 
   settingElem.style.display = 'block';
  
-  slider.change = (event) => {
-    const cols = event.target.value;
+  slider.onchange = () => {
+    const cols = slider.getAttribute('val');
     elem.setAttribute('cols', cols);
   }
 }
