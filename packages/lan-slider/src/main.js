@@ -4,7 +4,8 @@ import {
   calculateMax,
   calculateVal,
   calculateThumbPosition,
-  calculateTooltipPosition
+  calculateTooltipPosition,
+  calculatePositionOnMouseEvents
 } from "./helper.js";
 
 const template = document.createElement("template");
@@ -50,18 +51,20 @@ export default class LANSlider extends HTMLElement {
     const prebar = tmpl.querySelector("#prebar");
     const thumb = tmpl.querySelector("#thumb");
 
-    thumb.addEventListener("mouseout", () => this.onMouseOutCallback());
-    thumb.addEventListener("mouseover", () => this.onHoverCallback());
-    thumb.addEventListener("drag", event => this.onDragCallback(event));
-    thumb.addEventListener("dragend", () => this.onDragEndCallback());
-    thumb.addEventListener("dragstart", event => this.onDragStartCallback(event));
-
     // Set the prebar width and thumb position accordingly
     prebar.style.width = `${this.position}%`;
     thumb.style.left = `${this.position}%`;
 
     // Attach the created elements to the shadow dom
     shadow.appendChild(tmpl);
+
+    // Bind mouse events functions to this class
+    this.onClickCallback = this.onClickCallback.bind(this);
+    this.onMouseOutCallback = this.onMouseOutCallback.bind(this);
+    this.onHoverCallback = this.onHoverCallback.bind(this);
+    this.onDragCallback = this.onDragCallback.bind(this);
+    this.onDragStartCallback = this.onDragStartCallback.bind(this);
+    this.onDragEndCallback = this.onDragEndCallback.bind(this);
   }
 
   /**
@@ -76,6 +79,7 @@ export default class LANSlider extends HTMLElement {
 
     // Get the track and tooltip
     const track = this.shadowRoot.querySelector("#track");
+    const thumb = this.shadowRoot.querySelector("#thumb");
     const tooltip = this.shadowRoot.querySelector("#tooltip");
     const tooltipContent = this.shadowRoot.querySelector("#tooltip-content");
 
@@ -83,6 +87,14 @@ export default class LANSlider extends HTMLElement {
     tooltipContent.innerHTML = this.val;
     tooltip.style.opacity = '0';
     tooltip.style.left = `${calculateTooltipPosition(this.position, track.offsetWidth, 4)}px`;
+
+    // Add event listeners to the track and thumb
+    track.addEventListener("mousedown", event => this.onClickCallback(event));
+    thumb.addEventListener("mouseout", () => this.onMouseOutCallback());
+    thumb.addEventListener("mouseover", () => this.onHoverCallback());
+    thumb.addEventListener("drag", event => this.onDragCallback(event));
+    thumb.addEventListener("dragstart", event => this.onDragStartCallback(event));
+    thumb.addEventListener("dragend", () => this.onDragEndCallback());
   }
 
   /**
@@ -134,21 +146,33 @@ export default class LANSlider extends HTMLElement {
   }
 
   /**
+   * onClickCallback is a callback function that should be fired
+   * whenever the pointer clicks the track.
+   */
+  onClickCallback(event) {
+    // Get track
+    const track = this.shadowRoot.querySelector("#track");
+
+    // Calculate new position and val, then update attribute val
+    this.position = calculatePositionOnMouseEvents(event.clientX, track.getBoundingClientRect().left, track.offsetWidth, 10);
+    this.val = parseInt(this.position * this.range / 100) + this.min;
+    this.setAttribute("val", this.val);
+
+    // Fire onchange if present
+    if (this.onchange) this.onchange(event);
+  }
+
+  /**
    * onMouseOutCallback is a callback function that should be fired
    * whenever the pointer is out of the thumb.
    */
   onMouseOutCallback() {
-    // Get prebar, thumb, and tooltip
-    const prebar = this.shadowRoot.querySelector("#prebar");
+    // Get thumb and tooltip
     const thumb = this.shadowRoot.querySelector("#thumb");
     const tooltip = this.shadowRoot.querySelector("#tooltip");
 
-    // Revert the size of thumb
-    thumb.style.cssText = `height: 16px; width: 16px; margin-top: -14px; margin-left: -10px;`;
-
-    // Maintain prebar width and thumb position, hide tooltip
-    prebar.style.width = `${this.position}%`;
-    thumb.style.left = `${this.position}%`;
+    // Revert the size of thumb and hide tooltip
+    thumb.style.cssText = `height: 16px; width: 16px; margin-top: -14px; margin-left: -10px; left: ${this.position}%`;
     tooltip.style.opacity = '0';
   }
 
@@ -157,17 +181,12 @@ export default class LANSlider extends HTMLElement {
    * whenever the pointer is on top of the thumb.
    */
   onHoverCallback() {
-    // Get prebar, thumb and tooltip
-    const prebar = this.shadowRoot.querySelector("#prebar");
+    // Get thumb and tooltip
     const thumb = this.shadowRoot.querySelector("#thumb");
     const tooltip = this.shadowRoot.querySelector("#tooltip");
 
-    // Enlarge the thumb
-    thumb.style.cssText = `height: 20px; width: 20px; margin-top: -16px; margin-left: -12px;`;
-
-    // Maintain prebar width and thumb position, show tooltip
-    prebar.style.width = `${this.position}%`;
-    thumb.style.left = `${this.position}%`;
+    // Enlarge the thumb and show tooltip
+    thumb.style.cssText = `height: 20px; width: 20px; margin-top: -16px; margin-left: -12px; left: ${this.position}%`;
     tooltip.style.opacity = '1';
   }
 
@@ -176,58 +195,49 @@ export default class LANSlider extends HTMLElement {
    * whenever the pointer is dragging of the thumb.
    */
   onDragCallback(event) {
-    const OFFSET_X = 10;
-
-    // Get track, thumb, prebar, and tooltip
+    // Get track, thumb, and tooltip
     const track = this.shadowRoot.querySelector("#track");
     const thumb = this.shadowRoot.querySelector("#thumb");
     const tooltip = this.shadowRoot.querySelector("#tooltip");
-    const tooltipContent = this.shadowRoot.querySelector("#tooltip-content");
 
-    //Guard condition
+    // Guard condition
     if (event.clientX < track.getBoundingClientRect().left || event.clientX > track.getBoundingClientRect().right) {
       return;
     }
 
-    // Enlarge the thumb
+    // Enlarge the thumb and show tooltip
     thumb.style.cssText = `height: 20px; width: 20px; margin-top: -16px; margin-left: -12px;`;
-
-    // Calculate new position, update prebar width, thumb position, tooltip position, and show it.
-    this.position = parseInt((event.clientX - track.getBoundingClientRect().left + OFFSET_X) / track.offsetWidth * 100);
-    tooltip.style.left = `${calculateTooltipPosition(this.position, track.offsetWidth, 4)}px`;
     tooltip.style.opacity = '1';
 
-    // Update val and tooltip value
+    // Calculate new position and val, then update attribute val
+    this.position = calculatePositionOnMouseEvents(event.clientX, track.getBoundingClientRect().left, track.offsetWidth, 10);
     this.val = parseInt(this.position * this.range / 100) + this.min;
     this.setAttribute("val", this.val);
-    tooltipContent.innerHTML = this.val;
 
     // Fire onchange if present
     if (this.onchange) this.onchange(event);
-    this.dispatchEvent(new Event("change"));
+  }
+
+  /**
+   * onDragStartCallback is a callback function that should be fired
+   * whenever the pointer is about to start dragging the thumb.
+   */
+  onDragStartCallback(event){
+    event.dataTransfer.setDragImage(new Image(), 0, 0);
   }
 
   /**
    * onDragEndCallback is a callback function that should be fired
-   * whenever the pointer is about to end dragging of thumb.
+   * whenever the pointer is about to end dragging the thumb.
    */
   onDragEndCallback() {
-    // Get prebar, thumb and tooltip
-    const prebar = this.shadowRoot.querySelector("#prebar");
+    // Get thumb and tooltip
     const thumb = this.shadowRoot.querySelector("#thumb");
+    const tooltip = this.shadowRoot.querySelector("#tooltip");
 
-    // Revert thumb size
-    thumb.style.cssText = `height: 16px; width: 16px; margin-top: -14px; margin-left: -10px;`;
-
-    // Maintain prebar width and thumb position
-    prebar.style.width = `${this.position}%`;
-    thumb.style.left = `${this.position}%`;
-  }
-
-  onDragStartCallback(event){
-    var img = new Image();
-    img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
-    event.dataTransfer.setDragImage(img, 0, 0);
+    // Revert thumb size and hide tooltip
+    thumb.style.cssText = `height: 16px; width: 16px; margin-top: -14px; margin-left: -10px; left: ${this.position}%`;
+    tooltip.style.opacity = '0';
   }
 }
 

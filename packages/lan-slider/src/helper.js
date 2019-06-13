@@ -83,3 +83,17 @@ export let calculateThumbPosition = (val, max, min) => {
 export let calculateTooltipPosition = (thumbPosition, trackWidth, offset) => {
   return thumbPosition * trackWidth / 100 + offset;
 };
+
+/**
+ * calculatePositionOnDrag is a helper function to calculate the horizontal position
+ * of thumb on dragging
+ *
+ * @param {number} thumbPosition
+ * @param {number} trackWidth
+ * @param {number} offset
+ *
+ * @return {number} the left position percentage for the tooltip
+ */
+export let calculatePositionOnMouseEvents = (currPosition, trackBoundLeft, trackWidth, offset) => {
+  return parseInt((currPosition - trackBoundLeft + offset) / trackWidth * 100);
+};

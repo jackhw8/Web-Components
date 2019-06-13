@@ -21,6 +21,10 @@ const componentStyle = `
   #track:focus {
     outline: none;
   }
+  
+  #track:hover {
+    cursor: pointer;
+  }
 
   #prebar {
     position: relative;
