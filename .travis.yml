@@ -22,7 +22,7 @@ script:
   - bower install --save-dev web-component-tester
   - npm run test
   - npm run doc
-  
+  - npm run build
 
 after_script:
   - ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT
@@ -40,18 +40,17 @@ deploy:
       #all_branches: true
     local_dir: ./docs
 
-  - provider: script
-    skip_cleanup: true
-    github_token: $GH_TOKEN  # Set in the settings page of your repository, as a secure variable
-    keep_history: true
-    script:
-      - npm run build
-      - npm version patch
-    on:
-      repo: ucsd-cse112/team6
-      branches: 
-        only:
-          - master
+  # - provider: script
+  #   skip_cleanup: true
+  #   github_token: $GH_TOKEN  # Set in the settings page of your repository, as a secure variable
+  #   keep_history: true
+  #   script:
+  #     - npm version patch
+  #   on:
+  #     repo: ucsd-cse112/team6
+  #     branches: 
+  #       only:
+  #         - master
   
   - provider: npm
     email: $NPM_EMAIL
