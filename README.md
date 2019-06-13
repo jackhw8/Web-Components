@@ -40,7 +40,7 @@ Other Documentation
 ------------
 * [Manuals](https://ucsd-cse112.github.io/team6/manual/index.html) — Detailed definition on every component.
 * [Comprehensive](https://ucsd-cse112.github.io/team6) — Complete documentation on each functions.
-* [Notion Internal Documentations](https://notion.so/cse112sp19team6) — The internal documentation. (login using gmail account: email: cse112sp19team6@gmail.com , password:cse112lol)
+* [Notion Internal Documentations](https://notion.so/cse112sp19team6) — The internal documentation. (login using gmail account: email: teamlannister6@gmail.com , password:team6password)
 * [Add New Tests](https://www.notion.so/Testing-fdf860cbf6e94104825bf10d701fa361) — Small tutorial on how to add more tests
 
 Contributions
