@@ -1,10 +1,10 @@
 {
   "name": "lannister-component",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "An Open Source web component by UCSD Students",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint . ./packages/*/*.js",
+    "lint": "eslint . ./packages/**/*.js",
     "nyc_init": "nyc cover mocha",
     "test": "wct",
     "doc": "esdoc -c .esdoc.json",
