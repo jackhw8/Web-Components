@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>lan-slider example</title>
+    <script src="main.js" type="module" defer></script>
+    <script src="../../lan-button/src/main.js" type="module" defer></script>
+</head>
+
+<body>
+
+    <br><br>
+
+    <lan-tooltip effect="dark" event="hover" placement="right" content="Hey wassup" enterable="true">
+        <lan-button>Button</lan-button>
+    </lan-tooltip>
+
+    <lan-tooltip effect="light" event="click" placement="top" offset="50">
+        <lan-button type="danger">Button</lan-button>
+    </lan-tooltip>
+
+    <lan-tooltip placement="bottom" event="focus">
+        <lan-button type="primary">Button</lan-button>
+    </lan-tooltip>
+
+    <lan-tooltip placement="right" event="hover" effect="light" enterable="false">
+        <lan-button type="info">Button</lan-button>
+    </lan-tooltip>
+
+    
+
+</body>
+
+</html>

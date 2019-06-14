@@ -4,8 +4,9 @@
 <head>
 
     <meta charset="UTF-8">
-    <title>lan-slider example</title>
-    <script src="main.js" defer></script>
+    <title>lan-button example</title>
+    <script src="main.js" type="module" defer></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> 
 </head>
 
 <body>
@@ -16,7 +17,7 @@
         <lan-button type="success">Success</lan-button>
         <lan-button type="info">Info</lan-button>
         <lan-button type="warning">Warning</lan-button>
-        <lan-button type="danger">Primary</lan-button>
+        <lan-button type="danger">Danger</lan-button>
     </div>
     <div>
         <lan-button plain>Plain</lan-button>
@@ -24,7 +25,7 @@
         <lan-button type="success" plain>Success</lan-button>
         <lan-button type="info" plain>Info</lan-button>
         <lan-button type="warning" plain>Warning</lan-button>
-        <lan-button type="danger" plain>Primary</lan-button>
+        <lan-button type="danger" plain>Danger</lan-button>
     </div>
     <div>
         <lan-button round>Round</lan-button>
@@ -32,7 +33,7 @@
         <lan-button type="success" round>Success</lan-button>
         <lan-button type="info" round>Info</lan-button>
         <lan-button type="warning" round>Warning</lan-button>
-        <lan-button type="danger" round>Primary</lan-button>
+        <lan-button type="danger" round>Danger</lan-button>
     </div>
     <div>
         <lan-button>Default</lan-button>
@@ -47,6 +48,16 @@
         <lan-button type="info" disabled>Info</lan-button>
         <lan-button type="warning" disabled>Warning</lan-button>
         <lan-button type="danger" disabled>Danger</lan-button>
+    </div>
+    <br>
+    <div>
+        <button class="btn btn-primary">Twitter Boostrap Button</button>
+    </div>
+    <br>
+    <div>
+        <lan-button bootstrap className="btn btn-primary">
+            LAN Bootstrap Button
+        </lan-button>
     </div>
 </body>
 

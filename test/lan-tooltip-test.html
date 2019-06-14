@@ -1,0 +1,111 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../node_modules/web-component-tester/browser.js"></script>
+    <script src="../packages/lan-button/src/main.js" type="module" defer></script>
+    <script src="../packages/lan-tooltip/src/main.js" type="module" defer></script>
+</head>
+
+<body>
+    <test-fixture id="tooltip">
+        <template>
+            <lan-tooltip>
+                <lan-button>Button</lan-button>
+            </lan-tooltip>
+        </template>
+    </test-fixture>
+
+
+    <script>
+        suite('<lan-tooltip>', function () {
+            let myEl;
+            setup(() => {
+                myEl = fixture("tooltip");
+            });
+            // Testing right location
+            test('Testing placement effect', function () {
+                myEl.setAttribute('visible-arrow', 'false');
+                myEl.setAttribute('placement', 'top');
+                assert.equal(myEl.shadowRoot.querySelector('#tool').getAttribute('class'), 'tooltip-top');
+                myEl.setAttribute('placement', 'bottom');
+                assert.equal(myEl.shadowRoot.querySelector('#tool').getAttribute('class'), 'tooltip-bottom');
+                myEl.setAttribute('placement', 'left');
+                assert.equal(myEl.shadowRoot.querySelector('#tool').getAttribute('class'), 'tooltip-left');
+                myEl.setAttribute('placement', 'right');
+                assert.equal(myEl.shadowRoot.querySelector('#tool').getAttribute('class'), 'tooltip-right');
+
+                // Test invalid inputs
+                myEl.setAttribute('placement', 'tops');
+                assert.equal(myEl.shadowRoot.querySelector('#tool').getAttribute('class'), 'tooltip-bottom');
+            });
+            // Testing whether arrow shows on the right location
+            test('Testing visible arrow effect', function () {
+                myEl.setAttribute('visible-arrow', 'true');
+                myEl.setAttribute('placement', 'top');
+                assert.equal(myEl.shadowRoot.querySelector('#tool').getAttribute('class'), 'tooltip-top arrow-top');
+                myEl.setAttribute('placement', 'bottom');
+                assert.equal(myEl.shadowRoot.querySelector('#tool').getAttribute('class'), 'tooltip-bottom arrow-bottom');
+                myEl.setAttribute('placement', 'left');
+                assert.equal(myEl.shadowRoot.querySelector('#tool').getAttribute('class'), 'tooltip-left arrow-left');
+                myEl.setAttribute('placement', 'right');
+                assert.equal(myEl.shadowRoot.querySelector('#tool').getAttribute('class'), 'tooltip-right arrow-right');
+
+                // Test invalid inputs
+                myEl.setAttribute('placement', 'top');
+                myEl.setAttribute('visible-arrow', 'trues');
+                assert.equal(myEl.shadowRoot.querySelector('#tool').getAttribute('class'), 'tooltip-top arrow-top');
+            });
+            // Testing background color of black
+            test('Testing dark effect', function () {
+                assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.backgroundColor, "black");
+                assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.color, "white");
+
+                //Test invalid inputs
+                myEl.setAttribute('effect', 'lights')
+                assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.backgroundColor, "black");
+                assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.color, "white");
+            });
+            // Testing background color of white
+            test('Testing light effect', function () {
+                myEl.setAttribute('effect', 'light')
+                assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.color, "black");
+                assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.backgroundColor, "white");
+            });
+            // Testing whether the tooltip shows or hide after on click
+            test('Testing click effect', function () {
+                myEl.setAttribute("event", "click");
+                myEl.shadowRoot.querySelector('#tool').click();
+                assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.visibility, "visible");
+                myEl.shadowRoot.querySelector('#tool').click();
+                assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.visibility, "hidden");
+            });
+            // Testing the fades out of the button
+            test('Testing transition delay effects', function () {
+                myEl.setAttribute("event", "click");
+                myEl.setAttribute("hide-after", "3000");
+                myEl.setAttribute("open-delay", "2000");
+                myEl.shadowRoot.querySelector('#tool').click();
+                assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.transition, "opacity 2s linear 0s");
+                myEl.shadowRoot.querySelector('#tool').click();
+                assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.transition, "visibility 3s ease 0s, opacity 3s linear 0s");
+
+                // Test invalid inputs
+                myEl.setAttribute("hide-after", "-1");
+                myEl.setAttribute("open-delay", "-1");
+                myEl.shadowRoot.querySelector('#tool').click();
+                assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.transition, "opacity 0s linear 0s");
+                myEl.shadowRoot.querySelector('#tool').click();
+                assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.transition, "visibility 0s ease 0s, opacity 0s linear 0s");
+            });
+            test('Testing tooltip content', function () {
+                myEl.setAttribute("content", "hello world");
+                assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').innerHTML, "hello world");
+            });
+        });
+    </script>
+</body>
+
+</html>

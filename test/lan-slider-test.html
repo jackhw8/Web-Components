@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <script src="../node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+  <script src="../node_modules/web-component-tester/browser.js"></script>
+  <script src="../packages/lan-slider/src/main.js" type="module" defer></script>
+</head>
+
+<body>
+  <test-fixture id="slider">
+    <template>
+      <lan-slider></lan-slider>
+    </template>
+  </test-fixture>
+
+
+  <script>
+    suite('<lan-slider>', function () {
+      let myEl;
+      setup(() => {
+        myEl = fixture("slider");
+      });
+      test('Testing default value of val, min, max', function () {
+        assert.equal(myEl.getAttribute('min'), '0');
+        assert.equal(myEl.getAttribute('max'), '100');
+        assert.equal(myEl.getAttribute('val'), '50');
+      });
+      test('Testing value of val, min, max on set', function () {
+        myEl.setAttribute('min', '8');
+        myEl.setAttribute('max', '800');
+        myEl.setAttribute('val', '80');
+        assert.equal(myEl.getAttribute('val'), '80');
+        assert.equal(myEl.getAttribute('min'), '8');
+        assert.equal(myEl.getAttribute('max'), '800');
+      });
+      test('Testing that min value can not be set less than 0 (negative)', function() {
+        myEl.setAttribute('min', '-5');
+        assert.equal(myEl.getAttribute('val'), '50');
+        assert.equal(myEl.getAttribute('min'), '0');
+        assert.equal(myEl.getAttribute('max'), '100');
+      }); 
+      test('Testing that max value can not be set less than 0 (negative)', function() {
+        myEl.setAttribute('max', '-25');
+        assert.equal(myEl.getAttribute('val'), '50');
+        assert.equal(myEl.getAttribute('min'), '0');
+        assert.equal(myEl.getAttribute('max'), '100');
+      }); 
+      test('Testing that max can not be set less than min value', function() {
+        myEl.setAttribute('max', '25');
+        myEl.setAttribute('min', '75');
+        assert.equal(myEl.getAttribute('min'), '0');
+        assert.equal(myEl.getAttribute('max'), '100');
+        assert.equal(myEl.getAttribute('val'), '50');
+      });
+      test('Track on mousedown', function() {
+        var trackWidth = myEl.shadowRoot.querySelector("#track").offsetWidth;
+        var offset = 10;
+        var mockClientX = 0.5 * trackWidth + offset;
+
+        myEl.shadowRoot.querySelector('#track').dispatchEvent(new MouseEvent('mousedown', { clientX: mockClientX }));
+        var spySetAttr = sinon.spy(myEl, 'setAttribute');
+
+        expect(spySetAttr.calledWith(50));
+        assert.equal(myEl.shadowRoot.querySelector("#thumb").style.left, '50%');
+        assert.equal(myEl.shadowRoot.querySelector("#prebar").style.width, '50%');
+        assert.equal(myEl.val, 50);
+        expect(myEl.position >= 0 && myEl.position <= 100);
+      });
+      test('Thumb on mouse out', function() {
+        myEl.shadowRoot.querySelector('#thumb').dispatchEvent(new MouseEvent('mouseout'));
+        assert.equal(myEl.shadowRoot.querySelector("#thumb").style.left, '50%');
+        assert.equal(myEl.shadowRoot.querySelector("#prebar").style.width, '50%');
+        assert.equal(myEl.shadowRoot.querySelector("#tooltip").style.opacity, '0');
+      });
+      test('Thumb on hover', function() {
+        myEl.shadowRoot.querySelector('#thumb').dispatchEvent(new MouseEvent('mouseover'));
+        assert.equal(myEl.shadowRoot.querySelector("#thumb").style.left, '50%');
+        assert.equal(myEl.shadowRoot.querySelector("#prebar").style.width, '50%');
+        assert.equal(myEl.shadowRoot.querySelector("#tooltip").style.opacity, '1');
+      });
+      test('Thumb on drag, within bound', function() {
+        var trackWidth = myEl.shadowRoot.querySelector("#track").offsetWidth;
+        var offset = 10;
+        var mockClientX = 0.5 * trackWidth + offset;
+
+        myEl.shadowRoot.querySelector('#thumb').dispatchEvent(new DragEvent('drag', { clientX: mockClientX }));
+        var spySetAttr = sinon.spy(myEl, 'setAttribute');
+
+        expect(spySetAttr.calledWith(50));
+        assert.equal(myEl.shadowRoot.querySelector("#thumb").style.left, '50%');
+        assert.equal(myEl.shadowRoot.querySelector("#prebar").style.width, '50%');
+        assert.equal(myEl.val, 50);
+        expect(myEl.position >= 0 && myEl.position <= 100);
+      });
+      test('Thumb on drag, beyond bound', function() {
+        myEl.shadowRoot.querySelector('#thumb').dispatchEvent(new DragEvent('drag', { clientX: 0 }));
+        var spySetAttr = sinon.spy(myEl, 'setAttribute');
+        expect(spySetAttr.notCalled);
+      });
+      test('Thumb on drag start', function() {
+        var eventInit = { dataTransfer: new DataTransfer() };
+        var dragEvent = new DragEvent('dragstart', eventInit);
+        var spy = sinon.spy(eventInit.dataTransfer, 'setDragImage');
+        myEl.shadowRoot.querySelector('#thumb').dispatchEvent(dragEvent);
+        expect(spy.called);
+      });
+      test('Thumb on drag end', function() {
+        myEl.shadowRoot.querySelector('#thumb').dispatchEvent(new DragEvent('dragend'));
+        assert.equal(myEl.shadowRoot.querySelector("#thumb").style.left, '50%');
+        assert.equal(myEl.shadowRoot.querySelector("#prebar").style.width, '50%');
+      });
+    });
+  </script>
+</body>
+
+</html>

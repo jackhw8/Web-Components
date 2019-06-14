@@ -10,13 +10,10 @@
   <hello-world userName="Gary"></hello-world>
   </div>
   <h1 style="color:red">Hello Peter!<h1>
-  <lan-slider min=0 max=100 val=8 onchange="getSliderValue()"></lan-slider>
+  <lan-slider min=10 max=100 val=40 onchange="getSliderValue()"></lan-slider>
   <lan-button type="Default" onclick="resetOnclick()">Reset</lan-button>
 
-  <!--
-    <button class="button danger">Danger</button>
-  -->
-  <input type="button" class="button danger" value="Danger" onclick="alert('YO!!!')">
+  <lan-button type="danger" onclick="alert('YO!!!')">Alert User</lan-button>
 
   <textarea id="text-area"></textarea>
 
@@ -59,7 +56,16 @@
         <lan-button type="warning" disabled>Warning</lan-button>
         <lan-button type="danger" disabled>Danger</lan-button>
     </div>
-  
+    <div>
+      <lan-button class="btn btn-primary btn-lg" >Bootstrap Button</lan-button>
+    </div>
+    <div>
+      <lan-button type="primary" onclick="openMessageBox()">messagebox with input</lan-button>
+    </div>
+    <lan-messagebox showInput inputPlaceholder="test@google.com" validator = "email">
+        <span slot="title">email</span>
+        <p slot="text"><i>confirm</i> <strong>your </strong>email</p>
+    </lan-messagebox>
   <script>
     function resetOnclick(){
       var element = document.querySelector("lan-slider");
@@ -68,14 +74,27 @@
   </script>
 
   <script>
+    const messagebox = document.querySelector('lan-messagebox');
+    function openMessageBox(){
+      if (!messagebox.hasAttribute('opened')) {
+        messagebox.open();
+      }
+    }
+    messagebox.addEventListener('confirm', () => {
+      console.log(messagebox.getValue());
+    });
+
+    messagebox.addEventListener('cancel', () => {
+      alert('Cancelled...');
+    });
     function getSliderValue() {
       var element = document.querySelector("lan-slider");
       var textArea = document.querySelector('#text-area')
       textArea.innerHTML = element.getAttribute("val");
     }
   </script>
+  <!-- <script src="https://unpkg.com/lannister-component@1.0.1/bundle.js"></script> -->
+  <script type = "module" src="index.js"></script>
 
-  <script type = "module" src="packages/lan-slider/src/main.js"></script>
-  <script type = "module" src="packages/lan-button/src/main.js"></script>
 </body>
 </html>
