@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <script src="../../node_modules/@webcomponents/webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="./src/main.js" type="module" defer></script>
+    <script src="../lan-button/src/main.js" type="module" defer></script>
+  </head>
+  <body>
+    <h1 style="font-family:arial">Lan Messagebox Example</h1>
+    <lan-messagebox id="confirmation">
+      <h1 slot="title">Please Confirm</h1>
+      <p slot="text">With your confirmation you agree to give us $1,000,000!</p>
+    </lan-messagebox>
+    <lan-messagebox id="input" showInput validator="email" inputPlaceholder="abc@123.com">
+      <h1 slot="title">Input your email</h1>
+      <p slot="text">All spam will be sent to this address!</p>
+    </lan-messagebox>
+    <lan-button type="primary" onclick="openConfirmation()">Open Confirmation Dialog</lan-button>
+    <lan-button type="warning" onclick="openInput()">Open Input Dialog</lan-button>
+  </body>
+
+  <script>
+    const messagebox = document.querySelector('#confirmation');
+    function openConfirmation(){
+      if (!messagebox.hasAttribute('opened')) {
+        messagebox.open();
+      }
+    }
+    messagebox.addEventListener('cancel', () => {
+      alert('You have cancelled.');
+    });
+    const inputBox = document.querySelector('#input');
+    function openInput(){
+      if (!inputBox.hasAttribute('opened')){
+        inputBox.open();
+      }
+    }
+    inputBox.addEventListener('cancel', () => {
+      alert('You have cancelled.');
+    });
+    inputBox.addEventListener('confirm', () => {
+      var targetEmail = inputBox.getValue();
+      alert(targetEmail + " will now receive spam!");
+    });
+  </script>
+</html>

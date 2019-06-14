@@ -53,7 +53,8 @@ You will only need to do the following:
 3. Give details on what you are doing on that PR.
 
 ## To run the full suite:
-1. `npm install`
+1. 
+`npm install`
 2. `npm update`
 3. `npm run lint`
 4. `bower install --save-dev web-component-tester`
