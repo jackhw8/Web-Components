@@ -22,7 +22,7 @@ script:
 after_script:
 - "./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT"
 deploy:
-  matrix:
+  # matrix:
   - provider: pages
     skip_cleanup: true
     github_token: "$GH_TOKEN"
@@ -33,14 +33,14 @@ deploy:
         only:
         - master
     local_dir: "./docs"
-  - provider: npm
-    email: teamlannister6@gmail.com
-    api_key:
-      secure: YVrANr/NXuXYnK1HFtQ7WkyrlD+B7Jv8u2AtIlMq2Asimpng+hcz46RN8xafBqb6D9T5vJXPshvzT3qs83B+MTVaOMzFxRDnhV1AJRfO7HQfveWjX2O1RTRbKVDyahbMcos4X4qsewnrmJrXJNgq3zhE+SCmZmRRS1YkZNdGd61Xm+whf5XcSRLthDCpB3OZ93ufj05g//qNVdQ6Wbp0URQLvL+wFKGoGfOeL6uZwoj6vwIIpxwcNwro14p8abz2ZDs1CPqT0IBHOpePbeJ+GPzpcVnc8AM4xqkqVxIBJFgJM1a6m3CMfqAiNDQ89WMSfZAc5PWuuIjT9fmFAZGS2ng9F7K+wQMKyRTeLrxZEx0FGurtjWzfD7s3puu8UuiienKtTik0iIRl/XHYrtz9t0GdLyofVVj7wY4a++2YfnDtl18H5CyKSfs6KM+9Age5VQ5HMeZp/7jVV3e+Edo7aEMvl4WguCNL7LRkWj8iJzHH2m3rFevu2iN/YCh6KRR7uLRT3UY/tqPMbAj7M2rbjp+PYpZZ3vrh0Y0WF+YsBCfQVm+O2tGRY7Tw1PZnYwjjLUXxH1d67EW5D5NebaPycKLncmiGeJIquvxknQhL5mNiuO+6KL3YAcqXJNting6JnJOZM51Zo5RxdRydZ8Fnta21qvq9zNVFz9bkOGteGmg=
-    on:
-      repo: ucsd-cse112/team6
-      branches:
-        only:
-        - master
+#   - provider: npm
+#     email: teamlannister6@gmail.com
+#     api_key:
+#       secure: YVrANr/NXuXYnK1HFtQ7WkyrlD+B7Jv8u2AtIlMq2Asimpng+hcz46RN8xafBqb6D9T5vJXPshvzT3qs83B+MTVaOMzFxRDnhV1AJRfO7HQfveWjX2O1RTRbKVDyahbMcos4X4qsewnrmJrXJNgq3zhE+SCmZmRRS1YkZNdGd61Xm+whf5XcSRLthDCpB3OZ93ufj05g//qNVdQ6Wbp0URQLvL+wFKGoGfOeL6uZwoj6vwIIpxwcNwro14p8abz2ZDs1CPqT0IBHOpePbeJ+GPzpcVnc8AM4xqkqVxIBJFgJM1a6m3CMfqAiNDQ89WMSfZAc5PWuuIjT9fmFAZGS2ng9F7K+wQMKyRTeLrxZEx0FGurtjWzfD7s3puu8UuiienKtTik0iIRl/XHYrtz9t0GdLyofVVj7wY4a++2YfnDtl18H5CyKSfs6KM+9Age5VQ5HMeZp/7jVV3e+Edo7aEMvl4WguCNL7LRkWj8iJzHH2m3rFevu2iN/YCh6KRR7uLRT3UY/tqPMbAj7M2rbjp+PYpZZ3vrh0Y0WF+YsBCfQVm+O2tGRY7Tw1PZnYwjjLUXxH1d67EW5D5NebaPycKLncmiGeJIquvxknQhL5mNiuO+6KL3YAcqXJNting6JnJOZM51Zo5RxdRydZ8Fnta21qvq9zNVFz9bkOGteGmg=
+#     on:
+#       repo: ucsd-cse112/team6
+#       branches:
+#         only:
+#         - master
 notifications:
   slack: cse112-sp19-team6:N12LyYY9qQqATj006RyRVmKk
