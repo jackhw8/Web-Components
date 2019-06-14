@@ -11,7 +11,9 @@
         "manual": {
           "files": [
             "./manual/lan-button.md",
-            "./manual/lan-tooltip.md"
+            "./manual/lan-tooltip.md",
+            "./manual/lan-card.md",
+            "./manual/lan-slider.md"
           ]
         }
       }

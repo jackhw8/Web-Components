@@ -1,7 +1,7 @@
 /**
  * This is HelloWorld widget.
  */
-export default class HelloWorld extends HTMLElement {
+export default class LANCoreHello extends HTMLElement {
   /**
    * constructor
    */ 
@@ -32,7 +32,14 @@ export default class HelloWorld extends HTMLElement {
     shadow.appendChild(paragraph);
   }
 
-  
+  /**
+   * connectedCallback invoked when the element is removed, appended, edited on
+   * the DOM tree.
+   */
+  connectedCallback() {
+    // Nothing to do when the component is removed, appended, or edited
+  }
+
   /**
    * attributeChangedCallback is a lifecycle method that is invoked
    * whenever attributes listed in observedAttributes static function is
@@ -53,4 +60,4 @@ export default class HelloWorld extends HTMLElement {
 }
 
 // Define the new element
-customElements.define('hello-world', HelloWorld);
+customElements.define('lan-core-hello', LANCoreHello);

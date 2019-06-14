@@ -1,10 +1,13 @@
 {
   "name": "lannister-component",
-  "version": "1.0.2",
+  "version": "1.0.7",
   "description": "An Open Source web component by UCSD Students",
   "main": "index.js",
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
-    "lint": "eslint . ./packages/*/*.js",
+    "lint": "eslint . ./packages/**/*.js",
     "nyc_init": "nyc cover mocha",
     "test": "wct",
     "doc": "esdoc -c .esdoc.json",
@@ -12,14 +15,14 @@
     "build": "./node_modules/.bin/rollup -c"
   },
   "files": [
-    "bundle.js"
+    "dist/bundle.js"
   ],
   "author": "Team Lannister",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ucsd-cse112/team6.git"
   },
-  "unpkg": "bundle.js",
+  "unpkg": "dist/bundle.js",
   "license": "ISC",
   "devDependencies": {
     "bower": "1.8.8",

@@ -43,10 +43,18 @@ export default class LANMessageBox extends HTMLElement {
     //deal with input and inputPlaceHolder
     this.handleInputAttribute();
   }
-  // attributeChangedCallback() {
-  //   console.log("att changed!");
-  //   this.handleInputAttribute();
-  // }
+  
+
+  /**
+   * attributeChangedCallback is a lifecycle method that is invoked
+   * whenever attributes listed in observedAttributes static function is
+   * updated.
+   */
+  attributeChangedCallback() {
+    // console.log("att changed!");
+    // this.handleInputAttribute();
+  }
+
   /**
    * open lan-messagebox
    * need to bind wanted lan-messagebox

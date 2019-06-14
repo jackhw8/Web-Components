@@ -5,5 +5,5 @@ node_modules/
 coverage/
 bower_components/
 docs/
-bundle.js
 .vscode/
+.DS_Store

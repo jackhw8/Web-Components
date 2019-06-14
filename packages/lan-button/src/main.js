@@ -34,24 +34,6 @@ export default class LANButton extends HTMLElement {
     // check if bootstrap is enabled
     this._checkbootstrap(shadow);
   }
-
-  /**
-   * attributeChangedCallback is a lifecycle method that is invoked
-   * whenever attributes listed in observedAttributes static function is
-   * updated.
-   */
-  // eslint-disable-next-line no-unused-vars
-  attributeChangedCallback(name, oldVal, newVal) {
-    switch(name){
-      case "bootstrap":
-        this._checkbootstrap(this.shadowRoot);
-        break;
-      default:
-        // update the value of the buttons
-        this.updateButtonValue();
-    }
-  }
-
   
   /**
    * connectedCallback invoked when the element is removed, appended, edited on
@@ -60,6 +42,16 @@ export default class LANButton extends HTMLElement {
   connectedCallback() {
     const root = this.shadowRoot;
     this._checkbootstrap(root);
+  }
+
+  /**
+   * attributeChangedCallback is a lifecycle method that is invoked
+   * whenever attributes listed in observedAttributes static function is
+   * updated.
+   */
+  attributeChangedCallback() {
+    this._checkbootstrap(this.shadowRoot);
+    this.updateButtonValue();
   }
 
   /**

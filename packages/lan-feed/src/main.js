@@ -40,6 +40,14 @@ export default class LANFeed extends HTMLElement {
   }
 
   /**
+   * connectedCallback invoked when the element is removed, appended, edited on
+   * the DOM tree.
+   */
+  connectedCallback() {
+    // Nothing to do when the component is removed, appended, or edited
+  }
+
+  /**
    * attributeChangedCallback is a lifecycle method that is invoked
    * whenever attributes listed in observedAttributes static function is
    * updated.
