@@ -9,6 +9,7 @@
 </head>
 
 <body>
+  <!-- instantiate the slider within the testing framework -->
   <test-fixture id="slider">
     <template>
       <lan-slider></lan-slider>
@@ -18,6 +19,7 @@
 
   <script>
     suite('<lan-slider>', function () {
+      // get the testing element which contains the element
       let myEl;
       setup(() => {
         myEl = fixture("slider");
@@ -28,6 +30,7 @@
         assert.equal(myEl.getAttribute('val'), '50');
       });
       test('Testing value of val, min, max on set', function () {
+        // set attributes
         myEl.setAttribute('min', '8');
         myEl.setAttribute('max', '800');
         myEl.setAttribute('val', '80');
@@ -36,20 +39,26 @@
         assert.equal(myEl.getAttribute('max'), '800');
       });
       test('Testing that min value can not be set less than 0 (negative)', function() {
+        // attempt to set negative attribute for min
         myEl.setAttribute('min', '-5');
         assert.equal(myEl.getAttribute('val'), '50');
+        // check that value was ignored
         assert.equal(myEl.getAttribute('min'), '0');
         assert.equal(myEl.getAttribute('max'), '100');
       }); 
       test('Testing that max value can not be set less than 0 (negative)', function() {
+        // attempt to set negative value for max
         myEl.setAttribute('max', '-25');
         assert.equal(myEl.getAttribute('val'), '50');
         assert.equal(myEl.getAttribute('min'), '0');
+        // check that value was ignored
         assert.equal(myEl.getAttribute('max'), '100');
       }); 
       test('Testing that max can not be set less than min value', function() {
+        // attempt to set max value less than min value
         myEl.setAttribute('max', '25');
         myEl.setAttribute('min', '75');
+        // check that values were ignored
         assert.equal(myEl.getAttribute('min'), '0');
         assert.equal(myEl.getAttribute('max'), '100');
         assert.equal(myEl.getAttribute('val'), '50');
@@ -59,25 +68,32 @@
         var offset = 10;
         var mockClientX = 0.5 * trackWidth + offset;
 
+        // create mousedown event
         myEl.shadowRoot.querySelector('#track').dispatchEvent(new MouseEvent('mousedown', { clientX: mockClientX }));
-        var spySetAttr = sinon.spy(myEl, 'setAttribute');
 
+        // expect mousedown to update value and call the setAttribute function
+        var spySetAttr = sinon.spy(myEl, 'setAttribute');
         expect(spySetAttr.calledWith(50));
+        
         assert.equal(myEl.shadowRoot.querySelector("#thumb").style.left, '50%');
         assert.equal(myEl.shadowRoot.querySelector("#prebar").style.width, '50%');
         assert.equal(myEl.val, 50);
         expect(myEl.position >= 0 && myEl.position <= 100);
       });
       test('Thumb on mouse out', function() {
+        // create mouseout event
         myEl.shadowRoot.querySelector('#thumb').dispatchEvent(new MouseEvent('mouseout'));
         assert.equal(myEl.shadowRoot.querySelector("#thumb").style.left, '50%');
         assert.equal(myEl.shadowRoot.querySelector("#prebar").style.width, '50%');
+        // assert tooltip is not visible
         assert.equal(myEl.shadowRoot.querySelector("#tooltip").style.opacity, '0');
       });
       test('Thumb on hover', function() {
+        // create mouseover event
         myEl.shadowRoot.querySelector('#thumb').dispatchEvent(new MouseEvent('mouseover'));
         assert.equal(myEl.shadowRoot.querySelector("#thumb").style.left, '50%');
         assert.equal(myEl.shadowRoot.querySelector("#prebar").style.width, '50%');
+        // assert tooltip is visible
         assert.equal(myEl.shadowRoot.querySelector("#tooltip").style.opacity, '1');
       });
       test('Thumb on drag, within bound', function() {
@@ -85,17 +101,23 @@
         var offset = 10;
         var mockClientX = 0.5 * trackWidth + offset;
 
+        // create mouse drag event
         myEl.shadowRoot.querySelector('#thumb').dispatchEvent(new DragEvent('drag', { clientX: mockClientX }));
-        var spySetAttr = sinon.spy(myEl, 'setAttribute');
 
+        // expect mouse drag to update value and call the setAttribute function
+        var spySetAttr = sinon.spy(myEl, 'setAttribute');
         expect(spySetAttr.calledWith(50));
+
         assert.equal(myEl.shadowRoot.querySelector("#thumb").style.left, '50%');
         assert.equal(myEl.shadowRoot.querySelector("#prebar").style.width, '50%');
         assert.equal(myEl.val, 50);
         expect(myEl.position >= 0 && myEl.position <= 100);
       });
       test('Thumb on drag, beyond bound', function() {
+        // create mouse drag event
         myEl.shadowRoot.querySelector('#thumb').dispatchEvent(new DragEvent('drag', { clientX: 0 }));
+
+        // expect nothing to change because thumb was not dragged
         var spySetAttr = sinon.spy(myEl, 'setAttribute');
         expect(spySetAttr.notCalled);
       });
@@ -103,10 +125,14 @@
         var eventInit = { dataTransfer: new DataTransfer() };
         var dragEvent = new DragEvent('dragstart', eventInit);
         var spy = sinon.spy(eventInit.dataTransfer, 'setDragImage');
+        // create mouse drag start event, expect movement
         myEl.shadowRoot.querySelector('#thumb').dispatchEvent(dragEvent);
+
+        // expect thumb to respond to being dragged
         expect(spy.called);
       });
       test('Thumb on drag end', function() {
+        // create mouse drag end event
         myEl.shadowRoot.querySelector('#thumb').dispatchEvent(new DragEvent('dragend'));
         assert.equal(myEl.shadowRoot.querySelector("#thumb").style.left, '50%');
         assert.equal(myEl.shadowRoot.querySelector("#prebar").style.width, '50%');
