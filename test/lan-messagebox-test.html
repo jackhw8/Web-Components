@@ -23,9 +23,11 @@
       setup(() => {
         myEl = fixture("messagebox");
       });
+      // Testing whether the box is closed
       test('Testing lan-meessagebox is closed',function(){
         assert.isNull(myEl.getAttribute("opened"));
       });
+      // Testing title
       test('Testing header',function(){
         assert.equal(myEl.querySelector("span[slot='title']").innerHTML,"test title");
         //test input div, input box and tip
@@ -33,9 +35,11 @@
         assert.equal(myEl.shadowRoot.querySelector("#main").querySelector("p").getAttribute("id"),"tip");
         assert.equal(myEl.shadowRoot.querySelector("#main").querySelector("div").querySelector("div").getAttribute("id"),"inputBox");
       });
+      // Testing text
       test('Testing text',function(){
         assert.equal(myEl.querySelector("p[slot='text']").innerHTML,"test text");
       });
+      // Testing input
       test('Testing input and input validation',function(){
         const input = myEl.shadowRoot.querySelector("input");
         const tip = myEl.shadowRoot.querySelector("#tip");
@@ -51,10 +55,12 @@
         assert.equal(myEl.validater(),true);
         assert.equal(tip.innerHTML," ");
       });
+      // Testing action of danger and primary
       test('Testing actions',function(){
         assert.equal(myEl.shadowRoot.querySelector("#cancel-btn").getAttribute("type"),"danger");
         assert.equal(myEl.shadowRoot.querySelector("#confirm-btn").getAttribute("type"),"primary");
       });
+      // Testing open and hide the message box
       test('open and hide',function(){
         //test hide
         myEl.open();
@@ -73,6 +79,7 @@
         myEl.open();
         assert.equal(input.innerHTML,"");
       });
+      // Testing confirmation
       test('confirm event',function(){
         myEl.open();
         //add confirm event,let x++
@@ -98,6 +105,7 @@
         myEl.shadowRoot.querySelector("#confirm-btn").click();
         assert.equal(x,3);
       });
+      // Testing cancel
       test('cancel event',function(){
         myEl.open();
         let x = 1;
@@ -109,6 +117,7 @@
         myEl.shadowRoot.querySelector("#cancel-btn").click();
         assert.equal(x,2);
       });
+      // Testing error
       test('test without validator',function(){
         myEl.removeAttribute("validator");
         const input = myEl.shadowRoot.querySelector("input");
@@ -117,6 +126,7 @@
         assert.isTrue(myEl.validater());
         assert.equal( myEl.shadowRoot.querySelector("#tip").innerHTML," ");
       });
+      // Testing without input
       test('test without input',function(){
         myEl.removeAttribute("showInput");
         myEl.handleInputAttribute();
@@ -148,6 +158,7 @@
         assert.isNotNull(myEl.shadowRoot.querySelector("#tip"));
         assert.isNotNull(myEl.shadowRoot.querySelector("#inputDiv"));
       });
+      // Testing validation
       test("input number validation test", function(){
         myEl.setAttribute("validator", "number");
         const input = myEl.shadowRoot.querySelector("input");

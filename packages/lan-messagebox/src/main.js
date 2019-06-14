@@ -28,7 +28,7 @@ export default class LANMessageBox extends HTMLElement {
     this.attachShadow({ mode: "open" });
     // Clone template
     const tmpl = template.content.cloneNode(true);
-     // Attach the created elements to the shadow dom
+    // Attach the created elements to the shadow dom
     this.shadowRoot.appendChild(tmpl);
 
     //add event when click backdrop rather than message box,trigger cancel event
@@ -36,26 +36,34 @@ export default class LANMessageBox extends HTMLElement {
     //add event when click cancel button, trigger cancel event
     this.shadowRoot.querySelector('#cancel-btn').addEventListener('click', this._cancel.bind(this));
     //add event when click cancel icon, trigger cancel event
-    this.shadowRoot.querySelector("#cancel-icon").addEventListener('click',this._cancel.bind(this));
+    this.shadowRoot.querySelector("#cancel-icon").addEventListener('click', this._cancel.bind(this));
     //add event when click confirm button, trigger confirm event
     this.shadowRoot.querySelector('#confirm-btn').addEventListener('click', this._confirm.bind(this));
 
     //deal with input and inputPlaceHolder
     this.handleInputAttribute();
   }
-  // attributeChangedCallback() {
-  //   console.log("att changed!");
-  //   this.handleInputAttribute();
-  // }
+
+
+  /**
+   * attributeChangedCallback is a lifecycle method that is invoked
+   * whenever attributes listed in observedAttributes static function is
+   * updated.
+   */
+  attributeChangedCallback() {
+    // console.log("att changed!");
+    // this.handleInputAttribute();
+  }
+
   /**
    * open lan-messagebox
    * need to bind wanted lan-messagebox
    */
   open() {
     this.setAttribute('opened', '');
-    if(this.hasAttribute("showInput")){
+    if (this.hasAttribute("showInput")) {
       this.shadowRoot.querySelector("input").value = "";
-      if(this.hasAttribute("inputPlaceholder")){
+      if (this.hasAttribute("inputPlaceholder")) {
         this.shadowRoot.querySelector("input").placeholder = this.getAttribute("inputPlaceholder")
         //validate the input holder
         this.validater();
@@ -87,12 +95,12 @@ export default class LANMessageBox extends HTMLElement {
   }
   /**
    * internal function for lan-messagebox
-   * @param {*} event
+   * 
    * hide the messagebox and dispatch the confirm event
    * need to bind lan-messagebox
    */
   _confirm() {
-    if(!this.validater()){
+    if (!this.validater()) {
       return null;
     }
     //hide message box
@@ -106,8 +114,8 @@ export default class LANMessageBox extends HTMLElement {
   /**
    * get the vaule of input, if no value return null
    */
-  getValue(){
-    if(this.hasAttribute("showInput")){
+  getValue() {
+    if (this.hasAttribute("showInput")) {
       return this.shadowRoot.querySelector("input").value;
     }
     return null;
@@ -115,16 +123,16 @@ export default class LANMessageBox extends HTMLElement {
   /** 
    * validate the input value
    */
-  validater(){
+  validater() {
     //get input value type 
-    if(!this.hasAttribute("showInput")){
+    if (!this.hasAttribute("showInput")) {
       return true;
     }
-    if(this.getAttribute("validator") == "email"){
+    if (this.getAttribute("validator") == "email") {
       //regular expression to match email address
       const re = /\S+@\S+\.\S+/;
       //get the input value 
-      if(!re.test(String(this.getValue()).toLowerCase())){
+      if (!re.test(String(this.getValue()).toLowerCase())) {
         //show tip
         this.shadowRoot.querySelector("#tip").innerHTML = "invalid email";
         //return result
@@ -132,37 +140,37 @@ export default class LANMessageBox extends HTMLElement {
       }
     }
     //get input value type
-    else if(this.getAttribute("validator") == "number"){
+    else if (this.getAttribute("validator") == "number") {
       //get value and validate 
-      if(isNaN(this.getValue())){
+      if (isNaN(this.getValue())) {
         //show tip
         this.shadowRoot.querySelector("#tip").innerHTML = "invalid number";
         //return result
         return false;
       }
     }
-    if(this.shadowRoot.querySelector("#tip") !== null){
-       //empty the tip
+    if (this.shadowRoot.querySelector("#tip") !== null) {
+      //empty the tip
       this.shadowRoot.querySelector("#tip").innerHTML = " ";
     }
     //return true
     return true;
   }
 
-  handleInputAttribute(){
+  handleInputAttribute() {
     const mainPart = this.shadowRoot.querySelector("#main");
-    if(this.hasAttribute("showInput")){
+    if (this.hasAttribute("showInput")) {
       //create input div
-      const inputDiv= document.createElement("div");
-      inputDiv.setAttribute("id","inputDiv");
+      const inputDiv = document.createElement("div");
+      inputDiv.setAttribute("id", "inputDiv");
       //create input box
       const inputBox = document.createElement("div");
-      inputBox.setAttribute("id","inputBox");
+      inputBox.setAttribute("id", "inputBox");
       //create input 
       const input = document.createElement("input");
       //create tip
       const tip = document.createElement("p");
-      tip.setAttribute("id","tip");
+      tip.setAttribute("id", "tip");
       //attach input to input box 
       inputBox.appendChild(input);
       //attach input box and tip to input div
@@ -171,16 +179,16 @@ export default class LANMessageBox extends HTMLElement {
       //attach this input and tip to main div
       mainPart.appendChild(inputDiv);
       //add vaildator on input
-      input.addEventListener('input',this.validater.bind(this));
+      input.addEventListener('input', this.validater.bind(this));
       //change the value to input place holder 
-      if(this.hasAttribute("inputPlaceholder")){
+      if (this.hasAttribute("inputPlaceholder")) {
         input.value = this.getAttribute("inputPlaceholder")
         //validate input place holder
       }
       this.validater();
     }
-    else{
-      if (mainPart.querySelector("#inputDiv")){
+    else {
+      if (mainPart.querySelector("#inputDiv")) {
         mainPart.querySelector("#inputDiv").remove();
       }
     }
