@@ -9,6 +9,7 @@
 </head>
 
 <body>
+  <!-- instantiate the card within the testing framework -->
   <test-fixture id="card">
     <template>
       <lan-card></lan-card>
@@ -18,6 +19,7 @@
 
   <script>
     suite('<lan-card>', function () {
+      // get the testing element which contains the element
       let myEl;
       setup(() => {
         myEl = fixture("card");

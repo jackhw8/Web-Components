@@ -9,6 +9,7 @@
 </head>
 
 <body>
+  <!-- instantiate the button within the testing framework -->
   <test-fixture id="simple">
     <template>
       <lan-button>Button</lan-button>
@@ -18,6 +19,7 @@
 
   <script>
     suite('<lan-button>', function () {
+      // get the testing element which contains the element
       let myEl;
       setup(() => {
         myEl = fixture("simple");
@@ -32,10 +34,13 @@
       });
       test('Setting class', function() {
         myEl.setAttribute('autofocus', '');
+        // update value with new attribute class
         myEl.updateButtonValue();
+        // assert attribute exists
         assert.isNotNull(myEl.shadowRoot.querySelector("button").getAttribute('autofocus'));
       });
       test('Testing bootstrap', function() {
+        // add bootstrap attribute
         myEl.setAttribute('bootstrap', ' ');
         myEl.setAttribute('className', 'btn btn-primary');
         const btn = myEl.shadowRoot.querySelector("button");
@@ -45,11 +50,13 @@
       });
       test('Testing button shape', function() {
         myEl.setAttribute('round', '');
+        // update shape with set shape
         myEl.updateButtonShape();
         assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--border-rad'), '24px');
       });
       test('Testing button size', function() {
         myEl.setAttribute('size', 'medium');
+        // update shape with set size
         myEl.updateButtonShape();
         assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--padding'), '10px 20px');
         assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--txt-size'), '14px');
@@ -57,6 +64,7 @@
       test('Testing color', function() {
         myEl.setAttribute('plain', '');
         myEl.setAttribute('type', 'warning');
+        // update color with set style
         myEl.updateButtonColor();
         assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--bg-color'), '#fcf6ed');
         assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--txt-color'), '#e6a23c');
@@ -67,6 +75,7 @@
       });
       test('Testing disabled', function() {
         myEl.setAttribute('disabled', '');
+        // update disabled property
         myEl.updateDisabled();
         assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--pointer-events'), 'none');
         assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--opacity'), '0.7');
@@ -74,6 +83,7 @@
       });
       test('Testing random type', function() {
         myEl.setAttribute('type', 'awefoiawjefiojoaweif');
+        // update color with random type
         myEl.updateButtonColor();
         assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--bg-color'), '#ffffff');
         assert.equal(myEl.shadowRoot.querySelector("button").style.getPropertyValue('--txt-color'), '#606266');
