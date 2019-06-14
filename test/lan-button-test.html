@@ -10,7 +10,7 @@
 
 <body>
   <!-- instantiate the button within the testing framework -->
-  <test-fixture id="simple">
+  <test-fixture id="button">
     <template>
       <lan-button>Button</lan-button>
     </template>
@@ -22,7 +22,7 @@
       // get the testing element which contains the element
       let myEl;
       setup(() => {
-        myEl = fixture("simple");
+        myEl = fixture("button");
       });
       test('type is primary', function () {
         myEl.setAttribute('type', 'primary');
