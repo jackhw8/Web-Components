@@ -25,6 +25,7 @@
             setup(() => {
                 myEl = fixture("tooltip");
             });
+            // Testing right location
             test('Testing placement effect', function () {
                 myEl.setAttribute('visible-arrow', 'false');
                 myEl.setAttribute('placement', 'top');
@@ -40,6 +41,7 @@
                 myEl.setAttribute('placement', 'tops');
                 assert.equal(myEl.shadowRoot.querySelector('#tool').getAttribute('class'), 'tooltip-bottom');
             });
+            // Testing whether arrow shows on the right location
             test('Testing visible arrow effect', function () {
                 myEl.setAttribute('visible-arrow', 'true');
                 myEl.setAttribute('placement', 'top');
@@ -56,6 +58,7 @@
                 myEl.setAttribute('visible-arrow', 'trues');
                 assert.equal(myEl.shadowRoot.querySelector('#tool').getAttribute('class'), 'tooltip-top arrow-top');
             });
+            // Testing background color of black
             test('Testing dark effect', function () {
                 assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.backgroundColor, "black");
                 assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.color, "white");
@@ -65,11 +68,13 @@
                 assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.backgroundColor, "black");
                 assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.color, "white");
             });
+            // Testing background color of white
             test('Testing light effect', function () {
                 myEl.setAttribute('effect', 'light')
                 assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.color, "black");
                 assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.backgroundColor, "white");
             });
+            // Testing whether the tooltip shows or hide after on click
             test('Testing click effect', function () {
                 myEl.setAttribute("event", "click");
                 myEl.shadowRoot.querySelector('#tool').click();
@@ -77,6 +82,7 @@
                 myEl.shadowRoot.querySelector('#tool').click();
                 assert.equal(myEl.shadowRoot.querySelector('.tooltiptext').style.visibility, "hidden");
             });
+            // Testing the fades out of the button
             test('Testing transition delay effects', function () {
                 myEl.setAttribute("event", "click");
                 myEl.setAttribute("hide-after", "3000");
