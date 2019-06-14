@@ -54,13 +54,30 @@ You will only need to do the following:
 3. Give details on what you are doing on that PR.
 
 ## To run the full suite:
-1. 
-`npm install`
-2. `npm update`
-3. `npm run lint`
-4. `bower install --save-dev web-component-tester`
-5. `npm run test`
-6. `npm run doc`
+1. Install [npm](https://www.npmjs.com/get-npm).
+2. Install [Chrome](https://www.google.com/chrome/).
+3. Install [Firefox](https://www.mozilla.org/en-US/firefox/new/).
+4. Install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git).
+5. Install [Java](https://www.java.com/download).
+6. Add Java to the PATH environment variable.
+7. `git clone https://github.com/ucsd-cse112/team6.git` into your preferred directory.
+8. Navigate to the team6 folder.
+9. `npm install`
+10. `npm update`
+11. `npm run lint`
+12. `npm install bower`
+13. For Mac/Linux: `./node_modules/.bin/bower install --save-dev web-component-tester`
+
+    For Windows: `node_modules\.bin\bower.cmd install --save-dev web-component-tester`
+
+14. `npm run test`
+15. `npm run doc`
+
+### Troubleshooting:
+#### `npm run test`
+If you're getting an installation error along the lines of "could not request header," go to `package.json` and navigate to `scripts` then `test`. Change `wct` to `wct --skip-selenium-install`.
+
+On Mac, try going to `node_modules/wct-local/selenium-overrides.js` and change the version from `3.12.0` to `3.14.0`. For more info, visit the [Polymer web-component-tester repo](https://github.com/Polymer/tools/tree/master/packages/web-component-tester).
 
 ## Have fun humans!
 
