@@ -75,19 +75,19 @@ export default class LANButton extends HTMLElement {
 
   _checkbootstrap(shadow) {
     // If bootstrap is enabled then reset the style etc.
-    if(this.hasAttribute("bootstrap")) {
-      // remove styles
-      shadow.querySelector('style').innerHTML = "";
+    // if(this.hasAttribute("bootstrap")) {
+    //   // remove styles
+    //   shadow.querySelector('style').innerHTML = "";
 
-      // add class names to buttons
-      let classNames = this.getAttribute('className');
-      shadow.querySelector("button").setAttribute("class", classNames);
-    } else {
-      // set the class to default
-      shadow.querySelector("button").setAttribute("class", "button default");
+    //   // add class names to buttons
+    //   let classNames = this.getAttribute('className');
+    //   shadow.querySelector("button").setAttribute("class", classNames);
+    // } else {
+    //   // set the class to default
+    //   shadow.querySelector("button").setAttribute("class", "button default");
 
-      this.updateButtonValue();
-    }
+    //   this.updateButtonValue();
+    // }
   }
 
   /**
