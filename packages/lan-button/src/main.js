@@ -11,6 +11,7 @@ template.innerHTML = `
 
 /**
  * This is the Button web component.
+ * Another Foo component.
  */
 export default class LANButton extends HTMLElement {
   /**
