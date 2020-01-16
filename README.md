@@ -28,7 +28,7 @@ You're going to need:
 ### Getting Set Up
 To get the component working in your site, you will need to put this script to the bottom of your HTML file.
 ```
-  <script src="https://unpkg.com/lannister-component@latest/bundle.js"></script>
+  <script src="https://unpkg.com/lannister-component@latest/dist/bundle.js"></script>
 ```
 
 Next, you can load up your desired component above the script.
